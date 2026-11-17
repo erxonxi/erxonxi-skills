@@ -1,5 +1,7 @@
 # erxonxi-skills
 
+[![skills.sh](https://skills.sh/b/erxonxi/erxonxi-skills)](https://skills.sh/erxonxi/erxonxi-skills)
+
 Language-agnostic engineering skills for coding agents: architecture, domain modeling, naming, testing, infrastructure, frontend, and how to plan and ship work with an agent.
 
 They follow the [Agent Skills](https://skills.sh) format and work with Claude Code, Codex, Cursor and any agent the `skills` CLI supports.
