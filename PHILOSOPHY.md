@@ -1,0 +1,161 @@
+# Engineering philosophy
+
+How I design, model, name, structure and test code, written to hold in any language and to be handed to coding agents.
+
+The operational detail lives in the seven skills under `skills/`. This document explains the why and the whole.
+
+## 1. The central idea
+
+Code is organized around the business, not the technology. The business rules live in a core that knows nothing about frameworks, databases or protocols, and everything else is a replaceable detail that plugs into that core through small contracts. Each piece has a name that says what it does and a single place to live, so the folder structure reads as the index of the business.
+
+On top of that base there is a second idea just as strong: complexity is earned. Start with the simplest thing that works and climb one rung only when the previous one hurts and the pain has been measured.
+
+## 2. The principles
+
+### 1. The business drives the structure
+
+A file's path says first which business area it belongs to (`shop`, `catalog`, `notifications`), then which concept (`users`, `products`) and only at the end which technical role it plays (`domain`, `application`, `infrastructure`). A module is named after its aggregate, in plural. One folder per use case.
+
+Why: whoever arrives at the project understands what the system does before knowing what it is made of, and a business change touches one place.
+
+### 2. Dependencies point inward
+
+`infrastructure → application → domain`. The domain imports nothing technical. The application orchestrates without knowing about HTTP or SQL. The infrastructure implements the ports the domain declares.
+
+Why: the rules can be tested without starting anything, and switching database or framework does not touch the business. And discipline is not trusted: the rule is checked with import lint, architecture tests or the build graph.
+
+### 3. One use case, one class, one agent name
+
+`UserRegistrar`, `ProductFinder`, `ProductsSearcher`, `WelcomeEmailSender`. One class, one public method, its ports via constructor, primitives in and primitives or a DTO out. Controllers are thin: they parse, call, serialize and translate errors.
+
+Why: the folder listing of `application` is the catalog of what the system can do. Names like `Manager`, `Helper` or `Service` say nothing and end up accumulating everything.
+
+### 4. Objects protect themselves
+
+An invalid value object cannot be constructed. An aggregate has a private constructor, is created with a named constructor (`create`) that records the fact, is rebuilt with `fromPrimitives` and serialized with `toPrimitives`. There are no setters: state changes with business verbs (`rename`, `archive`, `publish`).
+
+Each rule lives in a single place, as deep inside as possible: value object, then aggregate, then domain service, then use case.
+
+Why: if a rule can be bypassed by constructing the object another way, it is not a rule.
+
+### 5. Business facts are events
+
+What happens is named in past tense and with business vocabulary (`UserRegisteredDomainEvent`, message `acme.shop.user.registered`). The aggregate records the event, the use case publishes it after saving, and each reaction is a subscriber with its own name (`SendWelcomeEmailOnUserRegistered`) that delegates to another use case.
+
+Why: the main use case does not know its side effects, adding a reaction is adding a class, and contexts learn what happens without coupling to each other. The price is accepted explicitly: at-least-once delivery, no guaranteed order, idempotent consumers and eventual consistency.
+
+### 6. Errors have names
+
+One class per business condition (`UserDoesNotExistError`), with structured data. No generic errors, codes, `null` as failure or decisions based on the message text. They are thrown in the domain and translated to protocol only at the edge, with an exhaustive mapping. The error name is part of the API's public contract.
+
+Why: propagating `Result`/`Either` through every layer costs more than it brings in most languages. What is valuable in that alternative is kept: exhaustiveness in the edge mapping. In languages whose idiom is error values, they are used with the same naming criteria.
+
+### 7. Contexts do not touch each other's insides
+
+A context never imports another's domain or infrastructure. They collaborate through events, or through a port that the consumer declares with the shape it needs and that is adapted to a public use case of the provider. Each context has its own view of a foreign concept and copies the data it needs to remember at the moment of the fact. The shared kernel is tiny and contains no rules.
+
+Why: it is what allows a context to change, be extracted or be rewritten without dragging the others along. For that same reason duplication between contexts is accepted: two identical pieces that represent different concepts will change for different reasons.
+
+### 8. Test the behavior, once, at the lowest level
+
+- Unit: a use case through its public API, with the real domain and its ports substituted.
+- Integration: each adapter against the real technology.
+- Acceptance: an endpoint or a flow with the application wired.
+
+All data comes from Object Mothers. Doubles are implementations of our own ports with intent vocabulary (`shouldSave`, `shouldPublish`). Tests are named as sentences (`UserRegistrar should` / `register a valid user`). Time, ids and randomness are controllable ports.
+
+Why: tests that survive refactors because they assert results at the boundaries and not internal details. Do not mock what is not yours, do not test the same thing at three levels and do not chase a coverage percentage.
+
+### 9. Simple design before clever design
+
+The four rules in order: it passes the tests, it reveals intent, it does not duplicate the same concept, it has the fewest elements. In practice: guard clauses and early return, no boolean flags, no default parameters, tell don't ask, classes closed and immutable by default, composition over inheritance, comments only for the why.
+
+And real YAGNI: no interface for every class, no factory for one case, no pattern without the force that justifies it. An interface is earned by crossing an input/output boundary or by having a real variation.
+
+### 10. Complexity is climbed like a ladder
+
+Almost all infrastructure decisions have the shape of a ladder, and the rule is not to skip rungs:
+
+| Topic | Rungs |
+|---|---|
+| Event bus | in memory → the database as a bus → broker |
+| Read model | join → view → materialized view → projection by events |
+| Transaction | repository → use case decorator → entry point / `UnitOfWork` |
+| Cache | HTTP cache → decorator over a port |
+| Organization | module → context → service |
+| Frontend | by feature → hexagonal core only where there are rules |
+| Agent memory | `AGENTS.md` → docs → skills → lint and hooks → specs |
+
+### 11. What is checkable is checked, not written
+
+Formatting, dependencies between layers, default parameters, PR size, commit format: everything a machine can verify becomes a lint rule, an architecture test, a hook or a CI check, with a message that says how to fix it. Prose is left for what cannot be automated.
+
+### 12. Small, verified steps
+
+TDD use case by use case. Refactor in minimal steps with tests green and without mixing it with behavior changes. Small PRs against a single trunk. With agents, the same at another scale: plans in vertical slices, one phase at a time, verification and a stop for human review at the end of each.
+
+## 3. How to work with agents
+
+The above, turned into a way of working for coding agents.
+
+- **Layered memory.** A short root `AGENTS.md` with commands, architecture in a few lines and a map of `docs/`, with the explicit order not to read all the docs at the start. Conventions in `docs/`, one file per convention and with a fixed skeleton. Procedures in skills. Mechanical rules in lint and hooks.
+- **Research, plan, implement**, with a human gate at each step. Exploration is delegated to subagents with cheap models. The plan is not written until phases and contracts are agreed.
+- **Public contracts in the plan**: use case signatures, events, test suites with their cases, schema and interface texts. The what is reviewed before the how is written.
+- **Specs as promise**: `SHALL`, one behavior per requirement, concrete values, only what is observable.
+- **The agent does not commit on its own**: it proposes messages and waits.
+- **Copying the neighboring pattern** is the default way to split work: each task cites the existing code to imitate.
+
+## 4. Default decisions
+
+Points where several reasonable options exist and this is the chosen one. They are the first thing to change if a project asks for something else.
+
+| Topic | Default option |
+|---|---|
+| Use case method name | Name of the action, or the language idiom, uniform per project |
+| Command/query bus | Not by default. Event bus yes |
+| `find` that finds nothing | `search` may not find, `find` throws |
+| Use case input | Primitives |
+| Errors | Typed exceptions, or the language's error idiom |
+| Ports | Whatever the language and its injection call for |
+| Ids and SQL constraints | The client generates the id. The column type is set by the project |
+| Mocks | Hand-written class or generic helper, always with `should*` vocabulary |
+| Isolated domain tests | Cover per use case. Extra cases only for partitions and boundaries |
+| Agent commit | Do not commit unless the user asks |
+| Exploration subagents | With context. Blind as an optional technique |
+| Where a shared event lives | In the emitting context |
+
+## 5. What is deliberately not done
+
+- Business logic in controllers, components or SQL.
+- Anemic models with setters, or ORM annotations in the domain.
+- Importing another context's domain, or a shared kernel with rules.
+- Generic "updated" events carrying the whole state.
+- Distributed transactions or two-phase commit.
+- A broker, a cache or a projection before it hurts.
+- Mocking third-party libraries or domain objects.
+- Browser E2E tests as the base strategy, or coverage targets.
+- Interfaces, factories and patterns without real variation. Singletons.
+- Hexagonal architecture in an interface without rules.
+- Arguing about formatting by hand.
+- Letting an agent read all the documentation, implement several phases in a row or commit without review.
+
+## 6. The skills
+
+| Skill | When it is loaded |
+|---|---|
+| `erxonxi-architecture` | Create or reorganize a project, module, use case or endpoint. Decide where a file goes |
+| `erxonxi-domain-modeling` | Design aggregates, value objects, events, errors, repositories or queries |
+| `erxonxi-testing` | Write or review tests, choose level, prepare data and doubles |
+| `erxonxi-clean-code` | Name things, write functions and classes, refactor, decide whether a pattern is justified |
+| `erxonxi-infrastructure` | Repositories, event bus, transactions, cache, projections, schema |
+| `erxonxi-frontend` | Components, state, styles, how much architecture to put in the client |
+| `erxonxi-workflow` | Plan, split into phases, write specs or docs, commits, scaffolding |
+
+All of them start with the same rule: the project's existing convention wins, and the skill decides only when there is no precedent.
+
+`AGENTS-snippet.md` contains the core in short format, to paste into an agent's global instructions file.
+
+## 7. Caveats
+
+- The "whys" are reasoning, not dogma. If a project has a good reason to do it another way, the project wins.
+- The skills give shape, not code: always check that an implementation delivers the guarantee it names (atomicity, idempotency, invalidation).
