@@ -20,6 +20,16 @@ A single skill, for a given agent:
 npx skills add erxonxi/erxonxi-skills --skill erxonxi-testing -a claude-code
 ```
 
+### As a Claude plugin
+
+In Claude Code:
+
+```bash
+/plugin install erxonxi-skills --marketplace erxonxi/erxonxi-skills
+```
+
+In the Claude app, go to Customize → Plugins → Add → Add marketplace, enter `erxonxi/erxonxi-skills`, then install the `erxonxi-skills` plugin.
+
 ## Skills
 
 | Skill | Covers |

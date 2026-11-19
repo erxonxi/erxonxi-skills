@@ -1,0 +1,13 @@
+{
+  "name": "erxonxi-skills",
+  "version": "1.0.0",
+  "description": "Language-agnostic engineering skills for coding agents: architecture, domain modeling, clean code, testing, infrastructure, frontend and agent workflow.",
+  "author": {
+    "name": "erxonxi",
+    "url": "https://github.com/erxonxi"
+  },
+  "homepage": "https://github.com/erxonxi/erxonxi-skills",
+  "repository": "https://github.com/erxonxi/erxonxi-skills",
+  "license": "MIT",
+  "keywords": ["skills", "architecture", "ddd", "testing", "clean-code", "infrastructure", "frontend", "workflow"]
+}

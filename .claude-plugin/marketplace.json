@@ -1,0 +1,21 @@
+{
+  "name": "erxonxi-skills",
+  "owner": {
+    "name": "erxonxi",
+    "url": "https://github.com/erxonxi"
+  },
+  "metadata": {
+    "description": "Language-agnostic engineering skills for coding agents."
+  },
+  "plugins": [
+    {
+      "name": "erxonxi-skills",
+      "source": "./",
+      "description": "Seven engineering skills: architecture, domain modeling, clean code, testing, infrastructure, frontend and agent workflow.",
+      "version": "1.0.0",
+      "category": "development",
+      "homepage": "https://github.com/erxonxi/erxonxi-skills",
+      "license": "MIT"
+    }
+  ]
+}
