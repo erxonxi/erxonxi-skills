@@ -2,7 +2,7 @@
 
 Cómo diseño, modelo, nombro, estructuro y pruebo el código, escrito para que valga en cualquier lenguaje y para dárselo a agentes de código.
 
-El detalle operativo vive en las siete skills de `skills/`. Este documento explica el porqué y el conjunto.
+El detalle operativo vive en las ocho skills de `skills/`. Este documento explica el porqué y el conjunto.
 
 ## 1. La idea central
 
@@ -85,6 +85,7 @@ Casi todas las decisiones de infraestructura tienen forma de escalera, y la regl
 | Organización | módulo → contexto → servicio |
 | Frontend | por funcionalidad → núcleo hexagonal solo donde hay reglas |
 | Memoria de agentes | `AGENTS.md` → docs → skills → lint y hooks → specs |
+| Alcance de producto | probar sin construir → MVP → iterar con datos |
 
 ### 11. Lo comprobable se comprueba, no se escribe
 
@@ -93,6 +94,12 @@ Formato, dependencias entre capas, parámetros por defecto, tamaño de los PR, f
 ### 12. Pasos pequeños y verificados
 
 TDD caso de uso a caso de uso. Refactor en pasos mínimos con los tests en verde y sin mezclarlo con cambios de comportamiento. PR pequeños contra un único tronco. Con agentes, lo mismo a otra escala: planes en rebanadas verticales, una fase por vez, verificación y parada para revisión humana al final de cada una.
+
+### 13. El plan sigue las mismas reglas que el código
+
+YAGNI y KISS se aplican a qué se construye, no solo a cómo. Un plan es una hipótesis con un resultado medible, un presupuesto de tiempo y una regla sobre qué pasa si el número no se mueve. Se recorta a la versión más pequeña que pueda confirmarla o refutarla, se trocea en rebanadas verticales que se entregan solas, se ordena para que vaya primero lo que desbloquea y lo que enseña, y se instrumenta para que la siguiente decisión salga de los datos.
+
+Por qué: el código más barato es el que nunca hizo falta, y la única forma de saberlo es entregar algo pequeño y mirar qué pasa. Estimaciones, fórmulas de puntuación, backlogs largos y roadmaps con fechas se quedan fuera hasta que su ausencia duela.
 
 ## 3. Cómo se trabaja con agentes
 
@@ -123,6 +130,9 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | Commit del agente | No hacer commit sin que lo pida el usuario |
 | Subagentes de exploración | Con contexto. A ciegas como técnica opcional |
 | Dónde vive un evento compartido | En el contexto emisor |
+| Roadmap | Ahora, Siguiente, Más adelante. Sin fechas salvo que sean reales y externas |
+| Estimaciones | Ninguna. Se ajusta el tamaño de las rebanadas y se pronostica con el ritmo de entrega |
+| Priorización | Por argumento: qué desbloquea, qué enseña, qué cuesta más retrasar. Sin fórmula de puntuación |
 
 ## 5. Lo que deliberadamente no se hace
 
@@ -138,6 +148,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 - Arquitectura hexagonal en una interfaz sin reglas.
 - Discutir formato a mano.
 - Dejar que un agente lea toda la documentación, implemente varias fases seguidas o haga commit sin revisión.
+- Puntos de historia, objetivos de velocidad, backlogs como inventario, tickets horizontales, ni entregar sin una señal.
 
 ## 6. Las skills
 
@@ -150,6 +161,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | `erxonxi-infrastructure` | Repositorios, bus de eventos, transacciones, caché, proyecciones, esquema |
 | `erxonxi-frontend` | Componentes, estado, estilos, cuánta arquitectura poner en cliente |
 | `erxonxi-workflow` | Planificar, trocear en fases, escribir specs o docs, commits, andamiaje |
+| `erxonxi-roadmap` | Montar o revisar un roadmap, bajar un plan a tickets, ordenar y paralelizar trabajo, acotar un MVP, decidir tras una entrega |
 
 Todas empiezan por la misma regla: la convención existente del proyecto gana, y la skill decide solo cuando no hay precedente.
 

@@ -2,7 +2,7 @@
 
 [![skills.sh](https://skills.sh/b/erxonxi/erxonxi-skills)](https://skills.sh/erxonxi/erxonxi-skills)
 
-Language-agnostic engineering skills for coding agents: architecture, domain modeling, naming, testing, infrastructure, frontend, and how to plan and ship work with an agent.
+Language-agnostic engineering skills for coding agents: architecture, domain modeling, naming, testing, infrastructure, frontend, how to plan and ship work with an agent, and how to decide what to build and in what order.
 
 They follow the [Agent Skills](https://skills.sh) format and work with Claude Code, Codex, Cursor and any agent the `skills` CLI supports.
 
@@ -41,6 +41,7 @@ In the Claude app, go to Customize → Plugins → Add → Add marketplace, ente
 | `erxonxi-infrastructure` | Adapters, event bus, retries and dead letters, transactions, outbox and inbox, caching, projections, schema |
 | `erxonxi-frontend` | How much architecture a client needs, components, state, UI tests, CSS architecture, accessibility |
 | `erxonxi-workflow` | Agent memory layers, research/plan/implement, vertical-slice plans, specs, commits, project scaffolding |
+| `erxonxi-roadmap` | Lean and agile planning without bureaucracy, for any ticket tool: bets with a hypothesis, MVP cut, vertical slices, dependencies, waves of parallel work, instrumentation, iterating on data |
 
 Every skill starts from the same rule: the project's existing convention wins. A skill only decides when the project has no precedent.
 

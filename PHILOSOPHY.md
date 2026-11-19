@@ -2,7 +2,7 @@
 
 How I design, model, name, structure and test code, written to hold in any language and to be handed to coding agents.
 
-The operational detail lives in the seven skills under `skills/`. This document explains the why and the whole.
+The operational detail lives in the eight skills under `skills/`. This document explains the why and the whole.
 
 ## 1. The central idea
 
@@ -85,6 +85,7 @@ Almost all infrastructure decisions have the shape of a ladder, and the rule is 
 | Organization | module → context → service |
 | Frontend | by feature → hexagonal core only where there are rules |
 | Agent memory | `AGENTS.md` → docs → skills → lint and hooks → specs |
+| Product scope | test without building → MVP → iterate on data |
 
 ### 11. What is checkable is checked, not written
 
@@ -93,6 +94,12 @@ Formatting, dependencies between layers, default parameters, PR size, commit for
 ### 12. Small, verified steps
 
 TDD use case by use case. Refactor in minimal steps with tests green and without mixing it with behavior changes. Small PRs against a single trunk. With agents, the same at another scale: plans in vertical slices, one phase at a time, verification and a stop for human review at the end of each.
+
+### 13. The plan follows the same rules as the code
+
+YAGNI and KISS apply to what is built, not only to how. A plan is a hypothesis with a measurable outcome, a time budget and a rule for what happens if the number does not move. It is cut to the smallest version that can confirm or refute it, split into vertical slices that ship on their own, ordered so that what unblocks and what teaches goes first, and instrumented so that the next decision comes from data.
+
+Why: the cheapest code is the code that was never needed, and the only way to find out is to ship something small and look at what happens. Estimates, scoring formulas, long backlogs and dated roadmaps stay out until their absence hurts.
 
 ## 3. How to work with agents
 
@@ -123,6 +130,9 @@ Points where several reasonable options exist and this is the chosen one. They a
 | Agent commit | Do not commit unless the user asks |
 | Exploration subagents | With context. Blind as an optional technique |
 | Where a shared event lives | In the emitting context |
+| Roadmap | Now, Next, Later. No dates unless they are real and external |
+| Estimates | None. Right-size the slices and forecast from throughput |
+| Prioritization | By argument: what unblocks, what teaches, what costs most to delay. No scoring formula |
 
 ## 5. What is deliberately not done
 
@@ -138,6 +148,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 - Hexagonal architecture in an interface without rules.
 - Arguing about formatting by hand.
 - Letting an agent read all the documentation, implement several phases in a row or commit without review.
+- Story points, velocity targets, backlogs as inventory, horizontal tickets, or shipping without a signal.
 
 ## 6. The skills
 
@@ -150,6 +161,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | `erxonxi-infrastructure` | Repositories, event bus, transactions, cache, projections, schema |
 | `erxonxi-frontend` | Components, state, styles, how much architecture to put in the client |
 | `erxonxi-workflow` | Plan, split into phases, write specs or docs, commits, scaffolding |
+| `erxonxi-roadmap` | Build or review a roadmap, split a plan into tickets, order and parallelize work, scope an MVP, decide after a release |
 
 All of them start with the same rule: the project's existing convention wins, and the skill decides only when there is no precedent.
 

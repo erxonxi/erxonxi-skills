@@ -11,8 +11,8 @@
     {
       "name": "erxonxi-skills",
       "source": "./",
-      "description": "Seven engineering skills: architecture, domain modeling, clean code, testing, infrastructure, frontend and agent workflow.",
-      "version": "1.0.0",
+      "description": "Eight engineering skills: architecture, domain modeling, clean code, testing, infrastructure, frontend, agent workflow and lean roadmapping.",
+      "version": "1.1.0",
       "category": "development",
       "homepage": "https://github.com/erxonxi/erxonxi-skills",
       "license": "MIT"
