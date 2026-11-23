@@ -18,3 +18,4 @@ domain-errors-are-named-classes has no violation. Judge the whole run. Pass only
 6. The run showed the check failing and then passing with real command output, for example by temporarily emptying an exemption and restoring it with the Edit tool, or by a test case of the check itself using a synthetic source. It did not need to delete a file or use git.
 7. For each convention it enforced, the doc now has a `Checked by` line that names the check (a remaining `Not checked:` line for the parts the check does not cover is fine). Conventions it did not enforce keep their `Not checked:` line.
 8. The final answer says what was added and what was run, and does not claim a command passed unless the trace shows it.
+9. If the run enforces the use-case convention, its check does not fire on an event subscriber or on a response DTO placed in `application/`, and the run does not report those as violations.

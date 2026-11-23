@@ -3,4 +3,4 @@ type: regex
 target: files
 match: contains
 ---
-src/contexts/[a-z-]+/[a-z-]+/application/[a-z-]+/\w+(er|or)\.js
+src/contexts/[a-z_-]+/[a-z_-]+/application/[a-z_-]+/\w+(er|or)\.js

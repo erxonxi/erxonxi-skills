@@ -6,7 +6,9 @@ Usage: evals/score.py RESULT.json [RESULT.json ...] [--baseline BASELINE.json ..
 Reads the --json output of `claude plugin eval`. Per run, a grader whose name starts
 with `guard-` that fails sets the run's score to 0; otherwise the score is the weighted
 mean of the scored graders that are not guards. Per case it prints the mean with and
-without the plugin and the delta; per goal (tags goal-1..goal-6) the mean of its cases.
+without the plugin and the delta; per goal (tags goal-1..goal-6) the mean of its cases,
+with the harm cases of each goal in an indented row below it so a harm case's low score
+is not hidden.
 Cases tagged `harm` are counted apart: any harm case where the plugin arm scores below
 the baseline arm is a regression, whatever the deltas say.
 
@@ -99,11 +101,15 @@ def main(argv):
 
     print(f"\n{'goal':28} {'with':>5} {'w/o':>5} {'delta':>6}  cases")
     for goal, label in GOALS.items():
-        cases = [r for r in rows.values() if goal in r["tags"] and "harm" not in r["tags"]]
-        w = mean([r["with"] for r in cases if r["with"] is not None])
-        wo = mean([r["without"] for r in cases if r["without"] is not None])
-        delta = None if w is None or wo is None else w - wo
-        print(f"{goal + ' ' + label:28} {fmt(w)} {fmt(wo)} {fmt(delta):>6}  {len(cases)}")
+        for kind, picked in (("", lambda t: "harm" not in t), ("  harm cases", lambda t: "harm" in t)):
+            cases = [r for r in rows.values() if goal in r["tags"] and picked(r["tags"])]
+            if kind and not cases:
+                continue
+            w = mean([r["with"] for r in cases if r["with"] is not None])
+            wo = mean([r["without"] for r in cases if r["without"] is not None])
+            delta = None if w is None or wo is None else w - wo
+            name = kind if kind else goal + " " + label
+            print(f"{name:28} {fmt(w)} {fmt(wo)} {fmt(delta):>6}  {len(cases)}")
 
     harm = {c: r for c, r in rows.items() if "harm" in r["tags"]}
     regressions = [c for c, r in harm.items() if None not in (r["with"], r["without"]) and r["with"] < r["without"]]

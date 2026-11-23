@@ -32,7 +32,7 @@ Contracts:
 
 - `RestockAlertRequester.request(alertId: string, productId: string, email: string): Promise<void>` in `src/contexts/catalog/restock-alerts/application/request/RestockAlertRequester.js`
 - Port `RestockAlertRepository` { save(alert) } in `src/contexts/catalog/restock-alerts/domain/`
-- Event `RestockAlertRequested` { alertId, productId, email }
+- Event `acme.catalog.restock_alert.requested` { productId, email } (aggregate id: the alert id)
 - `RestockAlertRequester should`: request an alert for an out-of-stock product · fail when the product does not exist
 
 Tasks:

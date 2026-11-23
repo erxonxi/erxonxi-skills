@@ -4,4 +4,4 @@ target: {source: file, path: docs/returns-breakdown.md}
 match: not_contains
 flags: im
 ---
-^#+\s*(?:(?:phase|step|slice|milestone|stage|track|stream|workstream)\s*\d*\s*[:.)—–-]?\s*|\d+[.)]\s*)?(?:backend|frontend|front-end|back-end|database|schema|domain layer|infrastructure|testing|qa|documentation|hardening|cleanup)\b
+^\s*(?:#+\s*|\*\*)*(?:(?:phase|step|stage|wave)\s*\d+|\d+)\s*[:.)—–-]?\s*(?:\*\*)?\s*(?:the\s+)?(?:domain|application(?: layer)?|infrastructure|persistence|database|schema|backend|frontend|http adapter|tests?|testing|qa|wiring|integration|hardening|cleanup)\b\s*(?:\*\*)?\s*(?:$|[:(—–-])|^\s*(?:#+\s*|\*\*)*(?:phase|step|stage|wave)\s*\d+[^\n]{0,60}\b(?:hardening|cleanup|qa|end-to-end pass)\b

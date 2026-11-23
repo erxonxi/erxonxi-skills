@@ -9,7 +9,7 @@ export class RestockAlert {
 
   static request(id, productId, email) {
     const alert = new RestockAlert(id, productId, email, "pending");
-    alert.events.push({ name: "RestockAlertRequested", alertId: id, productId, email });
+    alert.events.push({ name: "acme.catalog.restock_alert.requested", aggregateId: id, productId, email });
     return alert;
   }
 

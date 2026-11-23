@@ -17,6 +17,6 @@ describe("RestockAlertRequester should", () => {
       .requestAlert(product.id.value, "shopper@example.com");
 
     assert.equal(alerts.saved.length, 1);
-    assert.equal(published[0].name, "RestockAlertRequested");
+    assert.equal(published[0].name, "acme.catalog.restock_alert.requested");
   });
 });

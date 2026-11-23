@@ -5,4 +5,4 @@ runs: 2
 max_turns: 6
 timeout_seconds: 240
 ---
-Our `Order` aggregate should emit an `OrderPlaced` domain event. Should the aggregate method call `eventBus.publish(...)` directly when the order is placed? Answer in at most eight lines, no code unless a one-line signature helps.
+When an order is placed, other parts of our system have to find out about it. Who should be responsible for announcing it, at what point of the flow, and what does the `Order` class itself do about it? Answer in at most eight lines, no code unless a one-line signature helps.
