@@ -2,7 +2,7 @@
 
 How I design, model, name, structure and test code, written to hold in any language and to be handed to coding agents.
 
-The operational detail lives in the eleven skills under `skills/`. This document explains the why and the whole.
+The operational detail lives in the twelve skills under `skills/`. This document explains the why and the whole.
 
 ## 1. The central idea
 
@@ -105,6 +105,12 @@ YAGNI and KISS apply to what is built, not only to how. A plan is a hypothesis w
 
 Why: the cheapest code is the code that was never needed, and the only way to find out is to ship something small and look at what happens. Estimates, scoring formulas, long backlogs and dated roadmaps stay out until their absence hurts.
 
+### 14. Decide, delegate, evaluate
+
+The human decides, the agent executes, the machine judges. Decisions are made where they are cheapest to change: on contracts and phases, before code exists. Execution between two decisions is delegated, with a brief precise enough that the result can be checked against it. Evaluation goes in order of cost: checks first, then an independent reviewer who sees the change and not the author's conclusion, then the human, who judges the result on evidence (before and after, the same input on both sides) instead of reading every line.
+
+Why: implementation stopped being the bottleneck. Review is the serial part, so it is the part worth automating and the part worth protecting. A human who reads lines reviews a few changes a day. A human who reads evidence over green checks reviews many, and each correction becomes a check that makes the next review shorter.
+
 ## 3. How to work with agents
 
 The above, turned into a way of working for coding agents.
@@ -115,6 +121,7 @@ The above, turned into a way of working for coding agents.
 - **Delegation has a brief.** A subagent gets the contracts verbatim, the files it owns, the pattern to copy, the verification command and its limits. Its report is a claim to verify, not proof. Parallel agents only on phases of the same wave, with disjoint files.
 - **Public contracts in the plan**: use case signatures, events, test suites with their cases, schema and interface texts. The what is reviewed before the how is written.
 - **Specs as promise**: `SHALL`, one behavior per requirement, concrete values, only what is observable.
+- **Evaluation before reading**: verification command, contracts against the diff, an independent reviewer without the author's conclusion, and evidence of the result. The description always says what was not checked.
 - **The agent does not commit on its own**: it proposes messages and waits.
 - **Copying the neighboring pattern** is the default way to split work: each task cites the existing code to imitate.
 
@@ -134,6 +141,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | Mocks | Hand-written class or generic helper, always with `should*` vocabulary |
 | Isolated domain tests | Cover per use case. Extra cases only for partitions and boundaries |
 | Agent commit | Do not commit unless the user asks |
+| Reviewer subagent | Fresh context, the diff and the contracts, never the author's conclusion. Its findings are verified before they are reported |
 | Where a plan lives | `.agents/plans/<date>-<slug>.md`, or issues when the team works in a tracker |
 | Existing violations of a new check | Frozen in a baseline by unit, which only shrinks |
 | A correction from the user | Becomes a check. A short doc only when no check can be exact |
@@ -158,6 +166,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 - Arguing about formatting by hand.
 - Checks as warnings, checks that guess, or editing a check or its baseline so a change passes.
 - Letting an agent read all the documentation, implement several phases in a row or commit without review.
+- Reporting a check, a test or a review that did not run, or evidence of a side effect instead of the change.
 - Story points, velocity targets, backlogs as inventory, horizontal tickets, or shipping without a signal.
 
 ## 6. The skills
@@ -173,6 +182,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | `erxonxi-workflow` | Organize how an agent works on a project: the loop, memory layers, `AGENTS.md`, specs, commits, scaffolding |
 | `erxonxi-plan` | Plan a non-trivial task: research, decisions, phases with contracts, waves |
 | `erxonxi-implement-phase` | Implement, continue or resume one phase of a plan |
+| `erxonxi-evaluate` | A phase or change is done: checks, contracts, independent review, evidence, commit or PR text |
 | `erxonxi-rule` | After a correction, or to enforce a convention: turn it into a check with a shrinking baseline |
 | `erxonxi-roadmap` | Build or review a roadmap, split a plan into tickets, order and parallelize work, scope an MVP, decide after a release |
 

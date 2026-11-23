@@ -2,7 +2,7 @@
 
 Cómo diseño, modelo, nombro, estructuro y pruebo el código, escrito para que valga en cualquier lenguaje y para dárselo a agentes de código.
 
-El detalle operativo vive en las once skills de `skills/`. Este documento explica el porqué y el conjunto.
+El detalle operativo vive en las doce skills de `skills/`. Este documento explica el porqué y el conjunto.
 
 ## 1. La idea central
 
@@ -105,6 +105,12 @@ YAGNI y KISS se aplican a qué se construye, no solo a cómo. Un plan es una hip
 
 Por qué: el código más barato es el que nunca hizo falta, y la única forma de saberlo es entregar algo pequeño y mirar qué pasa. Estimaciones, fórmulas de puntuación, backlogs largos y roadmaps con fechas se quedan fuera hasta que su ausencia duela.
 
+### 14. Decidir, delegar, evaluar
+
+La persona decide, el agente ejecuta, la máquina juzga. Las decisiones se toman donde son más baratas de cambiar: en contratos y fases, antes de que exista código. La ejecución entre dos decisiones se delega, con un brief lo bastante preciso para poder comprobar el resultado contra él. La evaluación va por orden de coste: primero los checks, después un revisor independiente que ve el cambio y no la conclusión del autor, y al final la persona, que juzga el resultado con evidencia (antes y después, la misma entrada en los dos lados) en lugar de leer cada línea.
+
+Por qué: implementar dejó de ser el cuello de botella. La revisión es la parte en serie, así que es la que merece automatizarse y la que merece protegerse. Quien lee líneas revisa unos pocos cambios al día. Quien lee evidencia sobre checks en verde revisa muchos, y cada corrección se convierte en un check que acorta la siguiente revisión.
+
 ## 3. Cómo se trabaja con agentes
 
 Lo anterior, convertido en forma de trabajo para agentes de código.
@@ -115,6 +121,7 @@ Lo anterior, convertido en forma de trabajo para agentes de código.
 - **Delegar lleva un brief.** Un subagente recibe los contratos literales, los ficheros que posee, el patrón a copiar, el comando de verificación y sus límites. Su informe es una afirmación a comprobar, no una prueba. Agentes en paralelo solo en fases de la misma ola, con ficheros disjuntos.
 - **Contratos públicos en el plan**: firmas de casos de uso, eventos, suites de test con sus casos, esquema y textos de interfaz. Se revisa el qué antes de escribir el cómo.
 - **Specs como promesa**: `SHALL`, un comportamiento por requisito, valores concretos, solo lo observable.
+- **Evaluar antes de leer**: comando de verificación, contratos contra el diff, un revisor independiente sin la conclusión del autor y evidencia del resultado. La descripción siempre dice qué no se comprobó.
 - **El agente no hace commit por su cuenta**: propone mensajes y espera.
 - **Copiar el patrón vecino** es la forma por defecto de trocear trabajo: cada tarea cita el código existente a imitar.
 
@@ -134,6 +141,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | Mocks | Clase escrita a mano o ayudante genérico, siempre con vocabulario `should*` |
 | Tests de dominio aislados | Cubrir por caso de uso. Casos extra solo por particiones y límites |
 | Commit del agente | No hacer commit sin que lo pida el usuario |
+| Subagente revisor | Contexto limpio, el diff y los contratos, nunca la conclusión del autor. Sus hallazgos se verifican antes de reportarlos |
 | Dónde vive un plan | `.agents/plans/<fecha>-<slug>.md`, o issues cuando el equipo trabaja en un gestor |
 | Violaciones existentes de un check nuevo | Congeladas en una baseline por unidad, que solo encoge |
 | Una corrección del usuario | Se convierte en check. Un doc corto solo cuando ningún check puede ser exacto |
@@ -158,6 +166,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 - Discutir formato a mano.
 - Checks como warnings, checks que adivinan, o tocar un check o su baseline para que un cambio pase.
 - Dejar que un agente lea toda la documentación, implemente varias fases seguidas o haga commit sin revisión.
+- Dar por hecho un check, un test o una revisión que no se ejecutó, o evidencia de un efecto secundario en lugar del cambio.
 - Puntos de historia, objetivos de velocidad, backlogs como inventario, tickets horizontales, ni entregar sin una señal.
 
 ## 6. Las skills
@@ -173,6 +182,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | `erxonxi-workflow` | Organizar cómo trabaja un agente en un proyecto: el ciclo, capas de memoria, `AGENTS.md`, specs, commits, andamiaje |
 | `erxonxi-plan` | Planificar una tarea no trivial: investigación, decisiones, fases con contratos, olas |
 | `erxonxi-implement-phase` | Implementar, continuar o retomar una fase de un plan |
+| `erxonxi-evaluate` | Una fase o un cambio está terminado: checks, contratos, revisión independiente, evidencia, texto de commit o PR |
 | `erxonxi-rule` | Tras una corrección, o para hacer cumplir una convención: convertirla en check con una baseline que encoge |
 | `erxonxi-roadmap` | Montar o revisar un roadmap, bajar un plan a tickets, ordenar y paralelizar trabajo, acotar un MVP, decidir tras una entrega |
 

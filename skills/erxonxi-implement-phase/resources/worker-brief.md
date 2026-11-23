@@ -42,4 +42,4 @@ Report
 - One phase per subagent. Parallel subagents only for phases in the same wave, in isolated branches or worktrees, with disjoint "files you own".
 - Paste the contracts, do not summarize them: a summary drifts.
 - Do not include your expected solution beyond the contracts and the pattern to copy. The subagent should follow the code, not your guess.
-- Treat the report as a claim to verify, not as proof. Steps 5 and 6 of the skill check it.
+- Treat the report as a claim to verify, not as proof. Steps 5 to 7 of the skill check it.

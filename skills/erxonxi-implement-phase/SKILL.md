@@ -1,6 +1,6 @@
 ---
 name: erxonxi-implement-phase
-description: "Implement exactly one phase of an approved plan, yourself or by delegating it to a subagent with a precise brief, then verify, update the plan's state and stop for review. Never commits, pushes or merges on its own. Use when the user asks to implement, continue or resume a plan or one of its phases."
+description: "Implement exactly one phase of an approved plan, yourself or by delegating it to a subagent with a precise brief, then verify, evaluate, update the plan's state and stop for review. Never commits, pushes or merges on its own. Use when the user asks to implement, continue or resume a plan or one of its phases."
 ---
 
 # Implement a phase
@@ -32,7 +32,7 @@ Read the phase, the files it says to copy and the convention docs listed in the 
 - **A subagent** when the phase is self-contained and its brief fits on one screen: it keeps the main context clean for evaluating. Use a model suited to writing code. Write the brief with `resources/worker-brief.md`.
 - **Several subagents in parallel** only for phases in the same wave of the plan, each in its own branch or worktree, each owning disjoint files, and never more than the user can review the same day.
 
-When you delegate, you still own the result: its report is a claim that steps 5 and 6 check.
+When you delegate, you still own the result: its report is a claim that steps 5 to 7 check.
 
 ### 4. Implement
 
@@ -55,9 +55,13 @@ Propose the change to the plan in one message. Continue only after the user acce
 
 Run the project's verification command (types, lint, tests). Fix what fails and run it again. "Done" requires it green, plus the phase's "done when" checks, and, when the phase changes behavior, a check in the running application with the seed data.
 
-### 6. Present and stop
+### 6. Evaluate
 
-- Report what changed, the verification command and its real result, and what you could not check.
+Run `erxonxi-evaluate` on the phase: contracts against the diff, an independent review, and evidence of what the phase does. Fix the confirmed findings that are inside the phase, and list the rest.
+
+### 7. Present and stop
+
+- Report what changed, the verification command and its real result, the evaluation, and what you could not check.
 - Update the plan: checked tasks, `updated`, `implemented_by` if the project records provenance, **Next step**, and `status: done` after the last phase.
 - Propose two or three commit messages in the project's convention, with different plausible types, so the user can answer "commit with 2".
 - When the plan lives in issues: work in the branch linked to the phase issue, open the pull request that closes it, and never merge.
@@ -80,4 +84,5 @@ Then stop. Do not start the next phase, even if it is small, until the user asks
 - [ ] If I delegated, did the brief carry the contracts verbatim and the files owned?
 - [ ] Are the contracts exactly as approved?
 - [ ] Is the verification command green, and did I check the "done when"?
+- [ ] Did I evaluate the phase, with an independent review and evidence?
 - [ ] Is the plan updated, and did I stop with commit proposals?

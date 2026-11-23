@@ -46,7 +46,7 @@ Tasks:
 
 - [ ] <task>, copying `<existing file or class>`
 - [ ] Run the verification command and fix what fails
-- [ ] Present and stop: changes, verification result, commit messages, wait for the user
+- [ ] Evaluate and stop: `erxonxi-evaluate`, commit messages, wait for the user
 
 Done when: <observable check>
 

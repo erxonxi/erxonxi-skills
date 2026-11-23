@@ -14,6 +14,7 @@ The human decides, the agent executes, the machine judges. Implementation is che
 | What to build, how small, in what order | Human decides, agent proposes | `erxonxi-roadmap` | Bets, slices, waves |
 | **Decide**: how this task is done | Human decides on contracts, agent researches | `erxonxi-plan` | Approved plan with state |
 | **Delegate**: one phase | Agent or its subagents | `erxonxi-implement-phase` | Changes, verified, plan updated |
+| **Evaluate**: did it do the right thing | Checks first, an independent reviewer, then the human on evidence | `erxonxi-evaluate` | Evidence, verified findings, commit or PR text |
 | **Learn**: never correct the same thing twice | Agent, after a correction | `erxonxi-rule` | A check with a shrinking baseline |
 
 Gates: the human approves the plan, reviews each phase and decides every commit, push and merge. Everything between gates is delegated.
@@ -84,6 +85,7 @@ For a convention a check enforces, the short doc of `erxonxi-rule` is enough: th
 - Small PRs against a single trunk. Size reference by changed lines: under 10 XS, under 100 S, under 500 M, under 1000 L. Beyond that, split.
 - The agent does not commit, push or merge unless asked: it proposes two or three messages and waits.
 - Leave a provenance record when the project requires it: tool and model in the plan, the commit trailer or the PR.
+- The PR description carries evidence of what the change does and says what was not checked, written with `erxonxi-evaluate`.
 
 ## Project scaffolding
 

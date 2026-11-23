@@ -95,7 +95,7 @@ Next step   one sentence: which phase comes next
 - **Done when.** Each phase ends with observable checks: a command and its result, a screen and what it shows, a request and its response.
 - **Fixed ending.** Each phase ends with these two tasks, in order:
   1. Run the project's verification command (it is in `AGENTS.md`) and fix what fails.
-  2. Present and stop: show the changes and the verification result, propose commit messages and wait. Do not start the next phase.
+  2. Evaluate and stop: run `erxonxi-evaluate` (contracts, independent review, evidence), propose commit messages and wait. Do not start the next phase.
 
 ### Public contracts
 

@@ -2,7 +2,7 @@
 
 [![skills.sh](https://skills.sh/b/erxonxi/erxonxi-skills)](https://skills.sh/erxonxi/erxonxi-skills)
 
-Language-agnostic engineering skills for coding agents: architecture, domain modeling, naming, testing, infrastructure, frontend, how to plan and ship work with an agent, and how to decide what to build and in what order.
+Language-agnostic engineering skills for coding agents: architecture, domain modeling, naming, testing, infrastructure, frontend, how to decide, delegate and evaluate work with an agent, and how to decide what to build and in what order.
 
 They follow the [Agent Skills](https://skills.sh) format and work with Claude Code, Codex, Cursor and any agent the `skills` CLI supports.
 
@@ -43,6 +43,7 @@ In the Claude app, go to Customize → Plugins → Add → Add marketplace, ente
 | `erxonxi-workflow` | The map: the decide, delegate, evaluate loop and which skill runs each step, agent memory layers, specs, commits, project scaffolding |
 | `erxonxi-plan` | Research with cheap subagents, then an approved plan: decisions, vertical phases with public contracts, waves for parallel work, saved with its state in a file or in issues |
 | `erxonxi-implement-phase` | One phase per run, yourself or delegated with a precise brief, verified, plan state updated, then a stop for review. Never commits on its own |
+| `erxonxi-evaluate` | Judging a change by its results: verification command, contracts against the diff, an independent review without the author's conclusion, before/after evidence, commit or PR text that says what was not checked |
 | `erxonxi-rule` | Turning a convention into a check that fails in seconds: the lowest mechanism that covers it, a baseline that only shrinks, red then green, a short doc for the why. Also harvests the conventions a repository already follows |
 | `erxonxi-roadmap` | Lean and agile planning without bureaucracy, for any ticket tool: bets with a hypothesis, MVP cut, vertical slices, dependencies, waves of parallel work, instrumentation, iterating on data |
 
