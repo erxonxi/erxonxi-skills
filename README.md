@@ -53,6 +53,7 @@ Every skill starts from the same rule: the project's existing convention wins. A
 
 - [PHILOSOPHY.md](PHILOSOPHY.md): the reasoning behind the skills, the default choices and what is deliberately avoided. Spanish version: [FILOSOFIA.md](FILOSOFIA.md).
 - [AGENTS-snippet.md](AGENTS-snippet.md): a short always-on version to paste into a global `AGENTS.md` or `CLAUDE.md`.
+- [evals/](evals/README.md): an eval suite for `claude plugin eval` that checks the skills fire on the right requests and change the answer compared with the same model without them, from design questions to small runs on a synthetic repository.
 
 ## License
 
