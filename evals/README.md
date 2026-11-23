@@ -35,6 +35,7 @@ The sandbox shapes these cases. The agent's shell is read-only and `git` is bloc
 - Every knowledge case has an `expected-skill-loaded` indicator (the skill the question belongs to fired). It is not scored; it tells "the skill loaded and the answer was still wrong" apart from "the skill never loaded". A pass without the skill loading can still come from the skill descriptions, which every with-plugin run sees.
 - Rubrics are numbered claims a judge can check one by one. Put them in the grader body. Judge with a stronger model than the agent (`run.sh` uses opus over sonnet).
 - Negative graders (`max: 0`, `exists: false`) guard what must not happen: committing, writing code while planning, editing the exempt file.
+- The subagent tool is granted as `Task` in `allowed_tools`, but its calls appear in the trace as `Agent`: a `tool_used` grader for a reviewer uses `tool: Agent`.
 - A grader must be passable with the case's `allowed_tools`; the runner warns when it is not.
 - Keep `runs` at 2 while writing a case, raise it when calibrating a change that matters.
 
