@@ -1,6 +1,6 @@
 {
   "name": "erxonxi-skills",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "Language-agnostic engineering skills for coding agents: architecture, domain modeling, clean code, testing, infrastructure, frontend, agent workflow, planning, phase implementation, evaluation, convention checks and lean roadmapping.",
   "author": {
     "name": "erxonxi",

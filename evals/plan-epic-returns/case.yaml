@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: plan-epic-returns
+tags: [plan, roadmap, goal-5, goal-6]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "We want returns and refunds in the shop: a shopper asks to return items of an order, support approves or rejects, a return label is emailed, the refund is issued when the parcel arrives, stock goes back to the catalog, a back-office list of open returns, and a monthly report. We are three: one backend, one frontend, one QA. Management asks how long it will take. Write the breakdown to `docs/returns-breakdown.md`; do not build anything. (Environment: the shell in this workspace is read-only and git is not available. Create, change or remove file content with the Write and Edit tools; use the shell only to run commands such as the tests.)"
+  max_turns: 25
+  timeout_seconds: 600
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]

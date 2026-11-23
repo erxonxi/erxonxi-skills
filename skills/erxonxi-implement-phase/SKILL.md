@@ -66,7 +66,7 @@ Load `erxonxi-evaluate` and run it on the phase. If you cannot load it, do its c
 
 A green test run is step 5, not this step, and reading your own diff again is not a review. Fix the confirmed findings that are inside the phase, and list the rest.
 
-This step is not optional because the phase was small or the tests passed. If something prevents it (no way to load the skill, no way to get a separate review), say exactly what was not done and leave the evaluation task unchecked.
+This step is not optional because the phase was small, the tests passed or you already know of a problem. The "not evaluated" state below is for when something outside your control prevents it (the skill cannot be loaded, the session has no subagent tool): say exactly which, and leave the evaluation task unchecked. Choosing not to launch the reviewer is not one of those reasons.
 
 ### 7. Present and stop
 

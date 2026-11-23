@@ -50,7 +50,7 @@ The author's reading is anchored on its own intent. Get a second one that is not
 
 Without subagents, do a separate pass yourself reading only the diff and the contracts, with the checklists of the knowledge skills that apply (`erxonxi-architecture`, `erxonxi-domain-modeling`, `erxonxi-testing`, `erxonxi-clean-code`).
 
-Only mechanical changes skip this step: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. When you skip it, say so and why.
+Only mechanical changes skip this step: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. Neither is having found problems already: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why.
 
 Done when every confirmed finding is fixed or listed for the user.
 

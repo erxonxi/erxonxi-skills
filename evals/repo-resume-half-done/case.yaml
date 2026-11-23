@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: repo-resume-half-done
+tags: [repo, implement-phase, goal-4]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "Continue with the restock alerts plan. (Environment: the shell in this workspace is read-only and git is not available. Create, change or remove file content with the Write and Edit tools; use the shell only to run commands such as the tests.)"
+  max_turns: 50
+  timeout_seconds: 1200
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash, Task]

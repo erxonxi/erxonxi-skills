@@ -1,6 +1,6 @@
 ---
 name: knowledge-estimates
-tags: [knowledge, roadmap]
+tags: [knowledge, roadmap, goal-5]
 runs: 2
 max_turns: 6
 timeout_seconds: 240

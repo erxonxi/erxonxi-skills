@@ -13,9 +13,15 @@ acme::copy_shop() {
   cp -R "$FIXTURES/acme-shop/." .
 }
 
+# Optional argument: another plan fixture to use instead of restock-alerts-plan.md.
 acme::add_plan() {
   mkdir -p .agents/plans
-  cp "$FIXTURES/restock-alerts-plan.md" .agents/plans/2026-11-20-restock-alerts.md
+  cp "$FIXTURES/${1:-restock-alerts-plan.md}" .agents/plans/2026-11-20-restock-alerts.md
+}
+
+# Copies a fixture directory (for example restock-phase1-done) over the workspace.
+acme::add_code() {
+  cp -R "$FIXTURES/$1/." .
 }
 
 acme::commit_baseline() {

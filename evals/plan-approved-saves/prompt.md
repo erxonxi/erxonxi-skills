@@ -1,6 +1,6 @@
 ---
 name: plan-approved-saves
-tags: [procedure, plan]
+tags: [procedure, plan, goal-5]
 runs: 2
 max_turns: 10
 timeout_seconds: 300

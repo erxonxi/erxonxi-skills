@@ -1,0 +1,10 @@
+schema_version: "1.1"
+name: plan-housestyle-rfc
+tags: [plan, harm, goal-5]
+context:
+  scaffold_script: scaffold.sh
+execution:
+  prompt: "Earlier you proposed this plan and I approve it as it is. Store it the way this repository stores plans, then tell me the next step. Do not implement anything yet.\n\n---\nTask: wishlist for shoppers.\nGoal: a shopper can save products to a wishlist and see it.\nDecisions: wishlist is a module inside `shop`, keyed by shopper id; products referenced by id with name and price copied at save time; discarded: a join with the catalog table at read time (couples contexts).\nPhase 1 \u2014 a shopper can add a product to the wishlist. Contracts: `WishlistItemAdder.add(shopperId, productId, productName, priceCents)`, event `WishlistItemAdded {shopperId, productId}`, endpoint `PUT /wishlists/:shopperId/items/:productId`. Tests: \"add a product to an empty wishlist\", \"ignore a product that is already in the wishlist\". Done when `npm run check` is green.\nPhase 2 \u2014 a shopper can see the wishlist. Contracts: `WishlistSearcher.search(shopperId)` returning `{items: [{productId, productName, priceCents}]}`, endpoint `GET /wishlists/:shopperId`. Tests: \"return the items in insertion order\", \"return an empty list for a new shopper\". Done when `npm run check` is green.\n---\n(Environment: the shell in this workspace is read-only and git is not available. Create, change or remove file content with the Write and Edit tools; use the shell only to run commands such as the tests.)"
+  max_turns: 15
+  timeout_seconds: 420
+  allowed_tools: [Read, Glob, Grep, Skill, Write, Edit]
