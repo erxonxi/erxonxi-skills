@@ -66,7 +66,7 @@ Wave 1, with Phase 4. Blocked by: Phase 2.
 Phase 1: <name>.
 ```
 
-Every phase has a `Review:` line: `independent, strong model` when it touches money, personal data, authentication, concurrency, a migration or deletes data (say which); `independent` for any other behavior change; `self` only for a phase with no behavior change. A phase gets a `Wave` line only when the plan has phases that can run at the same time, and a `Blocked by` line only for a hard dependency. A plan whose phases run one after another has neither.
+Every phase has a `Review:` line: `independent, strong model` when it touches money, personal data, authentication, concurrency, a migration or deletes data (say which); `independent` for the first piece of its kind, a contract change or a new collaboration between contexts; `self` for a phase that copies an existing neighbor or changes no behavior (name the neighbor). A phase gets a `Wave` line only when the plan has phases that can run at the same time, and a `Blocked by` line only for a hard dependency. A plan whose phases run one after another has neither.
 
 ## Updating it
 

@@ -48,18 +48,18 @@ Done when every contract is marked as present, changed or missing.
 The author's reading is anchored on its own intent. Get a second one that is not:
 
 - **Level.** Use the one the plan states for the phase (its `Review:` line). Without one, decide by what the change touches, never by its size:
-  - **independent, strong model**: money, personal data, authentication or permissions, concurrency, a migration, or anything that deletes data. Strong means the strongest model available, never weaker than the author's.
-  - **independent**: any other change of behavior, and above all a new or changed public contract (event, endpoint, schema), a change across contexts, or the first piece of its kind in the project.
-  - **self**: mechanical changes only (see above).
+  - **independent, strong model**: money, personal data (an email or a name is enough), authentication or permissions, concurrency, a migration, or anything that deletes data. Strong means the strongest model available, never weaker than the author's.
+  - **independent**: the first piece of its kind in the project, a public contract (event, endpoint, schema) changed beyond what the plan approved, or a collaboration between contexts that no existing piece already follows.
+  - **self**: a change that copies an existing neighbor inside the approved contracts (another subscriber, endpoint or use case shaped like one already there), and mechanical changes. Do the separate pass below and say "no independent reviewer: <the neighbor it copies>".
 - An independent review means calling your subagent tool: a general-purpose reviewer (not a search agent) in a fresh context, with the model the level asks for. Your own second reading does not replace it. Do not report before it returns; until then, one line saying you are waiting.
 - Give it the diff, the approved contracts and the paths of the convention docs. **Not** your reasoning, your summary or your conclusion. Use `resources/review-brief.md`.
 - Ask for findings, each with a file and line, the concrete scenario that fails, and a severity.
 - A finding is confirmed only with its proof beside it: the file and line you read and what it showed, or the command you ran and its output. Without proof, drop it or list it as unverified. Report "confirmed N, dropped M" with the reason for each drop.
 - A finding that argues against a decision recorded in the plan is not a defect of the change: list it as "challenges decision <X>" with its scenario, and let the user decide.
 
-Without subagents, do a separate pass yourself reading only the diff and the contracts, with the checklists of the knowledge skills that apply (`erxonxi-architecture`, `erxonxi-domain-modeling`, `erxonxi-testing`, `erxonxi-clean-code`).
+At level self, or without subagents, do a separate pass yourself reading only the diff and the contracts, with the checklists of the knowledge skills that apply (`erxonxi-architecture`, `erxonxi-domain-modeling`, `erxonxi-testing`, `erxonxi-clean-code`).
 
-Only mechanical changes skip the independent review: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. Neither is having found problems already: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why in one line. The report of a mechanical change stays that short: the verdict, the check result and what you could not check.
+Size is never what decides the level: a small diff can be the first of its kind. A change at level self that turns out not to follow its neighbor (a different shape, a missing piece, something the neighbor does not do) goes up to independent. Having found problems already is not a reason to skip either: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why in one line. The report of a mechanical change stays that short: the verdict, the check result and what you could not check.
 
 Done when every confirmed finding is fixed or listed for the user.
 
