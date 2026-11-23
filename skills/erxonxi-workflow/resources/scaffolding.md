@@ -13,4 +13,4 @@ How to set up the tooling of a new project so an agent can verify its own work f
 - CI on every PR: install, lint, test (and build or static analysis).
 - Repository name that shows what it is: `<language>-<topic>-<type>`.
 - Shell scripts: strict mode and namespaced functions.
-- One source for agent instructions: rules in `AGENTS.md` and skills in `.agents/skills/`. Agents that expect other paths get a symlink (`CLAUDE.md → AGENTS.md`, `.claude/skills → .agents/skills`), created by a script, not hand-copied.
+- Agent instructions live once: `AGENTS.md` holds the rules, `.agents/skills/` holds the skills. Agents that expect other paths get a symlink (`CLAUDE.md → AGENTS.md`, `.claude/skills → .agents/skills`), created by a script, not hand-copied.

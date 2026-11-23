@@ -26,8 +26,8 @@ Done when
   <the verification command> is green, and <the phase's observable checks>.
 
 Limits
-  - Do not commit, push or open pull requests.
-  - Do not edit checks, their configuration or their baselines.
+  - Do not commit, push or open pull requests: the main agent does that after evaluating, if the user allowed it.
+  - Do not edit checks, their configuration or their exemption lists.
   - Do not change a contract. If one cannot hold, stop and explain.
 
 Report

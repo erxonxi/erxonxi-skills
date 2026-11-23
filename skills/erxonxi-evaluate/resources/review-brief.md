@@ -6,7 +6,7 @@ The reviewer must judge the change, not the author's story about it. Give it the
 You review a change in <repository>. You did not write it.
 
 Material
-  - The diff: <git diff base...head, or the list of changed files to read>
+  - The diff of this change only: <uncommitted changes against HEAD plus new files, or the change's own commits>
   - The approved contracts: <pasted verbatim from the plan>
   - The conventions that apply: <doc paths>. Read only these.
 

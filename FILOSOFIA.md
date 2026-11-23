@@ -91,7 +91,7 @@ Casi todas las decisiones de infraestructura tienen forma de escalera, y la regl
 
 Formato, dependencias entre capas, parámetros por defecto, tamaño de los PR, formato de los commits: todo lo que una máquina puede verificar se convierte en regla de lint, test de arquitectura, hook o check de CI, con un mensaje que dice cómo arreglarlo. La prosa queda para lo que no se puede automatizar, y para el porqué.
 
-Un check nuevo es un error desde el primer día para el código nuevo. El código que ya lo incumple se congela en una baseline que solo encoge, así que adoptar una regla nunca espera a una migración. Un check cuenta solo cuando se ha visto fallar con una violación y pasar en el repositorio.
+Un check nuevo es un error desde el primer día para el código nuevo. El código que ya lo incumple entra en una lista de exenciones que solo puede encoger, así que adoptar una regla nunca espera a una migración. Un check cuenta solo cuando se ha visto fallar con una violación y pasar en el repositorio.
 
 Por qué: un agente olvida un documento, lo malinterpreta o nunca lo carga. No puede ignorar un build en rojo. Cada corrección que un humano tiene que repetir es un check que nunca se escribió.
 
@@ -115,7 +115,7 @@ Por qué: implementar dejó de ser el cuello de botella. La revisión es la part
 
 Lo anterior, convertido en forma de trabajo para agentes de código.
 
-- **Memoria por capas.** Un `AGENTS.md` raíz corto con comandos, arquitectura en pocas líneas y un mapa de `docs/`, con la orden explícita de no leer todos los docs al empezar. Convenciones en `docs/`, un fichero por convención y con esqueleto fijo. Procedimientos en skills. Reglas mecánicas en lint y hooks.
+- **Memoria por capas.** Un `AGENTS.md` raíz corto con comandos, arquitectura en pocas líneas y un mapa de `docs/`, con la orden explícita de no leer todos los docs al empezar. Convenciones en `docs/`, un fichero corto por convención: la regla, el porqué y el check que la hace cumplir. Procedimientos en skills. Todo lo comprobable en tipos, lint, tests de arquitectura y hooks.
 - **Investigar, planificar, implementar**, con una puerta humana en cada paso. La exploración se delega en subagentes con modelos baratos. El plan no se escribe hasta acordar fases y contratos.
 - **El plan lleva su estado.** Un fichero (o una issue padre con una hija por fase) cuyas casillas dicen qué está hecho, para que cualquier agente o sesión lo retome. La fase actual es la primera con trabajo pendiente.
 - **Delegar lleva un brief.** Un subagente recibe los contratos literales, los ficheros que posee, el patrón a copiar, el comando de verificación y sus límites. Su informe es una afirmación a comprobar, no una prueba. Agentes en paralelo solo en fases de la misma ola, con ficheros disjuntos.
@@ -143,7 +143,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | Commit del agente | No hacer commit sin que lo pida el usuario |
 | Subagente revisor | Contexto limpio, el diff y los contratos, nunca la conclusión del autor. Sus hallazgos se verifican antes de reportarlos |
 | Dónde vive un plan | `.agents/plans/<fecha>-<slug>.md`, o issues cuando el equipo trabaja en un gestor |
-| Violaciones existentes de un check nuevo | Congeladas en una baseline por unidad, que solo encoge |
+| Violaciones existentes de un check nuevo | Una lista de exenciones por fichero o símbolo, que solo encoge |
 | Una corrección del usuario | Se convierte en check. Un doc corto solo cuando ningún check puede ser exacto |
 | Subagentes de exploración | Con contexto. A ciegas como técnica opcional |
 | Dónde vive un evento compartido | En el contexto emisor |
@@ -164,7 +164,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 - Interfaces, fábricas y patrones sin variación real. Singletons.
 - Arquitectura hexagonal en una interfaz sin reglas.
 - Discutir formato a mano.
-- Checks como warnings, checks que adivinan, o tocar un check o su baseline para que un cambio pase.
+- Checks como warnings, checks que adivinan, o tocar un check o su lista de exenciones para que un cambio pase.
 - Dejar que un agente lea toda la documentación, implemente varias fases seguidas o haga commit sin revisión.
 - Dar por hecho un check, un test o una revisión que no se ejecutó, o evidencia de un efecto secundario en lugar del cambio.
 - Puntos de historia, objetivos de velocidad, backlogs como inventario, tickets horizontales, ni entregar sin una señal.
@@ -183,7 +183,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | `erxonxi-plan` | Planificar una tarea no trivial: investigación, decisiones, fases con contratos, olas |
 | `erxonxi-implement-phase` | Implementar, continuar o retomar una fase de un plan |
 | `erxonxi-evaluate` | Una fase o un cambio está terminado: checks, contratos, revisión independiente, evidencia, texto de commit o PR |
-| `erxonxi-rule` | Tras una corrección, o para hacer cumplir una convención: convertirla en check con una baseline que encoge |
+| `erxonxi-rule` | Tras una corrección, o para hacer cumplir una convención: convertirla en check con una lista de exenciones que encoge |
 | `erxonxi-roadmap` | Montar o revisar un roadmap, bajar un plan a tickets, ordenar y paralelizar trabajo, acotar un MVP, decidir tras una entrega |
 
 Todas empiezan por la misma regla: la convención existente del proyecto gana, y la skill decide solo cuando no hay precedente.

@@ -15,7 +15,7 @@ The project's convention wins: where plans already live, their shape and languag
 
 ## When not to plan
 
-A change confined to one file, or one obvious edit, needs no plan: say so in one line and do it. Plan when the change spans several files or layers, needs a decision the user has not made, or will not fit in one session.
+A fix with its test, a rename, or any change whose shape is obvious needs no plan: say so in one line and do it. Plan when at least one holds: the change adds or alters a public contract (a use case, an event, a schema, an endpoint, user-facing copy), it crosses more than one layer or context, it needs a decision the user has not made, or it will not fit in one session.
 
 ## Steps
 
@@ -27,11 +27,11 @@ Done when you can state the goal in one to three sentences and what is out of sc
 
 Keep the main agent for reasoning and deciding. Delegate reading the code:
 
-- Launch explorer subagents on a cheaper, faster model than yours. Reuse one that already holds the context if the agent allows it.
-- As many as there are independent areas, at most four: one for a small, local change, one per context, layer or repository for a wide one. All in a single batch, in parallel.
-- Give each a narrow brief: the area, the questions, and the format of the answer. Ask for facts with paths: the use cases, entities, ports, adapters and tests involved, the conventions they follow, the files that best show the pattern to copy, and anything that contradicts the docs. Not file dumps.
-- Against anchoring, brief some explorers blind: name the area and what to describe, but not the task or the solution you have in mind.
-- Synthesize the reports yourself. Read directly only the files needed to confirm a contract or a convention, and always cross-check an implementation against its tests: anomalies surface there.
+- Explorers run on a lighter model than the main agent. If one from earlier in the session already knows the area, send it the new questions instead of starting another.
+- One explorer per independent area (a context, a layer, a repository), four at the most, a single one for a local change. Start them together so the research takes the time of the slowest, not the sum.
+- Each brief names the area, the questions and the shape of the answer: paths and facts about the use cases, entities, ports, adapters and tests involved, the conventions they follow, the best file to imitate, and anything that contradicts the docs. Never whole files.
+- Optionally, against anchoring, keep the task out of one explorer's brief: ask it only to describe the area.
+- The main agent merges the reports and decides. It opens a file itself only to settle a contract or a convention, and it compares each implementation with its tests, because that is where surprises hide.
 - Read only the docs the `AGENTS.md` map points to for this task.
 
 Without subagents, do the same research yourself, in the same order and with the same discipline: paths and facts, not whole files.
@@ -65,14 +65,9 @@ Everything in the plan in the project's working language, one language for every
 
 ### 6. Offer the next step
 
-Ask what to do next and stop:
+Stop and let the user choose: leave it here, commit the plan on its own (a `docs` commit), start phase 1 with `erxonxi-implement-phase`, or commit the plan and then start phase 1.
 
-- nothing more for now,
-- commit the plan alone (type `docs`),
-- implement phase 1 with `erxonxi-implement-phase`,
-- commit the plan, then implement phase 1.
-
-Never more than phase 1 from here, even if the user says "implement it". Each phase is its own run.
+Whatever the wording of the answer, this run goes no further than phase 1. Each phase is a run of its own.
 
 ## Shape of the plan
 
@@ -88,24 +83,24 @@ Next step   one sentence: which phase comes next
 
 - **Vertical slice.** Each phase delivers something that stands on its own, even if the rest is never built. Bad: the controller in phase 1 and the use case it calls in phase 2. Good: the whole happy path in phase 1 (interface, logic, persistence and their tests), edge cases and validation after.
 - **Early feedback.** Phase 1 produces something the user can see, use or run, even if rough.
-- **Always green.** Each phase can be committed and pushed without breaking the build.
-- **One responsibility.** Adding dependencies or tooling is not in the same phase as the first use case.
+- **Always green.** After any phase, the main branch could take it as it is: build, checks and tests pass.
+- **One responsibility.** New dependencies or tooling get a phase of their own, before the first use case that needs them.
 - **Copy the neighbor.** Each task names the existing code to imitate: "copying `RestockAlertRequester`".
 - **Few tests.** Prove each behavior with as few tests as possible, at the lowest level.
 - **Done when.** Each phase ends with observable checks: a command and its result, a screen and what it shows, a request and its response.
-- **Fixed ending.** Each phase ends with these two tasks, in order:
+- **Fixed ending.** Each phase ends with these two tasks, in order. `erxonxi-implement-phase` runs them as its own closing steps, so they are the last thing done in the phase:
   1. Run the project's verification command (it is in `AGENTS.md`) and fix what fails.
-  2. Evaluate and stop: run `erxonxi-evaluate` (contracts, independent review, evidence), propose commit messages and wait. Do not start the next phase.
+  2. Evaluate and stop: `erxonxi-evaluate` (contracts, independent review, evidence), then commit proposals and a stop. The next phase waits for the user.
 
 ### Public contracts
 
-Per phase, only the types that change. Omit a type that does not change:
+What the user approves instead of code. Per phase, list only the kinds that change:
 
-- use cases and their signatures, without constructor dependencies,
-- domain events and their attributes,
-- test suites with every case, written as behavior sentences,
-- database schema,
-- texts the user sees: the copy is a contract.
+- use case signatures (inputs and outputs, not what is injected),
+- events with their attributes,
+- every test case, as a behavior sentence, grouped by suite,
+- schema changes,
+- every text a user will read, because wording is a promise too.
 
 If the user brings no contracts, propose them from the research. They are what the user reviews: the what before the how.
 
@@ -113,7 +108,7 @@ If the user brings no contracts, propose them from the research. They are what t
 
 When two phases do not depend on each other, say so, so they can be delegated in parallel:
 
-- A phase lists `Depends on: <phase>` only for hard dependencies. Try to remove each one first with a contract agreed up front.
+- A phase lists `Blocked by: <phase>` only for hard dependencies. Try to remove each one first with a contract agreed up front.
 - Phases that touch disjoint files and share only an agreed contract go in the same wave.
 - Two phases that touch the same files are never in the same wave.
 

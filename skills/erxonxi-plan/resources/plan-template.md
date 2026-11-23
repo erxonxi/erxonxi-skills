@@ -5,7 +5,7 @@ The plan is the state of the work. Its checkboxes say what is done, so any agent
 ```markdown
 ---
 title: <short task title>
-status: approved            # approved | in-progress | done
+status: approved            # approved → in-progress (first phase started) → done
 created: <YYYY-MM-DDTHH:MM:SSZ>
 updated: <YYYY-MM-DDTHH:MM:SSZ>
 provenance:                 # only if the project records it
@@ -52,7 +52,7 @@ Done when: <observable check>
 
 ### Phase 2: <...>
 
-Wave 1. Depends on: Phase 1.
+Wave 1. Blocked by: Phase 1.
 
 ...
 

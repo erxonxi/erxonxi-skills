@@ -1,50 +1,51 @@
-# Pull request template
+# Change description template
 
-Use the repository's template when it has one. Otherwise this one. Delete the sections that do not apply.
+For a pull request, or the body of a large commit, when the repository has no template of its own. Drop every block that has nothing to say.
 
 ```markdown
-## Why
+## Problem
 
-<the problem, not the solution. Link the issue or the plan>
+<who was affected and how, in two or three sentences. Link the plan or the issue>
 
-## What changes
+## Approach
 
-- <2 to 5 bullets: decisions, trade-offs, non-obvious effects. Not the commit list>
+- <the decisions a reviewer should know about, and what was ruled out>
+- <side effects that are not obvious from the diff>
 
-## Evidence
+## Proof
 
-<from erxonxi-evaluate step 5, or "Nothing observable outside the tests: <why>">
+<the evidence, from erxonxi-evaluate step 5>
 
-## How I verified it
+Ran:
+- `<command>` → <result as printed>
 
-- `<command>`: <real result>
-- <manual check>: <what you did and saw>
-- Not checked: <what you did not verify, and why>
+Saw:
+- <manual checks: what you did and what happened>
 
-## Review
+Did not check:
+- <what remains unverified, and why>
 
-**Difficulty:** low | medium | high · <what makes it so>
-**Independent review:** <findings fixed, findings left for the reviewer, or "skipped: <reason>">
+## Risk
 
-## Deploy steps
+Review effort: <small | medium | large>, because <the reason>.
+Independent review: <what was found and fixed, what is left open, or why it was skipped>.
 
-1. [ ] **Before merging:** <where> <exact command, query or flag>
-2. [ ] **After deploying:** <...>
+Manual steps:
+1. [ ] <when: before merge, after deploy> · <where> · `<exact command, query or flag>`
 
-## Rollback
+Undo: <how to take this back in production>
 
-<"Revert this pull request." when that is enough. Otherwise each step, in order, with the exact command or migration, what data is kept or lost, and what cannot be undone>
+## Provenance
 
-## Authorship
-
-<tool and model with its version, and who directed the work>
+<agent and model with its version, and the person who directed the work>
 ```
 
-## Rules
+## Notes on each block
 
-- **Why** states the problem. A reader who skips the rest still knows whether to care.
-- **How I verified it** lists only what was run, with its real result, and always has the "Not checked" line.
-- **Difficulty** is how hard the change is to review, not a quality verdict.
-- **Deploy steps** only when someone must do something by hand. Never tick a step you did not run.
-- **Rollback**: when the change touches state outside the code (migrations, backfills, flags, queues, published events), read the diff and write the real steps. Never guess a migration name.
-- **Authorship** only when the project records provenance. Name the person from the session or the event that started the work, never guess one.
+- **Problem** is enough for a reader who stops there to know whether this matters to them. It describes the pain, not the fix.
+- **Approach** is not a list of commits or files. If the diff already says it, leave it out.
+- **Proof**: "Ran" holds only commands that actually ran, with their actual output. "Did not check" is never empty by omission: if everything was checked, write "Nothing".
+- **Review effort** measures how much attention the diff needs, not how good it is.
+- **Manual steps** only exist when a person must act for the change to work. Leave the boxes unticked unless you ran the step yourself.
+- **Undo**: if reverting the code is enough, say that in one line. If the change moves state the code does not own (schema, stored data, flags, queues, scheduled jobs, emitted events), write each step to reverse it, in order, from what the diff really contains, and say plainly what cannot be reversed.
+- **Provenance** only when the project records it. Take the person from the session or from what triggered the work; never invent a name.

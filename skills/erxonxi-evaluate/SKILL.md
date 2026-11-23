@@ -1,6 +1,6 @@
 ---
 name: erxonxi-evaluate
-description: "Judge a change by its results before a human reads its lines: run the checks, compare it with the approved contracts, get an independent review, capture before/after evidence and write the commit or PR text with what was and was not verified. Use when a phase or change is done, before committing or opening or updating a PR."
+description: "Judge a change by its results before a human reads its lines: checks, approved contracts against the diff, an independent review, before/after evidence, and commit or PR text that says what was not verified. Use when a phase or change is done, before committing or opening or updating a PR."
 ---
 
 # Evaluate
@@ -16,7 +16,7 @@ The project's checks, PR template and review rules win. If the repository has a 
 ### 1. Gather what the change promised
 
 - The plan phase: its contracts and its "done when". Without a plan, the task as the user stated it.
-- The diff against the base branch, and the base commit.
+- The diff of this change only. While nothing is committed: the working tree against `HEAD`, new files included. When the change was committed on its own branch: against the commit where it started. Never against an older base that mixes in earlier phases.
 - The verification command, from `AGENTS.md` or the project configuration.
 
 Done when you can state what the change was supposed to do, in one sentence, and against which base.
@@ -35,7 +35,7 @@ For each approved contract, confirm in the diff that it exists exactly as agreed
 
 - a public contract in the diff that the plan did not list is scope creep: report it,
 - a listed test case missing, renamed or weakened is a finding,
-- a check, its configuration or its baseline changed in the diff is a finding unless the user asked for it.
+- a check, its configuration or its exemption list changed in the diff is a finding unless the user asked for it.
 
 Done when every contract is marked as present, changed or missing.
 
@@ -56,7 +56,7 @@ Done when every confirmed finding is fixed or listed for the user.
 
 ### 5. Capture evidence
 
-Evidence lets the user see what the change does without running it. Choose by the kind of change, and read `resources/evidence.md` for the details of each:
+Evidence lets the user see what the change does without running it. First write the one sentence the evidence must support. Then choose by the kind of change; `resources/evidence.md` has the details of each:
 
 | Change | Evidence |
 |---|---|
@@ -66,23 +66,25 @@ Evidence lets the user see what the change does without running it. Choose by th
 | Architecture (calls, routing, dependencies) | Before and after diagrams of the affected part, same node names |
 | Nothing observable outside tests (refactor, config, docs) | None. Say so, and let the checks speak |
 
-- For a fix, the "before" that shows the failure is the most important piece. Capture it even if the screen looks the same: the error, the response, the output.
-- Prove the main change, not a side effect of it.
-- Say where each side comes from: the base commit and the branch, the environment and the input.
-- Keep evidence files out of the repository.
+- A fix needs its failure on record: the error, the wrong output or the broken state as it was before.
+- Support the sentence you wrote, not whatever the change happened to touch.
+- Both sides with the same input and setup, and one line naming what each side ran on.
+- Captures stay out of the repository.
 
 Done when someone who did not run the code can see the change, or you said why there is nothing to see.
 
 ### 6. Write the text
 
 - **Commit**: propose two or three messages in the project's convention, as in `erxonxi-workflow`.
-- **Pull request**: fill the repository's template, or `resources/pr-template.md`. Never write a check you did not run, and always write what you did not check.
+- **Pull request**: fill the repository's template, or `resources/pr-template.md`. Only checks that ran appear as done, and what was not checked is always written down.
 
 Done when the user can decide to commit, merge or send it back from what you wrote, without asking you anything.
 
 ### 7. Stop
 
 Present the result: the checks, the contract comparison, the confirmed findings, the evidence and the text. Do not commit, push or merge unless asked.
+
+When `erxonxi-implement-phase` called this skill, hand the result back to its last step instead of stopping here: that step updates the plan and then stops.
 
 Each correction the user makes after reading it is a candidate for `erxonxi-rule`: say so.
 

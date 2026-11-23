@@ -1,67 +1,64 @@
 # Harvest mode
 
-Turn the conventions a repository already has into checks. Two sources, in this order: what is written, then what only the code shows. Run steps 1 to 3 here, then steps 3 to 7 of `SKILL.md` for each convention you keep.
+The project already has conventions and wants them enforced. Some are declared (docs, `AGENTS.md`, ADRs, review checklists). Others are only observable: the code does the same job in more than one way, and an agent imitates whichever file it happens to open first.
 
-With a path, harvest only inside it: every count, every curve and every baseline covers that area alone, and so does the scope of each check.
+## How the steps change
 
-## 1. Written conventions
+1. **Map the toolchain** (step 2 of `SKILL.md`) once, for the whole run.
+2. **Collect** the conventions: declared ones first, observed ones second, as below. With a path, everything (search, counts, history, scope of each check, exemptions) stays inside it.
+3. **Write a convention card** (step 1) for each convention kept, with the breaking snippet taken from a real violation found while collecting.
+4. **Choose the mechanism** (step 3) for all of them, without asking yet.
+5. **Ask once** (below).
+6. **Build, prove and record** (steps 4 to 6) each convention, one at a time.
+7. **Hand over** (step 7) with one report for the whole run.
 
-Read `AGENTS.md`, `docs/`, ADRs, contributing guides and review checklists. For each statement:
+## Declared conventions
 
-- **Convertible**: a check could verify it exactly. Keep it.
-- **Judgment**: it needs a person to decide ("names reveal intent"). Skip it and leave it in prose.
-- **Already enforced**: a working check covers it. Skip it, and add the `Enforced by:` line to the doc if it is missing.
-- **Contradicted**: two statements decide the same thing in different ways. It becomes a question for the user.
+Sort every statement of the documents into one of four piles:
 
-A written convention is a decision the team already made. Enforce it without asking, unless it contradicts another one.
-
-Done when every statement in the documents you read has one of the four labels.
-
-## 2. Conventions only the code shows
-
-A repository has **competing patterns** when it does one job in two or more ways, usually an old way and a current way living together. The agent copies whichever it reads first, so these are worth more than any written rule.
-
-Find them by comparing the oldest and the newest modules (git says which are which). Usual jobs: folder layout, import style, module boundaries, data access, error handling, absence of values, component style, data fetching, styling, test setup, test data, test doubles. Names such as `Legacy`, `Old`, `V2` or a deprecation tag are leads.
-
-For each variant of each job record:
-
-- a **signature**: the import, regex or syntax shape that finds it,
-- how many files match,
-- its **direction**: how many matching files were created per period, and in the last twelve months. Date files with the first commit that added them, following renames, so a mass move does not reset the dates. In a young repository use quarters. With no usable history, direction is unknown,
-- a **canonical example**: a real file that does it the current way,
-- what the docs say about it, if anything.
-
-Weigh in this order:
-
-1. **Intent**: the team said which variant is current. A deprecation tag, a `Legacy` name, a migration commit, a document.
-2. **Direction**: the variant the newest files choose. A young variant with few files wins if recent code moves to it.
-3. **Volume**: only sizes the baseline. It never picks the winner.
-
-Verdicts:
-
-| Verdict | When | Proposal |
+| Pile | Meaning | Next |
 |---|---|---|
-| Remnant | Intent or direction points to one variant and the other stopped growing | The current one |
-| Regression | Recent code drifts from what intent and the rest of the repository follow | The established one |
-| Conflict | Intent and direction disagree | The one intent supports, the other as alternative |
-| No winner | No intent and every variant still grows | Nothing. Report it |
+| Checkable | A complete and precise check exists for it | Keep |
+| Needs judgment | A person must decide ("names reveal intent") | Leave as prose |
+| Already checked | A working check covers it | Add the `Checked by:` line to its doc if missing |
+| In conflict | Two statements settle the same question differently | Becomes a question |
 
-A job with a single variant, or whose variants no signature separates, is out of scope.
+The team already decided the checkable ones. They need no vote.
 
-Done when every job found has its variants recorded, a verdict and a one-line reason, and every discarded job has a one-line reason too.
+## Observed conventions
 
-## 3. Ask once
+Look for jobs the code does in two or more ways, typically a way the team is leaving and a way it is moving to. Compare the oldest areas of the code with the newest: layout, imports, boundaries, data access, error handling, absent values, components, data fetching, styles, test setup, test data, doubles. Words like `legacy`, `old`, `v2` or deprecation markers are good starting points.
 
-Three things need the user, and only these:
+For each way of doing a job, gather:
 
-- a dependency to install,
-- two written statements that contradict each other,
-- a mined job with a conflict, or a remnant or regression whose evidence is thin.
+- a pattern that finds it (an import, a regex, a syntax shape),
+- how many files use it,
+- when those files first appeared, per year or per quarter in a young project, following renames so a big move does not look like new code. With no usable history, the trend is unknown,
+- one file that shows it done well,
+- what the documents say about it, if anything.
 
-Put them all in one message. For each: the job or statement, the options with their evidence (counts, direction, canonical example), and your recommendation. Conventions that need no answer do not wait: enforce them first, then ask.
+Which way is current: what the team declared beats where new code is going, which beats how much code exists. Size never chooses; it only tells you how long the exemption list will be. A way used by few files can still be the current one if the newest files use it.
 
-After the answer, do not ask again until the report. A declined item is skipped. A declined dependency sends its convention one rung down.
+| Finding | Situation | Proposal |
+|---|---|---|
+| Stale | The team or the trend points to one way, and the other stopped appearing | Enforce the current way |
+| Drift | Recent files leave the way the team declared and the rest of the code follows | Enforce the established way |
+| Disputed | What the team declared and the trend disagree | Recommend the declared way, offer the other |
+| Open | Nothing declared and every way still grows | Enforce nothing. Report it |
 
-## Large repositories
+Drop a job when there is a single way, or when no pattern can tell the ways apart, with one line saying so.
 
-With dozens of conventions, build the shared pieces first in one change: where check tests live, the baseline mechanism and the check that keeps it shrinking. Then split the work by area (backend, frontend, tests) into subagents, each owning its own configuration file, rule files and baselines, so no two of them edit the same file.
+## Ask once
+
+After choosing mechanisms, send a single message with only what the project cannot answer:
+
+- each dependency a mechanism needs,
+- each pair of declared statements in conflict,
+- each disputed finding, and each stale or drift finding with thin evidence,
+- whether to commit each convention as soon as it is done. Many conventions often touch the same configuration file, and splitting them into separate commits afterwards is rarely possible.
+
+For each item give the options, the evidence (counts, trend, an example file) and your recommendation. Conventions that depend on no answer go ahead without waiting. After the answer, ask nothing more until the report: a declined item is skipped, and a declined dependency moves its convention to a lower rung.
+
+## Big runs
+
+When there are dozens of conventions, land first what every check will share: where checks are tested, how exemptions are stored and the test that keeps exemption lists shrinking. Then split the remaining work by area among subagents, each owning distinct configuration and exemption files.

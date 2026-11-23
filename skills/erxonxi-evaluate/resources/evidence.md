@@ -1,45 +1,28 @@
 # Evidence
 
-The evidence proves the change the description promises. A reviewer must see it without running the code.
+Evidence answers one question for someone who will not run the code: what does this change do that the code did not do before? Anything that does not help answer it is noise.
 
-## Structure
+## Before capturing
 
-1. One line that says where each side comes from: "Before is `main` at `<commit>`, after is this branch, both on <environment> with <the same input or seed data>."
-2. The main change first. Then scenarios and variants.
-3. One block per thing to prove: a heading, one sentence that says what to look at, then the evidence.
+- **Pick the claim.** Write the single sentence the evidence must support, taken from the problem the change solves. Capture that, not the most photogenic thing the change touched.
+- **Fix the comparison.** Both sides use the same input, data and setup. The only difference is the code: the base commit on one side, the change on the other. Write that down in one line at the top, naming the commit, the environment and the data.
+- **For a fix, the failure first.** The "before" that shows the bug (an error, a wrong response, a broken screen) is the strongest piece. Capture it even when the screen looks the same: show the failure in whatever form it takes.
 
 ## By kind of change
 
-### Visual
+| Kind | Capture | Watch out for |
+|---|---|---|
+| Something users see | Screenshots of both sides, same state, same viewport, same crop | Web: a wide and a narrow viewport, unless the change exists at one width only (say which and why). Add dark mode, languages, empty or error states only if the change affects them. A tiny visual defect deserves a zoomed crop, same zoom on both sides |
+| A flow of several steps | A short recording per flow, under a minute each, or a numbered strip of screenshots or outputs, one per step | The action and its result in the same frame. Visible clicks and typing, a pause after each step. One line above each recording saying what it shows and how long it is |
+| Behavior with no screen | The same call on both sides (request, command, tool call) and each side's output in a code block | Trim to the fields that changed and say it is trimmed |
+| How parts connect | A diagram of the affected part before and after, with identical node names | A dozen nodes at most. Flowchart for decisions and routing, sequence diagram for call order, dependency graph for module structure. Mark added, removed and changed parts, with a legend. A new flow has only an "after". Diagrams come on top of other evidence, never instead of it |
+| Nothing observable outside the tests | Nothing | Say so in one line and let the verification command speak |
 
-- Same state, same viewport and same crop on both sides.
-- For a web change: a wide and a narrow viewport (desktop and phone). If the change exists at one width only, capture that one and say why.
-- Other variants (dark mode, language, long content, empty state, error) only when the change affects them.
-- A defect of a few pixels: a close-up with the same crop and zoom on both sides.
-- Layout: a before/after table for the main change, a grid for states, a matrix for variants.
+## Layout
 
-### Flow
+Lead with the claim and its strongest evidence. Then one short block per extra scenario or variant: a heading, one sentence on what to look at, the evidence. Use side-by-side tables for before and after, a grid when several states matter, a matrix when several variants do.
 
-- A recording under a minute, or several short ones for a long flow.
-- Keep the action and its result in the frame, show where each click lands and what is typed, and pause a second after each action.
-- One sentence above each recording with the steps it shows and its length.
-- Without a recorder: the numbered sequence of screenshots or outputs, one per step.
+## Hygiene
 
-### Behavior without a visual
-
-- The same request, command or tool call on both sides, and each side's output in a code block.
-- Trim long outputs to the fields that matter, and say that they are trimmed.
-
-### Architecture
-
-- A before and an after diagram of the affected part only, around a dozen nodes at most, with the same node names on both sides.
-- The diagram type follows the change: a flowchart for a decision or routing, a sequence diagram for the order of calls, a dependency graph for module structure.
-- Mark what is added, removed and changed, with a legend.
-- A new flow with no "before": the "after" only, all marked as added.
-- Diagrams complement the other evidence, they do not replace it.
-
-## Producing it
-
-- Work in a temporary directory outside the repository. Never commit screenshots or recordings.
-- Capture "before" from the base branch and "after" from the change, with the same input.
-- Use the agent's browser, terminal or desktop tools when it has them. If it has none, say which evidence is missing and how the user can produce it.
+- Keep captures in a temporary directory outside the repository. Never commit them.
+- Use the browser, terminal or desktop tools the agent has. If it has none for this kind of change, say what is missing and how the user can produce it in one step.

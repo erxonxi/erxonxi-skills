@@ -1,160 +1,152 @@
 ---
 name: erxonxi-rule
-description: "Turn a convention into a check that fails in seconds (type, lint rule, architecture test) with a baseline that only shrinks, and keep prose only for the why. Use right after the user corrects you on a convention, when they describe one to enforce, or to enforce the conventions a repository already follows."
+description: "Turn a convention into a check that fails in seconds (type, lint rule, architecture test), with an exemption list for old code that can only shrink. Use right after the user corrects you on a convention, when they describe one to enforce, or to enforce the conventions a repository already follows."
 ---
 
 # Rule
 
-A convention written in prose holds only if the agent loads the right document, reads it the way the team meant it and a reviewer notices the miss. A check fails in seconds and its message says what to do instead, so the agent corrects itself without a human in the loop. This skill turns conventions into checks. Prose keeps only what no check can verify, and the why.
+Every correction a human has to repeat is a check nobody wrote. Documents get skipped, misread or never loaded. A red build does not. This skill writes the check, and keeps prose for the reason behind it and for what no machine can decide.
 
 ## Rule zero
 
-The project's tooling wins: its linters, its test runner, its way of exempting code and its commit convention. This skill adds a tool or a dependency only with the user's yes.
+Work with what the project already runs: its type checker, linters, test runner, hooks, CI and commit convention. A new tool or dependency needs the user's yes.
 
 ## Modes
 
-| Mode | Input | Steps |
-|---|---|---|
-| **One convention** (default) | The last correction in the conversation (your version and the one the user wanted), or a convention the user describes | This file |
-| **Harvest** | The conventions a repository already has: written in docs, `AGENTS.md` or ADRs, and the ones only the code shows. Optionally limited to a path | `resources/harvest.md`, then steps 3 to 7 of this file for each convention |
+- **From a correction** (default). The convention is the gap between what you wrote and what the user wanted, or what the user describes. One convention per run.
+- **Harvest**. The project already has conventions, written down or only visible in the code, and wants them enforced. Read `resources/harvest.md`: it says how to collect them and how it changes the steps below.
 
-## Principles
+## What makes a good check
 
-- **Exact or prose.** A check must cover the whole convention and flag only real violations. A check that has to guess (is this class an aggregate? is this file an entry point?) is not a check: write the short doc. The effort of writing the check is never the reason to skip it.
-- **Freeze, do not fix.** The check is an error for new code from today. The code that already breaks it is its **baseline**: exempted unit by unit and left as it is. The baseline only shrinks.
-- **Seen red, seen green.** A check counts only after you saw it fail on a violation and pass on the repository.
-- **One convention, one check.** Each with its own message and its own baseline, so each can be removed or migrated alone.
-- **The check holds the how, the doc holds the why.**
-- **Errors, never warnings.** An agent treats a warning as noise.
+| Property | Meaning |
+|---|---|
+| Complete | It covers the whole convention, not a convenient part of it. |
+| Precise | It never fires on correct code. If deciding needs judgment (is this an aggregate? is this an entry point?), it is not a check: the convention stays as prose. How hard the check is to write does not matter. |
+| Loud | It is an error. Agents treat warnings as noise. |
+| Helpful | Its message tells the reader what to write instead and where the convention is explained. |
+| Fair to old code | Code that broke the convention before today is listed as exempt. The list can lose entries, never gain them without the user's yes. |
+| Proven | It was seen failing on a violation and passing on the project. |
+| Independent | One convention, one check, one message, one exemption list. Each can be removed or migrated alone. |
 
 ## Steps
 
-### 1. Pin the convention
+### 1. Write the convention card
 
-Done when you can state, one sentence each:
+Before touching any configuration, write down:
 
-- what the code must do or must not do,
-- its scope: folders, layers, file types,
-- its exceptions, if the user or the docs name any,
-- why the team wants it, if anyone said so,
-- one real example that follows it and one that breaks it. After a correction they are the user's version and yours.
+```
+Rule        what code must or must not do, as one imperative sentence
+Scope       folders, layers, file types it applies to
+Exceptions  the ones the user or the docs allow, if any
+Reason      why the team wants it, if anyone said
+Follows     a real snippet that respects it
+Breaks      a real snippet that violates it (after a correction: your first version)
+```
 
-Ask only when the convention has two readings or the scope is unclear. All the questions in one message, each with the option you recommend.
+If the convention has two readings or the scope is fuzzy, ask, in one message, with your recommended reading.
 
-### 2. Read the tooling
+### 2. Map the toolchain
 
-Read the lint, format, type, test, hook and CI configuration. Done when you know:
+Find out, from the configuration and not from memory:
 
-- the verification command a contributor runs and the CI job that runs it,
-- each checker that command runs, what it parses and the file where a new rule goes,
-- what happens when two configuration blocks match the same file: options merge, or the last block replaces the others,
-- how the repository exempts existing code today,
-- where checks are tested, if anywhere, and with which command,
-- whether a pre-commit hook lints the changed files,
-- whether something already checks this convention or part of it.
+- which single command a contributor runs to verify a change, and which CI job runs it,
+- every checker behind that command, the languages it understands and where new rules are declared,
+- whether two configuration sections that match the same file combine their options or the later one wins,
+- how this project already exempts legacy code,
+- whether checks have tests of their own, and where,
+- whether a hook checks changed files before a commit,
+- whether something already enforces this convention, fully, partly or in a broken way.
 
-### 3. Pick the lowest rung
+### 3. Choose the mechanism
 
-Take the first rung that covers the whole convention without guessing. Confirm that the installed version of the tool has the rule before choosing it.
+Go up this ladder and stop at the first rung that is complete and precise for this convention, after confirming the installed version supports it:
 
-1. **The type system, the compiler or the formatter.** The best check is an illegal state that does not compile.
-2. **A built-in rule of an installed linter.**
-3. **A generic configurable rule of an installed linter**: restricted imports, restricted syntax, naming patterns, dependency boundaries.
-4. **A maintained plugin for an installed linter.** New dependency: ask.
-5. **A custom rule in a local plugin of an installed linter.**
-6. **A test in the existing test runner**: an architecture test over the import graph, or a test that lists files and asserts on them. It reaches what linters cannot: several files, files that are not code, languages without a linter. See `resources/beyond-the-linter.md`.
-7. **A new tool.** Only when nothing above fits, and only with the user's yes.
+1. **Types, compiler, formatter.** Best of all: the wrong code cannot be written.
+2. **A rule the installed linter ships with.**
+3. **A configurable rule of the installed linter**: banned imports, banned syntax, naming patterns, module boundaries.
+4. **A plugin for the installed linter**, maintained by its community. A dependency: ask.
+5. **A rule of your own** in a local plugin of the installed linter.
+6. **A test in the existing runner**: an architecture test over the import graph, or a test over file names and contents. It covers what crosses files, what is not code and languages without a capable linter. Shapes: `resources/beyond-the-linter.md`.
+7. **A new tool.** Last resort, with the user's yes.
 
-- If a check already covers part of the convention, extend it instead of adding a second one.
-- If a check exists but stays green on a violation, repair it.
-- If a generic rule is already configured for the same files and its options replace instead of merge, go one rung down so you do not silently disable the other convention.
-- If the user declines a dependency, go one rung down to something installed, or stop at the doc.
+Adjustments:
 
-Typical conventions of these skills and their usual rung: `resources/catalog.md`.
+- Something already covers part of it: extend that check.
+- Something exists but passes on the breaking snippet: repair it.
+- A configurable rule is already set for the same files and later sections override earlier ones: adding your options there would silently switch off the other convention. Use the next rung.
+- A dependency the user declines: drop to a rung that needs nothing new, or keep the convention as prose.
 
-Done when the convention has a mechanism, or no rung covers it exactly. In that case go to step 6.
+If no rung is both complete and precise, skip to step 6.
 
-### 4. Write the check
+Common conventions of these skills and the rung they usually land on: `resources/catalog.md`.
 
-1. Add it as an error for the whole scope. Encode the documented exceptions in the check or its scope, with a comment that names the document.
-2. Write the message for the agent that will read it: what to do instead and where the convention lives (`Convention: docs/<file>.md`, or the path of a file that does it right). If the tool takes no custom message, put that line as a comment next to the rule.
-3. Run it on the whole repository. What fails is the baseline. Count with the tool, never with a text search: the tool finds cases a search misses.
-4. Record the baseline by the smallest unit the tool can name (a file, or a symbol when one file holds many), with the first mechanism available: the tool's own suppression file, then a list of exempt units in the rule's configuration, then inline comments. Write next to it that it only shrinks, and make that true: something fails when an exempt unit no longer breaks the rule, so the list cannot rot.
-5. Fix violations instead of exempting them only when the tool has a safe autofix or they are a handful of one-line changes. A large migration is never part of this change.
+### 4. Build it
+
+- Declare it as an error over the whole scope. Express the allowed exceptions in the rule or its scope, with a comment pointing to the document that allows them.
+- Write the message for an agent: what to do instead, then `Convention: <path to the doc or to a file that does it right>`. If the tool has no custom messages, leave that line as a comment beside the rule.
+- Run it over the whole project. Whatever fails today is the exemption list. Size it from the tool's own output: a text search misses some cases and invents others.
+- Record the exemptions as narrowly as the tool allows (a file, or a symbol inside it). Prefer the tool's native exemption mechanism; fall back to a list in the rule's own configuration; use inline markers only if nothing else exists.
+- Make the list honest: something must fail when an exempt entry stops violating the rule, so entries leave as code gets fixed. Write next to the list that it only shrinks.
+- Fix old violations instead of exempting them only when the tool can fix them safely by itself or there are a few trivial ones. Migrating the rest is separate work.
 
 ### 5. Prove it
 
-Under the real configuration of the repository:
+- **Fails**: put the breaking snippet (or the smallest violation you can write) outside the exempt list and watch the check report it with your message.
+- **Passes**: the verification command is green on the project as it is.
 
-- **Red**: it fails on a violation outside the baseline. Use the breaking example of step 1.
-- **Green**: it passes on code that follows the convention, and the verification command is green on the repository.
+Keep the failing and passing snippets as tests of the check when the project has a fast place for them. Otherwise create that place with the existing runner, or prove the failure with a throwaway file and delete it. A check that broke silently and a convention everyone follows both show zero errors: only a test tells them apart. The failing snippet must never be picked up by the real lint run.
 
-Keep both cases as tests of the check when the place exists or the suite stays fast, so an upgrade that breaks the rule is noticed: a broken check looks exactly like a convention everybody follows. Keep the red case out of the real lint run. With no fast place for them, prove red with a temporary file and delete it.
+Confirm the verification command, CI and the pre-commit hook (if any) all run the new check.
 
-The verification command and CI must run the check. If a pre-commit hook lints the changed files, it runs it too.
+### 6. Record the convention
 
-Done when the check went red, then green, and the verification command passes.
-
-### 6. Write the short doc
-
-Where the project keeps its conventions, usually `docs/<area>/`. Create `docs/` if there is none.
-
-With a check:
+Every convention ends as one short file where the project keeps its conventions, usually `docs/<area>/`:
 
 ```
 # <Convention>
 
-<the rule, in one imperative sentence>
+<the rule, one imperative sentence>
 
-**Why**: <the reason>
+Why: <the reason>
 
-Enforced by: <tool> · <rule or test name>
+Checked by: <tool> → <rule or test name>
 ```
 
-Without a check:
+When no check could be complete and precise, replace the last line with:
 
 ```
-# <Convention>
+Not checked: <why no exact check exists, one sentence>
 
-<the rule, in one imperative sentence>
-
-**Why**: <the reason>
-
-**Not enforced**: <why no check can be exact, in one sentence>
-
-## Examples
-
-Good: <shortest real example>
-Bad: <shortest realistic violation, from the same domain>
+Respects: <shortest real snippet>
+Violates: <shortest realistic snippet from the same domain>
 ```
 
-If nobody gave the why, show the draft and ask for it in one line. Without an answer, leave the line out instead of inventing one. Add the doc to the documentation map of `AGENTS.md`.
+Leave `Why:` out rather than inventing it: show the draft and ask the user for the reason in one line. List the file in the documentation map of `AGENTS.md`.
 
 ### 7. Hand over
 
-- Do not commit unless asked. Propose one commit per convention, containing the check, its tests, its baseline and its doc, with the project's commit convention. Shared tooling goes first, in its own commit.
-- Report in a few lines: the convention, the mechanism and its rung, the baseline size, and how to migrate one unit (change the code, remove it from the baseline). Or why it stays as prose.
+Commit only if the user asked. Otherwise propose one commit per convention, holding its check, its tests, its exemption list and its doc. Report: the convention, the rung used, how many entries the exemption list holds and how to retire one (fix the code, delete the entry), or why it stayed as prose.
 
-## Protect the checks
+## Guarding the guards
 
-- Never edit a check, its configuration or its baseline to make your own change pass. If a change seems to need it, stop and say so.
-- Growing a baseline needs the user's explicit yes, every time.
-- Where the agent supports hooks or permissions, block writes to check and baseline files from the agent. A sentence in a prompt is not a guardrail.
+- Your change failing a check is a reason to change your code, never the check, its configuration or its exemption list. If you believe the check is wrong, stop and say why.
+- Adding an entry to an exemption list always needs the user's yes.
+- If the agent supports hooks or permissions, deny it writes to check and exemption files. A prompt sentence is not a guardrail.
 
 ## What is not done
 
-- A check that guesses, or a check that covers half the convention without saying so.
-- Warnings, or rules switched off "for now".
-- Fixing the whole baseline in the same change as the check.
-- A doc that repeats what the check's message already says.
-- A new linter for a single rule that an architecture test in the existing runner could cover.
+- A check that needs judgment, or one that silently covers half the convention.
+- Warnings, or rules disabled "for now".
+- Migrating every old violation inside the change that adds the check.
+- A doc that repeats the check's message.
+- A whole new linter for one rule a test in the existing runner could express.
 
 ## Checklist
 
-- [ ] Can I state the convention, its scope, its exceptions and one example of each side?
-- [ ] Did I pick the lowest rung that covers all of it without guessing?
-- [ ] Does the message say what to do instead and where the convention lives?
-- [ ] Is the baseline recorded by unit, and does something fail when it should shrink?
-- [ ] Did I see it red, then green, and is the verification command green?
-- [ ] Does CI run it, and the pre-commit hook if there is one?
-- [ ] Is the doc minimal, with the why, and listed in `AGENTS.md`?
+- [ ] Is the convention card complete, with a real snippet on each side?
+- [ ] Is the chosen rung the lowest one that is complete and precise?
+- [ ] Does the message say what to do instead and where to read more?
+- [ ] Is the exemption list narrow, and does something fail when an entry should leave it?
+- [ ] Did I see the check fail, then the project pass?
+- [ ] Do the verification command, CI and the pre-commit hook run it?
+- [ ] Is there one short doc, listed in `AGENTS.md`?

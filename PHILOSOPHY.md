@@ -91,7 +91,7 @@ Almost all infrastructure decisions have the shape of a ladder, and the rule is 
 
 Formatting, dependencies between layers, default parameters, PR size, commit format: everything a machine can verify becomes a lint rule, an architecture test, a hook or a CI check, with a message that says how to fix it. Prose is left for what cannot be automated, and for the why.
 
-A new check is an error from day one for new code. The code that already breaks it is frozen in a baseline that only shrinks, so adopting a rule never waits for a migration. A check counts only after it has been seen failing on a violation and passing on the repository.
+A new check is an error from day one for new code. The code that already breaks it goes into an exemption list that can only shrink, so adopting a rule never waits for a migration. A check counts only after it has been seen failing on a violation and passing on the repository.
 
 Why: an agent forgets a document, misreads it or never loads it. It cannot ignore a red build. Every correction a human has to repeat is a check that was never written.
 
@@ -115,7 +115,7 @@ Why: implementation stopped being the bottleneck. Review is the serial part, so 
 
 The above, turned into a way of working for coding agents.
 
-- **Layered memory.** A short root `AGENTS.md` with commands, architecture in a few lines and a map of `docs/`, with the explicit order not to read all the docs at the start. Conventions in `docs/`, one file per convention and with a fixed skeleton. Procedures in skills. Mechanical rules in lint and hooks.
+- **Layered memory.** A short root `AGENTS.md` with commands, architecture in a few lines and a map of `docs/`, with the explicit order not to read all the docs at the start. Conventions in `docs/`, one short file per convention: the rule, the why and the check that enforces it. Procedures in skills. Everything checkable in types, lint, architecture tests and hooks.
 - **Research, plan, implement**, with a human gate at each step. Exploration is delegated to subagents with cheap models. The plan is not written until phases and contracts are agreed.
 - **The plan carries its state.** A file (or a parent issue with one child per phase) whose checkboxes say what is done, so any agent or session can resume it. The current phase is the first one with work left.
 - **Delegation has a brief.** A subagent gets the contracts verbatim, the files it owns, the pattern to copy, the verification command and its limits. Its report is a claim to verify, not proof. Parallel agents only on phases of the same wave, with disjoint files.
@@ -143,7 +143,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | Agent commit | Do not commit unless the user asks |
 | Reviewer subagent | Fresh context, the diff and the contracts, never the author's conclusion. Its findings are verified before they are reported |
 | Where a plan lives | `.agents/plans/<date>-<slug>.md`, or issues when the team works in a tracker |
-| Existing violations of a new check | Frozen in a baseline by unit, which only shrinks |
+| Existing violations of a new check | An exemption list by file or symbol, which only shrinks |
 | A correction from the user | Becomes a check. A short doc only when no check can be exact |
 | Exploration subagents | With context. Blind as an optional technique |
 | Where a shared event lives | In the emitting context |
@@ -164,7 +164,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 - Interfaces, factories and patterns without real variation. Singletons.
 - Hexagonal architecture in an interface without rules.
 - Arguing about formatting by hand.
-- Checks as warnings, checks that guess, or editing a check or its baseline so a change passes.
+- Checks as warnings, checks that guess, or editing a check or its exemption list so a change passes.
 - Letting an agent read all the documentation, implement several phases in a row or commit without review.
 - Reporting a check, a test or a review that did not run, or evidence of a side effect instead of the change.
 - Story points, velocity targets, backlogs as inventory, horizontal tickets, or shipping without a signal.
@@ -183,7 +183,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | `erxonxi-plan` | Plan a non-trivial task: research, decisions, phases with contracts, waves |
 | `erxonxi-implement-phase` | Implement, continue or resume one phase of a plan |
 | `erxonxi-evaluate` | A phase or change is done: checks, contracts, independent review, evidence, commit or PR text |
-| `erxonxi-rule` | After a correction, or to enforce a convention: turn it into a check with a shrinking baseline |
+| `erxonxi-rule` | After a correction, or to enforce a convention: turn it into a check with a shrinking exemption list |
 | `erxonxi-roadmap` | Build or review a roadmap, split a plan into tickets, order and parallelize work, scope an MVP, decide after a release |
 
 All of them start with the same rule: the project's existing convention wins, and the skill decides only when there is no precedent.

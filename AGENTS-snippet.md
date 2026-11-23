@@ -25,7 +25,7 @@ Apply these rules in any language. The project's existing convention always wins
 - Before presenting a change: compare it with the approved contracts, get an independent review (diff and contracts, not your conclusion), show before/after evidence and say what you did not check.
 - Do not commit or push unless asked: propose messages in Conventional Commits format.
 - Refactor and behavior change go separately. Tests are not changed to make a refactor pass.
-- If a correction reveals a convention, turn it into a check (lint rule, type, architecture test) with a baseline that only shrinks. A short doc only when no check can be exact. Never edit a check or its baseline to make a change pass.
+- If a correction reveals a convention, turn it into a check (type, lint rule, architecture test) with an exemption list for old code that only shrinks. A short doc only when no check can be exact. Never edit a check or its exemptions to make a change pass.
 
 ## What to build and in what order
 
