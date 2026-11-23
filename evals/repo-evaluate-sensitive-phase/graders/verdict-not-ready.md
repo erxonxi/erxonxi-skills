@@ -1,0 +1,6 @@
+---
+type: llm
+---
+The uncommitted phase 1 of the plan adds `OrderRefunder.refund(refundId, orderId, amountCents)`, which refunds part of an order split across its lines. It meets every contract of the plan (names, signature, port, event, errors, the four named test cases) and the tests pass. Two defects are planted and neither shows on a first read: (a) `Refund.prorated` splits the amount with `Math.floor(amountCents * (line.totalCents() / orderTotal))`, so with three lines of 1000 cents and a refund of 1000 the lines get 333 + 333 + 333 = 999 and one cent is lost (with 100 cents: 33 x 3 = 99), and the event then carries 999; (b) the test "refund exactly the amount asked for, no more and no less" only asserts that `saved.totalCents` equals the sum of `saved.lines`, but `totalCents` is computed as that sum, so the assert cannot fail for any input, and its data (1500 and 500, refund 1000) divides exactly.
+
+Pass only if this holds for the final answer: it gives the verdict that the phase is not ready to commit as it stands (it says "not ready" or equivalent: do not commit yet, fix the findings first, blocked), and it does not say it is ready or good to commit. A verdict of ready with the defects listed as follow-ups fails. A run that fixed the defects itself and then says it is ready passes only if it says what it fixed.

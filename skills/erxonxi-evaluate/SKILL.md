@@ -47,7 +47,11 @@ Done when every contract is marked as present, changed or missing.
 
 The author's reading is anchored on its own intent. Get a second one that is not:
 
-- If you have a subagent tool, this step means calling it: launch a general-purpose reviewer (not a search agent) in a fresh context, on a strong model when the change touches data, money, security, concurrency or architecture. Your own second reading does not replace it. Do not report before it returns.
+- **Level.** Use the one the plan states for the phase (its `Review:` line). Without one, decide by what the change touches, never by its size:
+  - **independent, strong model**: money, personal data, authentication or permissions, concurrency, a migration, or anything that deletes data. Strong means the strongest model available, never weaker than the author's.
+  - **independent**: any other change of behavior, and above all a new or changed public contract (event, endpoint, schema), a change across contexts, or the first piece of its kind in the project.
+  - **self**: mechanical changes only (see above).
+- An independent review means calling your subagent tool: a general-purpose reviewer (not a search agent) in a fresh context, with the model the level asks for. Your own second reading does not replace it. Do not report before it returns; until then, one line saying you are waiting.
 - Give it the diff, the approved contracts and the paths of the convention docs. **Not** your reasoning, your summary or your conclusion. Use `resources/review-brief.md`.
 - Ask for findings, each with a file and line, the concrete scenario that fails, and a severity.
 - A finding is confirmed only with its proof beside it: the file and line you read and what it showed, or the command you ran and its output. Without proof, drop it or list it as unverified. Report "confirmed N, dropped M" with the reason for each drop.
@@ -55,7 +59,7 @@ The author's reading is anchored on its own intent. Get a second one that is not
 
 Without subagents, do a separate pass yourself reading only the diff and the contracts, with the checklists of the knowledge skills that apply (`erxonxi-architecture`, `erxonxi-domain-modeling`, `erxonxi-testing`, `erxonxi-clean-code`).
 
-Only mechanical changes skip this step: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. Neither is having found problems already: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why in one line. The report of a mechanical change stays that short: the verdict, the check result and what you could not check.
+Only mechanical changes skip the independent review: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. Neither is having found problems already: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why in one line. The report of a mechanical change stays that short: the verdict, the check result and what you could not check.
 
 Done when every confirmed finding is fixed or listed for the user.
 

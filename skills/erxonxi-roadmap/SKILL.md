@@ -1,6 +1,6 @@
 ---
 name: erxonxi-roadmap
-description: "Lean product planning for any ticket tool: bets with a measurable hypothesis, MVP cut, vertical slices, dependencies, waves, instrumentation, estimates and prioritization, deciding on data. Use when building a roadmap or backlog, splitting an epic into tickets, estimating or ranking work, or deciding after a release."
+description: "Load before splitting an epic or a backlog into tickets, ordering or ranking work, answering how long something will take or when it will be done, and deciding after a release. Covers bets, the MVP cut, vertical slices, waves and forecasts without estimates. Its answers often differ from common practice."
 ---
 
 # Roadmap
@@ -30,12 +30,15 @@ The team's tool and habits win: Linear, Jira, Notion, GitHub Issues or a markdow
 
 ### 1. Frame the bet
 
+First ask whether not building it is an option. If it is not (a law, a contract, a security fix), skip the frame and go to "Work that is not a bet". When the user asked how to break something down or how long it takes, the frame is one line, not a block.
+
 ```
 Outcome     who does what differently, in one sentence
 Hypothesis  We believe <change> for <who> will result in <outcome>.
             We will know when <signal> reaches <threshold> within <window>.
 Decision    what happens if it does not: remove, adjust or stop
-Appetite    the time this is worth, in days or weeks, set before designing
+Appetite    what the outcome is worth to whoever pays, in days or weeks, set before designing.
+            Ask for it; never add up the slices to get it
 Non-goals   what is out, explicitly
 Riskiest    the assumption that, if false, makes the rest worthless
 ```
@@ -55,13 +58,15 @@ Done when: someone outside the team can tell what success looks like and what wo
 - Narrow, not shoddy. Cut features, rules, data variations, platforms, settings and automation (do it by hand behind the scenes). Do not cut tests, security or the signal.
 - If the project has no path to production yet, the first slice is a walking skeleton: the thinnest end-to-end piece through every layer, the pipeline that deploys it and one metric.
 - Whatever did not make the cut is one line in Later. It is not sliced, estimated or ticketed.
+- In a breakdown, the cut is the first thing the reader sees: what is in, what is done by hand behind the scenes, and what is Later. A breakdown that slices the whole scope skipped this step.
 
 Done when: the MVP fits the appetite with room to spare, and removing any part of it would make the hypothesis untestable.
 
 ### 3. Slice
 
 - **Vertical slices.** Each ticket delivers behavior someone can observe, through every layer it needs, and could ship alone. Bad: "Restock alerts API", "Restock alerts UI", "Restock alerts tests". Good: "A shopper asks for an alert on an out-of-stock product".
-- **Right-size instead of estimating.** A slice fits in one to three days of one person, or in one agent session. The real limit is the review: a diff a human reads in one sitting. If it does not fit, split it. If the only way to split it is horizontally, keep it whole and say so. No points, no hours.
+- **Right-size instead of estimating.** A slice is the right size when one person or one agent session can finish it and a human can read its diff in one sitting. That bound is a filter, never a number written on a slice: no days per slice, per role or per person. If it does not fit, split it. If the only way to split it is horizontally, keep it whole and say so. No points, no hours.
+- A slice that needs backend, frontend and QA is still one slice with one owner, and the others work on it with them. Never a ticket, a column or a wave per role.
 
 | Split by | First slice | Later slices |
 |---|---|---|
@@ -119,7 +124,7 @@ Done when: every "blocked by" is hard, and none could be removed with a contract
 Group the slices in waves. A slice goes in the first wave where all its hard blockers are already done. Everything inside a wave can run at the same time.
 
 ```
-Wave 0   A          the contract and the walking skeleton: what everything else needs
+Wave 0   A          the first user step, end to end, on the agreed contract
 Wave 1   B   C      in parallel: both blocked only by A, disjoint files
 Wave 2   D          blocked by B
 ```
@@ -164,6 +169,7 @@ Done when: the day after shipping, anyone can answer "does it work?" and "is it 
   - **Work item age.** The item that has been in progress longer than usual gets attention before anything new starts.
   - **Throughput**: slices finished per week. It is also the forecast: "at 4 to 6 slices a week, the 12 left take 2 to 3 weeks". A range from history, not a date from estimates.
   - **Delivery health**: lead time from commit to production, deployment frequency, change fail rate, recovery time.
+- **No history yet**: do not invent one. Answer with when the first usable slice lands, how many slices are in Now, and when you will forecast again: after the first three slices, from their real cycle time. If pressed for a figure, give the number of slices times the right-size bound, and call it a bound, not a forecast.
 
 Done when: the decision is written next to the bet, and the roadmap reflects it.
 
@@ -206,7 +212,7 @@ Not everything is a hypothesis. Do not force the frame on it.
 | Kind | How it is treated |
 |---|---|
 | A defect that hurts users or their data | Fixed now, ahead of any bet. It is a slice with its checks and its signal, not a priority to argue. |
-| An obligation with a real date (a law, a contract, a security fix) | No hypothesis. The date is fixed, so scope varies: the smallest version that complies, a fallback in case it does not arrive, and a checkpoint early enough to cut scope. Its longest chain starts first. |
+| An obligation (a law, a contract, a security fix) | No hypothesis. The date is fixed, so scope varies: the smallest version that complies, a fallback in case it does not arrive, and a checkpoint early enough to cut scope. Its longest chain starts first. |
 | Technical work (a rewrite, a migration, an upgrade) | It names the measured problem and the number that will show it solved. Without them it is deleted, like any item without an outcome. |
 
 ## Example
@@ -219,6 +225,7 @@ A bet framed, cut and ordered in waves, end to end: `resources/example.md`. Read
 - Scoring spreadsheets (RICE, ICE, WSJF) fed with invented numbers. Numbers are used only when they are real.
 - A backlog as inventory: refining, ordering or estimating what nobody will start this month.
 - Horizontal tickets ("backend", "frontend", "tests") and phase tickets ("design", "implementation", "QA").
+- A "skeleton", "setup" or "test baseline" ticket per role, and a last wave for QA, hardening or an end-to-end pass.
 - "MVP" as a low-quality first version, and "phase 2" as the place where tests, observability and cleanup go.
 - "Investigate X" tickets without a timebox and a decision as output.
 - Meetings without a decision as output, states nobody filters by, templates with empty sections.
@@ -231,9 +238,10 @@ A bet framed, cut and ordered in waves, end to end: `resources/example.md`. Read
 - [ ] Does the bet state an outcome, a threshold, a window and what happens if it is missed?
 - [ ] Was the riskiest assumption tested in the cheapest way before building?
 - [ ] Is the MVP one user, one job, one path, end to end, and does it fit the appetite?
-- [ ] Is every ticket a vertical slice of one to three days, with observable checks and a signal?
+- [ ] Is every ticket a vertical slice one person can finish and a human can review in one sitting, with observable checks and a signal, and no days written on it?
 - [ ] Are only hard dependencies recorded, and did I try to remove each one with a contract, a flag or a reorder?
-- [ ] Are the slices in waves, with a small wave 0 and parallel slices on disjoint files?
+- [ ] Does the breakdown open with the cut, and is wave 0 a user step end to end?
+- [ ] Are the slices in waves, with parallel slices on disjoint files?
 - [ ] Does the work in progress fit the review capacity?
 - [ ] Can someone tell tomorrow whether it works and whether it is used?
 - [ ] Did I add no field, state, label or meeting the team did not already have?

@@ -33,7 +33,7 @@ Apply these rules in any language. The project's existing convention always wins
 
 - A plan is a hypothesis: an outcome, a signal with a threshold, a time budget and what happens if it is missed, written before building.
 - Start with the smallest version that tests the riskiest assumption: one user, one job, one path, end to end, deployed and measured. Cut scope, never quality.
-- Tickets are vertical slices of one to three days with observable checks and a production signal. No points, no hours, no "backend" or "QA" tickets.
+- Tickets are vertical slices one person finishes and a human reviews in one sitting, with observable checks and a production signal. No days, points or hours on them, and no "backend" or "QA" tickets.
 - Record only hard dependencies, and first try to remove them with a contract agreed up front, a flag or a reorder. Order in waves: what unblocks, then what teaches, then what costs most to delay. Parallelize only disjoint work, up to review capacity.
 - Done is in production with its signal visible. Then read the data and double down, adjust or remove.
 - Use the team's ticket tool as it is: no new fields, states, labels or meetings.

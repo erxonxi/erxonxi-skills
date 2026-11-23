@@ -92,6 +92,8 @@ Never import the `domain` or the `infrastructure` of another context: not its re
 1. **Domain events** (asynchronous, eventual consistency). Context B subscribes to facts from A and keeps its own copy or projection of what it needs.
 2. **Consumer-owned port** (synchronous, inside a monolith). The consumer declares in its `domain` a port with the name and shape it needs (`CheckoutCatalog` returns `CatalogItem`, not the `Product` aggregate). An adapter in its `infrastructure` implements it by calling a public use case in the provider's `application` and mapping its DTO.
 
+Choose by what the data is for: a decision that needs the current value (a credit limit, stock, a price at payment) takes the port; a listing, a filter or a provider that may be slow takes the copy from events, with its accepted delay stated.
+
 Also:
 
 - Each context models its own view of a foreign concept (`NotificationsRecipient` is not the `User` of another context).
@@ -106,7 +108,7 @@ Also:
 
 ## When not to apply all of this
 
-- Small project, script, CRUD without rules or UI without logic: do not build layers or ports. Group by feature and keep the code simple.
+- Small project, script, CRUD without rules or UI without logic: no layers and no ports. The test: if you cannot name one invariant beyond format validation, nor one port you would replace in a test, group by feature and keep it plain. Add the layers with the first invariant or the second adapter.
 - Do not create an interface, factory or layer for a single implementation without a reason. A valid reason is crossing an input/output boundary (you need to substitute it in tests) or having a real variation.
 - Do not add contexts, command or query buses, brokers, subscribers or projections "just in case". The in-memory event bus is the exception: it is in from the first write, and an event nobody listens to yet is recorded and published, with nothing else built for it. A module is promoted to a context when it hurts.
 

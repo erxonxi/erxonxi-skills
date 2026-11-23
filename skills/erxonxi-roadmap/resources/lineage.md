@@ -21,7 +21,7 @@ The twelve principles, paraphrased, and what each one asks of a plan:
 |---|---|---|
 | 1 | Satisfy the customer with early and continuous delivery of valuable software | MVP first, then slices that ship alone |
 | 2 | Welcome changing requirements, even late | The plan is a hypothesis. Re-plan every wave |
-| 3 | Deliver working software often, the shorter the interval the better | Slices of one to three days |
+| 3 | Deliver working software often, the shorter the interval the better | Slices small enough to review in one sitting |
 | 4 | Business people and developers work together daily | Whoever decides and whoever builds share one page |
 | 5 | Build around motivated people and trust them | Process is chosen, not imposed |
 | 6 | Face-to-face conversation is the most efficient way to share information | A ticket is a reminder of a conversation, not a contract |

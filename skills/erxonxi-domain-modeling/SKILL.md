@@ -16,7 +16,7 @@ Order of preference, from most protected to least:
 3. **Domain service** (stateless, in `domain`): a rule that needs several aggregates or a repository (`DomainUserFinder`, `...CriteriaFactory`).
 4. **Use case**: orchestration and checks that depend on repositories (existence, uniqueness).
 
-A rule lives in exactly one place. If a rule can be bypassed by building the object directly, it is in the wrong place. The database constraint is a safety net, not the place of the rule: the domain does not depend on engine error codes.
+A rule lives in exactly one place. If a rule can be bypassed by building the object directly, it is in the wrong place. The database constraint is not where the rule lives, but under concurrency it is what holds: the adapter turns its violation into the same named error, so neither the domain nor the use case reads engine codes.
 
 ## Aggregate
 
@@ -68,7 +68,7 @@ class User extends AggregateRoot {
 - Immutable. Primitives only. Always carries `aggregateId`, `eventId` and `occurredOn`, plus the data that changed or that the subscriber needs so it does not have to ask again. A new event gets its `eventId` and `occurredOn` from the `DomainEvent` base; a stored one is rebuilt through a named constructor (`fromPrimitives`) that receives them. Two paths, not a constructor parameter with a default. The base is the only place in `domain` that reads the clock or randomness.
 - Recorded inside the aggregate. Published by the use case after saving: `eventBus.publish(aggregate.pullDomainEvents())`. The domain never publishes or does input/output.
 - Subscriber: one class per reaction, named `<Action>On<Event>` (`SendWelcomeEmailOnUserRegistered`), which declares which events it subscribes to and delegates to a use case. Its stable name `<company>.<context>.<action>_on_<event>` identifies its queue (`acme.notifications.send_welcome_email_on_user_registered`).
-- Delivery is "at least once" with no guaranteed order: subscribers must be idempotent and tolerate duplicates and reordering.
+- Delivery is "at least once" with no guaranteed order. A subscriber that creates derives the id from the event and treats "already there" as done, not as an error. One that sets a value is already safe. One that increments or sends needs an inbox or a deduplication key. Its tests include doing nothing on a repeated event.
 
 ## Domain errors
 

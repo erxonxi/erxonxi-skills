@@ -50,7 +50,7 @@ A self-describing JSON envelope, the same in every language of the system:
 
 ### Complexity ladder
 
-1. **Synchronous in-memory bus**: enough for a monolith with no resilience requirements and for tests.
+1. **Synchronous in-memory bus**: enough for a monolith with no resilience requirements and for tests. It guarantees nothing after the save: a subscriber's failure must not fail the caller, and an effect that cannot be lost needs rung 2.
 2. **The database as a bus**: a pending-events table with one row per (event, subscriber), consumed with `SELECT ... FOR UPDATE SKIP LOCKED`, a retries column and a dead letter flag. No new infrastructure.
 3. **Broker** (RabbitMQ, Kafka, SQS): when volume or isolation demand it.
 

@@ -34,6 +34,8 @@ provenance:                 # only if the project records it
 
 ### Phase 1: <what the user can do when it ends>
 
+Review: independent
+
 Contracts:
 
 - `ProductStockNotifier.notify(productId: string): void`
@@ -64,7 +66,7 @@ Wave 1, with Phase 4. Blocked by: Phase 2.
 Phase 1: <name>.
 ```
 
-A phase gets a `Wave` line only when the plan has phases that can run at the same time, and a `Blocked by` line only for a hard dependency. A plan whose phases run one after another has neither.
+Every phase has a `Review:` line: `independent, strong model` when it touches money, personal data, authentication, concurrency, a migration or deletes data (say which); `independent` for any other behavior change; `self` only for a phase with no behavior change. A phase gets a `Wave` line only when the plan has phases that can run at the same time, and a `Blocked by` line only for a hard dependency. A plan whose phases run one after another has neither.
 
 ## Updating it
 

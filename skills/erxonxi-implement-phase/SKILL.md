@@ -15,9 +15,9 @@ The plan and the project's conventions win over this skill. When the plan says t
 
 ### 1. Find the phase
 
-- Ask for the plan if the user did not name it. Look in `.agents/plans/` or the tracker the plan uses.
-- The current phase is the first one with an unchecked task. When the plan lives in issues, the rule is in `erxonxi-plan`, file `resources/plan-in-issues.md` of that skill.
-- If the user names a phase, check that the phases it depends on are done. If not, say so and stop.
+- Ask for the plan if the user did not name it. Look in `.agents/plans/` or the tracker the plan uses. If more than one plan matches, pick none: list them with their status and date, leave out `status: done`, and ask.
+- The current phase is the first one with an unchecked task. If Next step says otherwise, the checkboxes win: say so and correct Next step. When the plan has no checkboxes (an RFC, a design doc), check each step's "done when" against the code, report what you found and ask where to start; do not add checkboxes to their document. When the plan lives in issues, the rule is in `erxonxi-plan`, file `resources/plan-in-issues.md` of that skill.
+- If the current or the named phase is blocked by one that is not done, say which, and offer a phase that is not blocked, or stop.
 - If every phase is done, there is nothing left to do: say so and stop.
 
 Done when you can name the phase, its contracts, its tasks and its "done when".
@@ -25,6 +25,8 @@ Done when you can name the phase, its contracts, its tasks and its "done when".
 ### 2. Load only what the phase needs
 
 Read the phase, the files it says to copy and the convention docs listed in the plan's Context. Nothing else at the start. Check the working tree: if it holds unrelated changes, say so before touching anything.
+
+Run the verification command before changing anything. If it is already red, stop and report the failure as existing before the phase. The user chooses: fix it first as a change of its own, go on with it named as known-red in the report, or stop. Never fix, skip or silence it inside the phase.
 
 ### 3. Decide who implements
 
@@ -48,7 +50,8 @@ When you delegate, you still own the result: its report is a claim that steps 5 
 - a task is unclear,
 - a contract cannot hold as written, or the implementation reveals a design problem,
 - the work needs something beyond the plan or the spec,
-- a check fails and the only way to pass it would be editing the check or its exemption list.
+- a check fails and the only way to pass it would be editing the check or its exemption list,
+- the phase turns out larger than one review: stop at the first green point that stands alone and propose the split.
 
 Propose the change to the plan in one message. Continue only after the user accepts it, and record it under Decisions.
 

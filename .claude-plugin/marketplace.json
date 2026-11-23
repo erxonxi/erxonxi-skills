@@ -12,7 +12,7 @@
       "name": "erxonxi-skills",
       "source": "./",
       "description": "Twelve engineering skills: architecture, domain modeling, clean code, testing, infrastructure, frontend, agent workflow, planning, phase implementation, evaluation, convention checks and lean roadmapping.",
-      "version": "1.5.0",
+      "version": "1.6.0",
       "category": "development",
       "homepage": "https://github.com/erxonxi/erxonxi-skills",
       "license": "MIT"
