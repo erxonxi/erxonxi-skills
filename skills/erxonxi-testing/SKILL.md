@@ -1,6 +1,6 @@
 ---
 name: erxonxi-testing
-description: "Test strategy and style in any language: which level to test at, use case tests with mocked ports, Object Mothers, handwritten doubles, integration and acceptance tests, naming. Use when writing or reviewing tests or preparing test data and doubles."
+description: "Test strategy and style in any language: which level to test at, use case tests with mocked ports, handwritten mocks, Object Mothers for test data, integration, acceptance and E2E tests, naming. Use for any question about how to test something, replace a dependency in a test or build test data."
 ---
 
 # Testing

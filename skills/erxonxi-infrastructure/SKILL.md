@@ -1,6 +1,6 @@
 ---
 name: erxonxi-infrastructure
-description: "Adapters and integration in any technology: repositories, event bus (retries, dead letter, outbox, inbox), transactions, cache, projections, schema changes, local environment. Use when implementing or reviewing any of them or communication between services."
+description: "Adapters and integration in any technology: repositories, event bus and brokers, retries, dead letter, outbox, idempotent consumers and duplicate messages, transactions, cache, projections, schema changes. Use for any question or change about persistence, messaging or how services exchange data."
 ---
 
 # Infrastructure

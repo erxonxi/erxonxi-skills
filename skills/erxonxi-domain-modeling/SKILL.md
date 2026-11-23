@@ -1,6 +1,6 @@
 ---
 name: erxonxi-domain-modeling
-description: "Tactical DDD in any language: aggregates, value objects, domain events and errors, repositories, criteria, domain services, read models. Use when designing or changing any of them, or deciding where a business rule lives."
+description: "Tactical DDD in any language: aggregates, entities, value objects, ids, domain events and their names, domain errors, repositories, finders, criteria, read models. Use for any question or change about modeling a business concept, where a rule lives, or how state changes and is published."
 ---
 
 # Domain modeling

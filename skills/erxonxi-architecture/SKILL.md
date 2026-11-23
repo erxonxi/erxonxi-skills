@@ -1,6 +1,6 @@
 ---
 name: erxonxi-architecture
-description: "Where code goes in a hexagonal + DDD application, in any language: bounded contexts, modules, layers, use cases, entry points, composition root, collaboration between contexts. Use when creating or moving a project, module, use case or endpoint, or reviewing dependencies between layers."
+description: "Where code goes in a hexagonal + DDD backend, any language: contexts, modules, layers, use cases, entry points, composition root, buses, how contexts collaborate. Use for any question or change about where something lives, what a use case takes and returns, or whether a module may depend on another."
 ---
 
 # Architecture

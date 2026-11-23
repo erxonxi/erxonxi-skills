@@ -1,6 +1,6 @@
 ---
 name: erxonxi-frontend
-description: "Frontend structure in any framework: how much architecture a client needs, components, hooks, state, injecting repositories, UI tests, CSS, accessibility. Use when creating or reviewing components, screens, client state, styles or the layout of a web app."
+description: "Frontend in any framework: how much architecture a client needs, components, hooks, UI state, injecting repositories, UI tests, CSS, accessibility. Use for any question or change about components, screens, client state, styles or the layout of a web app."
 ---
 
 # Frontend

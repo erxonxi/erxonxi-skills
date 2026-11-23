@@ -1,6 +1,6 @@
 ---
 name: erxonxi-roadmap
-description: "Lean planning for any ticket tool: a bet with a measurable hypothesis, MVP cut, vertical slices, dependencies, waves of parallel work, instrumentation, deciding on data. Use when building a roadmap or backlog, splitting an epic into tickets, ordering or cutting work, or deciding after a release."
+description: "Lean product planning for any ticket tool: bets with a measurable hypothesis, MVP cut, vertical slices, dependencies, waves, instrumentation, estimates and prioritization, deciding on data. Use when building a roadmap or backlog, splitting an epic into tickets, estimating or ranking work, or deciding after a release."
 ---
 
 # Roadmap
