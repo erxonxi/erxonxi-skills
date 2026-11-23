@@ -54,29 +54,23 @@ Propose the change to the plan in one message. Continue only after the user acce
 
 ### 5. Verify
 
-Run the project's verification command (types, lint, tests). Fix what fails and run it again. "Done" requires it green, plus the phase's "done when" checks, and, when the phase changes behavior, a check in the running application with the seed data.
+Run the project's verification command (types, lint, tests). Fix what fails and run it again. "Done" requires it green, plus the phase's "done when" checks, and, when the phase changes behavior and has an entry point, a check in the running application with the seed data. Without an entry point, say that nothing can be run yet.
 
 ### 6. Evaluate
 
-Load `erxonxi-evaluate` and run it on the phase. If you cannot load it, do its core here, in this order:
+Call the Skill tool with `erxonxi-evaluate` now and follow it on the phase. This is a tool call, not a reference to remember; where skills are plain files, read its `SKILL.md`. A green test run is step 5, not this step, and reading your own diff again is not a review. Fix the confirmed findings that are inside the phase, and list the rest.
 
-1. **Contracts**: for each contract of the phase, mark it present, changed or missing in the code, and list any public contract the phase added without the plan.
-2. **Independent review**: if you have a subagent tool, call it now with the diff, the contracts and the convention docs, and nothing of your reasoning (brief in `erxonxi-evaluate`, file `resources/review-brief.md`). Verify each finding before reporting it. Only without a subagent tool, do a separate pass yourself that reads only the diff and the contracts.
-3. **Evidence**: what the phase does, shown without running it, or why there is nothing to show.
-
-A green test run is step 5, not this step, and reading your own diff again is not a review. Fix the confirmed findings that are inside the phase, and list the rest.
-
-This step is not optional because the phase was small, the tests passed or you already know of a problem. The "not evaluated" state below is for when something outside your control prevents it (the skill cannot be loaded, the session has no subagent tool): say exactly which, and leave the evaluation task unchecked. Choosing not to launch the reviewer is not one of those reasons.
+This step is not optional because the phase was small, the tests passed or you already know of a problem. If the skill cannot be loaded, do not improvise the evaluation: say so, leave the evaluation task unchecked and close as "not evaluated".
 
 ### 7. Present and stop
 
 - Report what changed, the verification command and its real result, the evaluation, and what you could not check.
 - Update the plan: checked tasks, `updated`, `implemented_by` if the project records provenance, **Next step**, and `status: done` after the last phase. The plan ends in one of two states, never in between:
-  - **evaluated**: every task of the phase checked, including verify and evaluate; Next step names the following phase;
+  - **evaluated**: every task of the phase checked, including verify and evaluate; Next step names the following phase, with the open points that do not block in the same line ("Phase 2, after you decide: <points>");
   - **not evaluated**: the evaluate task (and verify, if it is not green) left unchecked; Next step says "Phase N: finish verification/evaluation", so the next run resumes this phase and not the next one.
 - Offer two or three numbered commit messages in the project's convention, each with a type that could fit, so the user can pick one by its number.
 - When the plan lives in issues and the user chose to work through pull requests, that choice is the permission to commit the phase on its linked branch, push it and open the pull request that closes the phase issue. Never merge it.
-- List the corrections the user made during the phase: each one is a candidate for `erxonxi-rule`.
+- Only if the user corrected you during the phase, list each correction as a candidate for `erxonxi-rule`. Otherwise say nothing about rules.
 
 Then stop. Do not start the next phase, even if it is small, until the user asks.
 

@@ -60,7 +60,7 @@ Por qué: es lo que permite que un contexto cambie, se extraiga o se reescriba s
 
 - Unitario: un caso de uso por su API pública, con el dominio real y sus puertos sustituidos.
 - Integración: cada adaptador contra la tecnología real.
-- Aceptación: un endpoint o un flujo con la aplicación cableada.
+- Aceptación: pocos, uno por objetivo de usuario, con la aplicación cableada. No uno por endpoint.
 
 Todos los datos salen de Object Mothers. Los dobles son implementaciones de los puertos propios con vocabulario de intención (`shouldSave`, `shouldPublish`). Los tests se nombran como frases (`UserRegistrar should` / `register a valid user`). Tiempo, ids y aleatoriedad son puertos controlables.
 
@@ -137,11 +137,11 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | Entrada del caso de uso | Primitivos |
 | Errores | Excepciones tipadas, o el idioma de errores del lenguaje |
 | Puertos | Lo que pida el lenguaje y su inyección |
-| Ids y restricciones SQL | El id lo genera el cliente. El tipo de columna lo marca el proyecto |
+| Ids y restricciones SQL | El id lo genera el cliente; crear con un id que ya existe nunca sobrescribe. El tipo de columna lo marca el proyecto |
 | Mocks | Clase escrita a mano o ayudante genérico, siempre con vocabulario `should*` |
 | Tests de dominio aislados | Cubrir por caso de uso. Casos extra solo por particiones y límites |
 | Commit del agente | No hacer commit sin que lo pida el usuario |
-| Subagente revisor | Contexto limpio, el diff y los contratos, nunca la conclusión del autor. Sus hallazgos se verifican antes de reportarlos |
+| Subagente revisor | Contexto limpio, el diff y los contratos, nunca la conclusión del autor. Sus hallazgos solo se reportan con su prueba. El veredicto es no listo, listo con puntos abiertos, o listo |
 | Dónde vive un plan | `.agents/plans/<fecha>-<slug>.md`, o issues cuando el equipo trabaja en un gestor |
 | Violaciones existentes de un check nuevo | Una lista de exenciones por fichero o símbolo, que solo encoge |
 | Una corrección del usuario | Se convierte en check. Un doc corto solo cuando ningún check puede ser exacto |

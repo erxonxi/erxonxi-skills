@@ -63,8 +63,8 @@ Rules:
 ## Specs
 
 - Normative voice in present tense: `SHALL`. The spec is the promise. Avoid "currently" and "the code does".
-- One requirement, one behavior. Split when a client would test two behaviors separately. More scenarios only for distinct edge cases.
-- Concrete values taken from tests, fixtures and seed data: "a quantity above the 3 units in stock is rejected with the message 'Not enough stock'", not "an invalid request is rejected".
+- One requirement, one behavior: if a client would check two things apart, they are two requirements. Add scenarios only for edge cases that behave differently.
+- Concrete values taken from tests, fixtures and seed data: "ordering 4 when only 3 are left fails with 'Not enough stock'", not "an invalid request is rejected".
 - Observable behavior only. No tables, classes, folders or frameworks. Persistence is expressed as "survives a reload".
 - Scenarios in `WHEN` / `THEN`. Unique requirement names, because later changes reference them by name.
 - When extracting specs from existing code: the authority is contracts > implementation > tests > docs, and each behavior is classified as intended and verified, bug, accidental or dead.
@@ -72,7 +72,7 @@ Rules:
 
 ## Commits and PRs
 
-- Conventional Commits: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `build`, `ci`, `chore`, `revert`, `test`. Prefer the most specific type (`perf` over `refactor`, `ci` over `build`).
+- Conventional Commits: `build`, `chore`, `ci`, `docs`, `feat`, `fix`, `perf`, `refactor`, `revert`, `style`, `test`. Prefer the most specific type (`perf` over `refactor`, `ci` over `build`).
 - Subject in present imperative, lowercase, no trailing period. The body explains the why, not the what.
 - One commit per phase. Refactor and behavior change in separate commits. Changes that only touch the plan are `docs`.
 - Small PRs against a single trunk. Size reference by changed lines: under 10 XS, under 100 S, under 500 M, under 1000 L. Beyond that, split.

@@ -11,6 +11,10 @@ An agent writes code faster than anyone can read it. So the human does not revie
 
 The project's checks, PR template and review rules win. If the repository has a PR template, fill that one. If it defines review levels, use them.
 
+## Mechanical changes
+
+A change with no behavior in it (docs, configuration, a rename) takes a short path: run the checks, confirm nothing still uses the old name, and report in about five lines: the verdict, the check result and what you could not see. The verdict is "Ready." unless something in this change is wrong. A problem you notice in code the change did not touch is one line at the end, not an open point.
+
 ## Steps
 
 ### 1. Gather what the change promised
@@ -31,7 +35,7 @@ Done when the verification command is green, or the failure is reported as it is
 
 ### 3. Compare with the contracts
 
-For each approved contract, confirm in the diff that it exists exactly as agreed: names, signatures, event attributes, test suites and case names, schema, copy. Then look the other way:
+For each approved contract, confirm in the diff that it exists exactly as agreed: names, signatures, event attributes, test suites and case names, schema, copy. Compare by meaning under the repository's conventions: an id that every event carries as `aggregateId` is present, not missing. Name the difference without calling it a mismatch. Then look the other way:
 
 - a public contract in the diff that the plan did not list is scope creep: report it,
 - a listed test case missing, renamed or weakened is a finding,
@@ -43,14 +47,15 @@ Done when every contract is marked as present, changed or missing.
 
 The author's reading is anchored on its own intent. Get a second one that is not:
 
-- If you have a subagent tool, this step means calling it: launch a reviewer in a fresh context, on a strong model when the change touches data, money, security, concurrency or architecture. Your own second reading does not replace it.
+- If you have a subagent tool, this step means calling it: launch a general-purpose reviewer (not a search agent) in a fresh context, on a strong model when the change touches data, money, security, concurrency or architecture. Your own second reading does not replace it. Do not report before it returns.
 - Give it the diff, the approved contracts and the paths of the convention docs. **Not** your reasoning, your summary or your conclusion. Use `resources/review-brief.md`.
 - Ask for findings, each with a file and line, the concrete scenario that fails, and a severity.
-- Verify every finding yourself before reporting it. Drop what you cannot confirm, and say how many you dropped.
+- A finding is confirmed only with its proof beside it: the file and line you read and what it showed, or the command you ran and its output. Without proof, drop it or list it as unverified. Report "confirmed N, dropped M" with the reason for each drop.
+- A finding that argues against a decision recorded in the plan is not a defect of the change: list it as "challenges decision <X>" with its scenario, and let the user decide.
 
 Without subagents, do a separate pass yourself reading only the diff and the contracts, with the checklists of the knowledge skills that apply (`erxonxi-architecture`, `erxonxi-domain-modeling`, `erxonxi-testing`, `erxonxi-clean-code`).
 
-Only mechanical changes skip this step: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. Neither is having found problems already: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why.
+Only mechanical changes skip this step: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. Neither is having found problems already: the reviewer is there for the ones you did not find, so run it before you report, not after the fixes. When you skip it, say so and why in one line. The report of a mechanical change stays that short: the verdict, the check result and what you could not check.
 
 Done when every confirmed finding is fixed or listed for the user.
 
@@ -64,7 +69,7 @@ Evidence lets the user see what the change does without running it. First write 
 | A flow of several steps | A short recording, or the numbered sequence of states |
 | Behavior without a visual (endpoint, CLI, agent tool, job) | The same input on both sides and each side's output, trimmed to what matters |
 | Architecture (calls, routing, dependencies) | Before and after diagrams of the affected part, same node names |
-| Nothing observable outside tests (refactor, config, docs) | None. Say so, and let the checks speak |
+| Nothing observable outside tests (refactor, config, docs) | None: leave the evidence section out and let the checks speak |
 
 - A fix needs its failure on record: the error, the wrong output or the broken state as it was before.
 - Support the sentence you wrote, not whatever the change happened to touch.
@@ -75,19 +80,23 @@ Done when someone who did not run the code can see the change, or you said why t
 
 ### 6. Write the text
 
-- **Commit**: propose two or three messages in the project's convention, as in `erxonxi-workflow`.
+- **Commit**: when the user asked for it or `erxonxi-implement-phase` called this skill, propose two or three messages in the project's convention, as in `erxonxi-workflow`.
 - **Pull request**: fill the repository's template, or `resources/pr-template.md`. Only checks that ran appear as done, and what was not checked is always written down.
-- **When the change is not ready** (a red check, a missing contract, a confirmed finding not fixed): still write the text the user asked for, marked as a draft, with the open findings at the top of it. Its proof section states the current results, never the results you expect after the fixes.
+- **Verdict**, as the first line of the report, one of three:
+  - **Not ready**: a red check, a contract missing or changed, or a confirmed finding that breaks promised behavior, loses data or opens a security hole.
+  - **Ready, with open points**: everything promised holds and there is at least one open point. Confirmed findings about behavior the plan does not specify are decisions for the user, each with your recommendation. They do not block the commit.
+  - **Ready.**
+- When it is not ready, still write the text the user asked for, marked as a draft, with the blocking findings at the top. Every sentence in it is true today: never write what will only be true after the fixes, not even with a note beside it.
 
 Done when the user can decide to commit, merge or send it back from what you wrote, without asking you anything.
 
 ### 7. Stop
 
-Present the result: the checks, the contract comparison, the confirmed findings, the evidence and the text. Do not commit, push or merge unless asked.
+Present the result: the checks, the contract comparison, the confirmed findings, the evidence and the text. Leave out any part with nothing in it instead of writing that it is empty. Do not commit, push or merge unless asked.
 
 When `erxonxi-implement-phase` called this skill, hand the result back to its last step instead of stopping here: that step updates the plan and then stops.
 
-Each correction the user makes after reading it is a candidate for `erxonxi-rule`: say so.
+If the plan's tasks for this change are still unchecked, say so and offer to check them. Only if the user corrected you during this run, list each correction as a candidate for `erxonxi-rule`; otherwise say nothing about rules.
 
 ## What is not done
 
@@ -101,7 +110,8 @@ Each correction the user makes after reading it is a candidate for `erxonxi-rule
 
 - [ ] Is the verification command green, with its real output recorded?
 - [ ] Is every approved contract present as agreed, and is there nothing unlisted?
-- [ ] Did an independent reviewer see the diff without my conclusion, and did I verify each finding?
+- [ ] Did an independent reviewer see the diff without my conclusion, and does each confirmed finding carry its proof?
+- [ ] Does the report open with one of the three verdicts?
 - [ ] Can the user see the change without running it?
 - [ ] Does the text say what I did not check?
 - [ ] Did I stop without committing?

@@ -5,7 +5,7 @@ Usage: evals/score.py RESULT.json [RESULT.json ...] [--baseline BASELINE.json ..
 
 Reads the --json output of `claude plugin eval`. Per run, a grader whose name starts
 with `guard-` that fails sets the run's score to 0; otherwise the score is the weighted
-mean of the scored graders that are not guards. Per case it prints the mean with and
+mean of the scored graders that are not guards or `arm: with-only` indicators. Per case it prints the mean with and
 without the plugin and the delta; per goal (tags goal-1..goal-6) the mean of its cases,
 with the harm cases of each goal in an indented row below it so a harm case's low score
 is not hidden.
@@ -40,8 +40,22 @@ def tags_of(case):
     return []
 
 
-def run_score(run):
-    graders = [g for g in run.get("graders", []) if g.get("scored", True)]
+def with_only_graders(case):
+    """Names of the case's graders marked `arm: with-only`, and `tool_used: Skill` checks, which
+    the runner treats the same way. They are indicators, never
+    part of the score, also in runs made with --ablation none, where the runner scores them."""
+    names = set()
+    for path in (EVALS / case / "graders").glob("*.md"):
+        head = path.read_text().split("---")[1] if path.read_text().startswith("---") else ""
+        skill_check = re.search(r"^type:\s*tool_used\s*$", head, re.M) and re.search(r"^tool:\s*Skill\s*$", head, re.M)
+        if skill_check or re.search(r"^arm:\s*with-only\s*$", head, re.M):
+            names.add(path.stem)
+    return names
+
+
+def run_score(run, indicators=frozenset()):
+    graders = [g for g in run.get("graders", [])
+               if g.get("scored", True) and g["name"] not in indicators]
     if any(g["name"].startswith("guard-") and not g["passed"] for g in graders):
         return 0.0, True
     scored = [g for g in graders if not g["name"].startswith("guard-")]
@@ -81,10 +95,11 @@ def main(argv):
 
     rows = {}
     for case, by_arm in sorted(arms.items()):
-        scored = {arm: [run_score(r) for r in runs] for arm, runs in by_arm.items()}
+        indicators = with_only_graders(case)
+        scored = {arm: [run_score(r, indicators) for r in runs] for arm, runs in by_arm.items()}
         without = scored.get("without", [])
         if base is not None:
-            without = [run_score(r) for r in base.get(case, {}).get("without", [])]
+            without = [run_score(r, indicators) for r in base.get(case, {}).get("without", [])]
         with_ = scored.get("with", [])
         rows[case] = {
             "with": mean([s for s, _ in with_]),

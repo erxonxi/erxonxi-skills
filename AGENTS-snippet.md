@@ -6,13 +6,15 @@ Apply these rules in any language. The project's existing convention always wins
 
 - **Structure by business**: `context/module/{domain,application,infrastructure}`. The module is named after the aggregate, in plural. One folder per use case.
 - **Dependencies point inward**: `infrastructure → application → domain`. The domain imports no framework, ORM, HTTP or driver. Never import the `domain` or the `infrastructure` of another context: collaborate through events or through your own port adapted to a public use case of the other.
-- **Use case**: one class, one public method, agent name (`UserRegistrar`, `ProductFinder`, `ProductsSearcher`). Ports via constructor. Primitives in, primitives or a DTO out. Never `Manager`, `Helper`, `Util`, `Impl` or an `I` prefix.
+- **Use case**: a class with a single public method named after the action (`find`, `register`; never `run` or `execute`), agent name (`UserRegistrar`, `ProductFinder`, `ProductsSearcher`). Ports via constructor. Primitives in, primitives or a DTO out. Never `Manager`, `Helper`, `Util`, `Impl` or an `I` prefix.
 - **Thin entry points**: parse, call a use case, serialize, translate errors. No business logic.
+- **Behavior first**: every business rule in the request becomes a test sentence, implemented in this change or asked about before coding.
+- **Ids**: the client generates them. Creating with an id that already exists never overwrites.
 - **Protected domain**: value objects that validate on construction. Aggregates with a private constructor, `create()` that records the event, `fromPrimitives()` and `toPrimitives()`. No setters: business verbs. Each rule in a single place, as deep inside as possible.
 - **Events**: fact in past tense (`UserRegisteredDomainEvent`, `acme.<context>.<aggregate>.<fact>`), primitives only, recorded in the aggregate and published by the use case after saving. Subscribers `<Action>On<Event>`, idempotent.
 - **Errors**: one named class per business condition. No generic errors, codes or `null` as failure. Translated to protocol only at the edge.
 - **Repositories**: one port per aggregate. `save`, `search` (may not find), `matching(criteria)`. `find` throws and lives in a finder. Adapter with the technology as prefix (`PostgresUserRepository`).
-- **Tests**: unit per use case with real domain and substituted ports. Integration per adapter against the real technology. Acceptance per endpoint. Data always with Object Mothers. Names as behavior sentences. Each behavior is tested once, at the lowest possible level. Do not mock what you do not own or domain objects.
+- **Tests**: unit per use case with real domain and substituted ports. Integration per adapter against the real technology. A few acceptance tests, one per user goal, not one per endpoint. Data always with Object Mothers. Names as behavior sentences. Each behavior is tested once, at the lowest possible level. Do not mock what you do not own or domain objects.
 - **Code**: business names in English and without abbreviations, guard clauses and early return, no boolean flags or default parameters, tell don't ask, immutable and closed by default, composition over inheritance, comments only for the why.
 - **Simplicity**: nothing that is not used today. No interface, factory, pattern, cache, broker or layer without a real, current need. Do not unify identical code that represents different concepts.
 - **Automate the rules**: what a linter, an architecture test or a hook can check is not left in prose.
@@ -22,7 +24,7 @@ Apply these rules in any language. The project's existing convention always wins
 - Read only the documentation relevant to the task.
 - Non-trivial tasks: delegate the exploration to cheaper subagents, then propose a plan in vertical slices with their public contracts (use case signatures, events, test cases, schema, interface texts) and wait for approval. Save it with its state (checkboxes) so any session can resume it.
 - Implement one phase at a time, yourself or through a subagent with a brief that carries the contracts verbatim and the files it owns. End each phase by running the project's verification command (types, lint, tests) and stop for review.
-- Before presenting a change: compare it with the approved contracts, get an independent review (diff and contracts, not your conclusion), show before/after evidence and say what you did not check.
+- Before presenting a change: compare it with the approved contracts, get an independent review (diff and contracts, not your conclusion), show before/after evidence and list what was not checked.
 - Do not commit or push unless asked: propose messages in Conventional Commits format.
 - Refactor and behavior change go separately. Tests are not changed to make a refactor pass.
 - If a correction reveals a convention, turn it into a check (type, lint rule, architecture test) with an exemption list for old code that only shrinks. A short doc only when no check can be exact. Never edit a check or its exemptions to make a change pass.

@@ -1,6 +1,6 @@
 ---
 name: erxonxi-clean-code
-description: "Code style in any language: naming classes and methods, parameters (boolean flags, defaults), classes, comments, null and errors, smells and refactorings, patterns, when an interface is justified. Use for any question, review or refactor about how a piece of code should be named, split or shaped."
+description: "Load before answering whether a name, a signature, a parameter, a flag, a default, an interface or an abstraction is fine, and before writing, reviewing or refactoring code, even for a one-line question. Its answers often differ from common practice. Any language."
 ---
 
 # Clean code
@@ -68,7 +68,7 @@ Stopping criterion: the code is good enough when you could come back to it in si
 - Remove literal and structural duplication **of the same concept**.
 - Two identical fragments that represent different concepts (the price calculation of an order and of an invoice, in different contexts) are **not** unified: they will change for different reasons. Do not apply DRY across contexts.
 - YAGNI. Do not create: an interface per class, a factory for a single class, repository methods nobody calls, unused states or enums, "just in case" parameters.
-- An interface is justified when it crosses an input/output boundary, when there is real variation, or when the test needs to replace it.
+- An interface is justified when it crosses an input/output boundary (which is also what tests replace) or when there is real variation. Wanting to replace anything else in a test means the test is at the wrong level.
 - Three real cases before generalizing.
 
 ## Smell → refactoring

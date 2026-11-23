@@ -27,18 +27,17 @@ provenance:                 # only if the project records it
 ## Decisions
 
 - <decision>. Discarded: <alternative>, because <reason>.
+- Risk: <what could hurt>. Handled: <phase N | accepted | out of scope>.
 - Out of scope: <list>.
 
 ## Phases
 
 ### Phase 1: <what the user can do when it ends>
 
-Wave 0.
-
 Contracts:
 
 - `ProductStockNotifier.notify(productId: string): void`
-- Event `acme.catalog.product.restocked` { productId, quantity, occurredAt }
+- Event `acme.catalog.product.restocked` { quantity } (aggregate id: the product id)
 - `ProductStockNotifier should`: notify every shopper who asked · not notify twice the same shopper
 - Copy: "We will email you when it is back"
 
@@ -52,7 +51,11 @@ Done when: <observable check>
 
 ### Phase 2: <...>
 
-Wave 1. Blocked by: Phase 1.
+...
+
+### Phase 3: <...>
+
+Wave 1, with Phase 4. Blocked by: Phase 2.
 
 ...
 
@@ -60,6 +63,8 @@ Wave 1. Blocked by: Phase 1.
 
 Phase 1: <name>.
 ```
+
+A phase gets a `Wave` line only when the plan has phases that can run at the same time, and a `Blocked by` line only for a hard dependency. A plan whose phases run one after another has neither.
 
 ## Updating it
 

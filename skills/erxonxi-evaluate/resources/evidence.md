@@ -12,7 +12,7 @@ Evidence answers one question for someone who will not run the code: what does t
 
 | Kind | Capture | Watch out for |
 |---|---|---|
-| Something users see | Screenshots of both sides, same state, same viewport, same crop | Web: a wide and a narrow viewport, unless the change exists at one width only (say which and why). Add dark mode, languages, empty or error states only if the change affects them. A tiny visual defect deserves a zoomed crop, same zoom on both sides |
+| Something users see | Screenshots of both sides, same state, same viewport, same crop | Web: a wide and a narrow viewport, unless the change only appears at one width (say which and why). Add dark mode, languages, empty or error states only if the change affects them. A tiny visual defect deserves a zoomed crop, same zoom on both sides |
 | A flow of several steps | A short recording per flow, under a minute each, or a numbered strip of screenshots or outputs, one per step | The action and its result in the same frame. Visible clicks and typing, a pause after each step. One line above each recording saying what it shows and how long it is |
 | Behavior with no screen | The same call on both sides (request, command, tool call) and each side's output in a code block | Trim to the fields that changed and say it is trimmed |
 | How parts connect | A diagram of the affected part before and after, with identical node names | A dozen nodes at most. Flowchart for decisions and routing, sequence diagram for call order, dependency graph for module structure. Mark added, removed and changed parts, with a legend. A new flow has only an "after". Diagrams come on top of other evidence, never instead of it |

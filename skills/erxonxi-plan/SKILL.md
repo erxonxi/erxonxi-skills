@@ -1,6 +1,6 @@
 ---
 name: erxonxi-plan
-description: "Research a non-trivial task with cheap subagents and turn it into an approved plan: decisions, vertical phases with public contracts, waves for parallel work, saved with its state so any agent can resume it. Use when the user asks for a plan, or before a change that spans several files, layers or sessions."
+description: "Turn a non-trivial task into an approved plan in vertical phases with public contracts, saved with its state so any agent can resume it, or say that it needs none. Use when the user asks for a plan, or before a change that spans several files, layers or sessions."
 ---
 
 # Plan
@@ -36,27 +36,25 @@ Keep the main agent for reasoning and deciding. Delegate reading the code:
 
 Without subagents, do the same research yourself, in the same order and with the same discipline: paths and facts, not whole files.
 
+Before stating that something does not exist, search for it by name: a truncated listing is not evidence.
+
 Done when you know which files the change touches, which existing feature to copy, and which conventions apply.
 
 ### 3. Ask once
 
-Put every open question in a single message, each with the option you recommend and why in one line. Use the agent's question tool if it has one. Do not ask what the user already decided. Unless they already said how fine the phases should be, include the granularity, with what each option would put in each phase:
-
-- minimal: one phase,
-- intermediate: one to three,
-- granular: more than three.
+Put the open questions in a single message, each with the option you recommend and why in one line. Use the agent's question tool if it has one. At most five. Ask only what changes a contract or a phase and cannot be read from the code or the docs, and nothing the user already decided. Never ask about the plan itself (its language, where it is saved, how fine the phases are): decide that from the project and say what you chose.
 
 Done when nothing that changes a contract or a phase is still open.
 
 ### 4. Propose decisions, phases and contracts
 
-Present them in the conversation, not in a file yet. Rules for phases and contracts: below. Iterate until the user accepts.
+Present them in the conversation, not in a file yet. Rules for phases and contracts: below. Choose the granularity yourself; show two cuts only when both are reasonable and they change what the user reviews. Iterate until the user accepts.
 
 Done when the user has accepted the contracts and the phases explicitly.
 
 ### 5. Save the plan
 
-Only after approval, and as it was approved. Something you would add now (an assumption, a `Blocked by`, an out-of-scope line) is a change to the plan: propose it before saving, or save the approved version and list the suggestion after it. Where:
+Only after approval, and as it was approved. Something you would add now (an assumption, a wave or a `Blocked by` the approved plan did not have, an out-of-scope line) is a change to the plan: propose it before saving, or save the approved version and list the suggestion after it. Where:
 
 - Default: a file at `.agents/plans/<YYYY-MM-DD>-<slug>.md`, with the shape of `resources/plan-template.md`.
 - If the team tracks work in issues: a parent issue for the plan and one child issue per phase. See `resources/plan-in-issues.md`.
@@ -74,15 +72,18 @@ Whatever the wording of the answer, this run goes no further than phase 1. Each 
 ```
 Goal        1 to 3 sentences
 Context     files to copy from and convention docs that apply, as links
-Decisions   one line per decision or assumption not requested, with the discarded alternative. Last line: out of scope
+Decisions   one line per decision or assumption not requested, with the discarded alternative.
+            Then the risks that change a phase or a contract (abuse, privacy, money, data loss,
+            concurrency), each with where it is handled: a phase, accepted, or out of scope.
+            Last line: out of scope
 Phases      vertical slices, each with contracts, tasks and "done when"
 Next step   one sentence: which phase comes next
 ```
 
 ### Phases
 
-- **Vertical slice.** Each phase delivers something that stands on its own, even if the rest is never built. Bad: the controller in phase 1 and the use case it calls in phase 2. Good: the whole happy path in phase 1 (interface, logic, persistence and their tests), edge cases and validation after.
-- **Early feedback.** Phase 1 produces something the user can see, use or run, even if rough.
+- **Vertical slice.** Each phase delivers something that holds up by itself, even if no later phase is ever built. Bad: the controller in phase 1 and the use case it calls in phase 2. Good: the whole happy path in phase 1 (interface, logic, persistence and their tests), edge cases and validation after.
+- **Early feedback.** Phase 1 produces something the user can see, use or run, even if rough. When nothing visible changes (a migration, a refactor, a provider swap), that something is a check the user can run that was absent or red before.
 - **Always green.** After any phase, the main branch could take it as it is: build, checks and tests pass.
 - **One responsibility.** New dependencies or tooling get a phase of their own, before the first use case that needs them.
 - **Copy the neighbor.** Each task names the existing code to imitate: "copying `RestockAlertRequester`".
@@ -97,8 +98,8 @@ Next step   one sentence: which phase comes next
 What the user approves instead of code. Per phase, list only the kinds that change:
 
 - use case signatures (inputs and outputs, not what is injected),
-- events with their attributes,
-- every test case, as a behavior sentence, grouped by suite,
+- events by message name, with the attributes they add to `aggregateId`, `eventId` and `occurredOn`,
+- every test case, as a behavior sentence, grouped by suite. Every business rule in the user's request is one of them or is listed as out of scope,
 - schema changes,
 - every text a user will read, because wording is a promise too.
 

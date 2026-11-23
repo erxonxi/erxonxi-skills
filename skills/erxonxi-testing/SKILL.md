@@ -1,6 +1,6 @@
 ---
 name: erxonxi-testing
-description: "Test strategy and style in any language: which level to test at, use case tests with mocked ports, handwritten mocks, Object Mothers for test data, integration, acceptance and E2E tests, naming. Use for any question about how to test something, replace a dependency in a test or build test data."
+description: "Load before writing, changing or reviewing a test, and before answering how to test something, which level to test at, how to replace a dependency or how to build test data, even for a one-line question. Its answers often differ from common practice."
 ---
 
 # Testing
@@ -20,6 +20,7 @@ Rules:
 - The test tree mirrors the `src` tree.
 - Domain classes are covered through use cases. Do not test them separately if a use case already exercises that rule.
 - Prove each behavior once, at the lowest level that can prove it. Do not repeat the same check at several levels.
+- A subscriber's tests include doing nothing on a repeated event.
 - At least one test per use case. Additional cases come from equivalence partitions and boundary values, not from gratuitous variations.
 - No browser E2E by default in backend. Between services or repositories, use contract tests instead of E2E.
 - There is no coverage target. The measure is that every use case and every adapter has its test.
@@ -114,7 +115,7 @@ describe("PostgresUserRepository should", () => {
 
 ## Acceptance test
 
-- One per endpoint worth covering or per user goal. Real request, real application.
+- A few: one per user goal that crosses the whole wiring, plus one that pins the error mapping. Not one per endpoint. Real request, real application.
 - Assert HTTP status and body, including the error `type`: it pins the contract the client depends on.
 - Cover happy path, input validation and error → status mapping. Business rules are already in the use case tests.
 - Gherkin format, steps in business language or simple protocol language (`Given I send a PUT request to ... Then the response status code should be 201`).
@@ -134,7 +135,7 @@ describe("PostgresUserRepository should", () => {
 
 ## Workflow
 
-1. TDD per use case: first the use case test and the mothers it needs, then the domain objects, then the use case, until green.
+1. TDD per use case: first one test sentence per business rule in the request, then the use case test and the mothers it needs, then the domain objects, then the use case, until green.
 2. Repeat use case by use case.
 3. At the end, the repository implementation test and then the implementation.
 4. Bug: first a test that reproduces it, then the fix.

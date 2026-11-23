@@ -63,7 +63,7 @@ The sandbox shapes these cases. The agent's shell is read-only and `git` is bloc
 
 On the CRM, the base model already copies the good neighbours, so those code cases are harm guards; the code goals get their signal from the greenfield case, where there is nothing to copy. Cases tagged `harm` are reported apart, and also in an indented `harm cases` row under each goal they carry, so a harm case's low score does not disappear from the goal mean. Any harm case where the plugin scores below the baseline is a regression, whatever the deltas say, and `score.py` exits with 1.
 
-To save money after a change, keep the last full run's JSON as the baseline and re-run only the plugin arm of the cases that matter: `evals/run.sh code --ablation none --json new.json`, then `evals/score.py new.json --baseline full.json`.
+To save money after a change, keep the last full run's JSON as the baseline and re-run only the plugin arm of the cases that matter: `evals/run.sh code --ablation none --json new.json`, then `evals/score.py new.json --baseline full.json`. Under `--ablation none` the runner scores the indicators (`arm: with-only` graders and `tool_used` on `Skill`) like any other grader, so `score.py` reads each case's grader files and leaves them out of the score in both arms.
 
 ## Calibrating
 

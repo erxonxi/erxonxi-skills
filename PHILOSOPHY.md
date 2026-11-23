@@ -60,7 +60,7 @@ Why: it is what allows a context to change, be extracted or be rewritten without
 
 - Unit: a use case through its public API, with the real domain and its ports substituted.
 - Integration: each adapter against the real technology.
-- Acceptance: an endpoint or a flow with the application wired.
+- Acceptance: a few, one per user goal, with the application wired. Not one per endpoint.
 
 All data comes from Object Mothers. Doubles are implementations of our own ports with intent vocabulary (`shouldSave`, `shouldPublish`). Tests are named as sentences (`UserRegistrar should` / `register a valid user`). Time, ids and randomness are controllable ports.
 
@@ -91,7 +91,7 @@ Almost all infrastructure decisions have the shape of a ladder, and the rule is 
 
 Formatting, dependencies between layers, default parameters, PR size, commit format: everything a machine can verify becomes a lint rule, an architecture test, a hook or a CI check, with a message that says how to fix it. Prose is left for what cannot be automated, and for the why.
 
-A new check is an error from day one for new code. The code that already breaks it goes into an exemption list that can only shrink, so adopting a rule never waits for a migration. A check counts only after it has been seen failing on a violation and passing on the repository.
+A new check fails new code from the first day. Existing violations go into an exemption list that can only shrink, so adopting a rule never waits for a migration. A check counts only after it has been seen failing on a violation and passing on the repository.
 
 Why: an agent forgets a document, misreads it or never loads it. It cannot ignore a red build. Every correction a human has to repeat is a check that was never written.
 
@@ -137,11 +137,11 @@ Points where several reasonable options exist and this is the chosen one. They a
 | Use case input | Primitives |
 | Errors | Typed exceptions, or the language's error idiom |
 | Ports | Whatever the language and its injection call for |
-| Ids and SQL constraints | The client generates the id. The column type is set by the project |
+| Ids and SQL constraints | The client generates the id; creating with an existing id never overwrites. The column type is set by the project |
 | Mocks | Hand-written class or generic helper, always with `should*` vocabulary |
 | Isolated domain tests | Cover per use case. Extra cases only for partitions and boundaries |
 | Agent commit | Do not commit unless the user asks |
-| Reviewer subagent | Fresh context, the diff and the contracts, never the author's conclusion. Its findings are verified before they are reported |
+| Reviewer subagent | Fresh context, the diff and the contracts, never the author's conclusion. Its findings are reported only with their proof. The verdict is not ready, ready with open points, or ready |
 | Where a plan lives | `.agents/plans/<date>-<slug>.md`, or issues when the team works in a tracker |
 | Existing violations of a new check | An exemption list by file or symbol, which only shrinks |
 | A correction from the user | Becomes a check. A short doc only when no check can be exact |

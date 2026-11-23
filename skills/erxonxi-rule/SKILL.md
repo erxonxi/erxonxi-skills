@@ -1,6 +1,6 @@
 ---
 name: erxonxi-rule
-description: "Turn a convention into a check that fails in seconds (type, lint rule, architecture test), with an exemption list for old code that can only shrink. Use right after the user corrects you on a convention, when they describe one to enforce, or to enforce the conventions a repository already follows."
+description: "Load as soon as the user points out a convention you broke, when they ask for a convention to be enforced, or to enforce the conventions a repository already follows. Turns it into a fast automatic check: a type, a lint rule, an architecture test."
 ---
 
 # Rule
@@ -73,7 +73,7 @@ Adjustments:
 
 - Something already covers part of it: extend that check.
 - Something exists but passes on the breaking snippet: repair it.
-- A configurable rule is already set for the same files and later sections override earlier ones: adding your options there would silently switch off the other convention. Use the next rung.
+- The same configurable rule is already configured for those files, and a later section replaces an earlier one: adding your options there would silently switch off the other convention. Use the next rung.
 - A dependency the user declines: drop to a rung that needs nothing new, or keep the convention as prose.
 
 If no rung is both complete and precise, skip to step 6.
@@ -82,12 +82,12 @@ Common conventions of these skills and the rung they usually land on: `resources
 
 ### 4. Build it
 
-- Declare it as an error over the whole scope. Express the allowed exceptions in the rule or its scope, with a comment pointing to the document that allows them.
+- Declare it as an error over the whole scope. Put the allowed exceptions inside the rule's options or its file scope, each with a comment linking the document that permits it.
 - Write the message for an agent: what to do instead, then `Convention: <path to the doc or to a file that does it right>`. If the tool has no custom messages, leave that line as a comment beside the rule.
 - Run it over the whole project. Whatever fails today is the exemption list. Size it from the tool's own output: a text search misses some cases and invents others.
 - Record the exemptions as narrowly as the tool allows (a file, or a symbol inside it). Prefer the tool's native exemption mechanism; fall back to a list in the rule's own configuration; use inline markers only if nothing else exists.
 - Make the list honest: something must fail when an exempt entry stops violating the rule, so entries leave as code gets fixed. Write next to the list that it only shrinks.
-- Fix old violations instead of exempting them only when the tool can fix them safely by itself or there are a few trivial ones. Migrating the rest is separate work.
+- Fix an old violation instead of exempting it when the tool can fix it safely by itself, or when the fix is mechanical and moves no behavior or decision. When fixing it means deciding something (where formatting lives, which module owns a type), exempt it and say so. Migrating the rest is separate work.
 
 ### 5. Prove it
 

@@ -1,6 +1,6 @@
 ---
 name: erxonxi-frontend
-description: "Frontend in any framework: how much architecture a client needs, components, hooks, UI state, injecting repositories, UI tests, CSS, accessibility. Use for any question or change about components, screens, client state, styles or the layout of a web app."
+description: "Load before any question or change about a component, a screen, loading and error state, client data fetching, styles or accessibility, even for a one-line question. Also decides how much architecture a client needs, often none. Any framework."
 ---
 
 # Frontend
@@ -42,7 +42,7 @@ src/
 
 - Components as functions. Props typed next to the component.
 - A component does one thing. A screen's state and effects logic is extracted into its own `use<Feature>` hook and the component stays a view.
-- Explicit UI states with an enumeration (`Initial`, `Loading`, `Success`, `Error`) and an exhaustive `switch`. Not several booleans that can contradict each other.
+- One status, never several booleans that can contradict each other. For server data, the framework or the data-cache library owns loading and error: render from its single status with an exhaustive `switch` and do not derive booleans from it. An enumeration of your own (`Initial`, `Loading`, `Success`, `Error`) only for flows the client owns, such as a wizard or an upload.
 - Validation lives in the domain. The form shows the message the domain gives and does not duplicate the rule.
 - Domain constants (lengths, limits) are exported by name and reused in the UI and in tests.
 - No floating promises in state hooks: await the result before marking success and catch the error to mark failure.
@@ -105,7 +105,7 @@ src/
 
 - [ ] Is the chosen structure the simplest one that works for this feature?
 - [ ] Does the component receive its dependencies and can it be replaced in tests?
-- [ ] Is the UI state an enumeration with an exhaustive `switch`?
+- [ ] Is the UI state a single status rendered with an exhaustive `switch`, with no derived booleans?
 - [ ] Is the validation rule in a single place?
 - [ ] Do the tests query by role or label?
 - [ ] Do the styles use tokens and flat selectors?

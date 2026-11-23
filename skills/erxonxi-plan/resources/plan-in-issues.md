@@ -8,14 +8,14 @@ Use this when the team tracks work in an issue tracker (GitHub, GitLab, Linear, 
 - **Child issue per phase**: title `<Phase N>: <what the user can do>`. Body: a reference to the parent, the wave and `Blocked by`, the contracts, the task checklist and the "done when" checks.
 - Hard dependencies use the tracker's native "blocked by" relation when it has one, otherwise a `Blocked by:` line.
 
-The current phase is the **first child issue in the parent checklist that is still open and has no pull request waiting for review**. If the previous phase's pull request is still open, say so and ask whether to start the next phase on top of it, start a phase of the same wave, or wait.
+The current phase is the **earliest open child issue in the parent's checklist that has no pull request waiting for review**. If the previous phase's pull request is still open, say so and ask whether to start the next phase on top of it, start a phase of the same wave, or wait.
 
 ## Rules
 
 - Create issues only after the user accepted the plan. Search for duplicates first.
 - Use the tracker as the team uses it: its templates, labels and states. Add no field, state or label.
 - Resolve the repository or project from the local checkout or the user's words, never from a guess. If the issue the user gave belongs to another repository, stop and say so.
-- Choosing to work through pull requests is the user's permission, for this plan, to commit the phase on a branch linked to its child issue, push that branch and open a pull request that closes the issue on merge. Without that choice, the phase stays uncommitted like any other.
+- Choosing to work through pull requests is the user's permission, for this plan, to commit the phase on a branch linked to its child issue, push that branch and open the pull request that closes the issue on merge. Without that choice, the phase stays uncommitted like any other.
 - The agent never merges. Merging is the human's decision, and it is what closes the phase.
 
 ## Typical commands
