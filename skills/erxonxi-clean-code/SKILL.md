@@ -1,6 +1,6 @@
 ---
 name: erxonxi-clean-code
-description: "Code style at line, function and class level, in any language. Covers names, functions, classes, comments, null and error handling, code smells with their refactorings, design patterns and the simple design rules. Use when writing or reviewing code, naming things, refactoring, or deciding whether an abstraction or a pattern is justified."
+description: "Code style at line, function and class level in any language: names, functions, classes, comments, errors, smells and refactorings, patterns, simple design. Use when writing, naming, refactoring or reviewing code, or judging whether an abstraction is justified."
 ---
 
 # Clean code

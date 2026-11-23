@@ -1,6 +1,6 @@
 ---
 name: erxonxi-infrastructure
-description: "Infrastructure and integration design in any language or technology. Covers persistence adapters, the event bus (queues, retries, dead letter, outbox, inbox), transactions, caching, projections, database schema and the local environment. Use when implementing or reviewing a repository, an event bus or consumer, a transaction, a cache, a projection, a schema change or communication between services."
+description: "Adapters and integration in any technology: repositories, event bus (retries, dead letter, outbox, inbox), transactions, cache, projections, schema changes, local environment. Use when implementing or reviewing any of them or communication between services."
 ---
 
 # Infrastructure

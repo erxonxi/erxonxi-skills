@@ -1,6 +1,6 @@
 ---
 name: erxonxi-roadmap
-description: "Lean and agile planning without bureaucracy, agnostic of the ticket tool (Linear, Jira, Notion, GitHub Issues or a markdown file). Covers framing a goal as a bet with a measurable hypothesis, cutting the MVP, splitting work into thin vertical slices, mapping and removing dependencies, ordering slices in waves so people or agents can work in parallel, prioritizing without scoring theater, instrumenting every delivery and iterating on data. Use when building or reviewing a roadmap or a backlog, breaking a plan, PRD or epic into tickets, deciding what goes first or what to cut, scoping an MVP, unblocking or parallelizing work, or deciding what to do after a release, even if the user never says \"roadmap\"."
+description: "Lean planning for any ticket tool: a bet with a measurable hypothesis, MVP cut, vertical slices, dependencies, waves of parallel work, instrumentation, deciding on data. Use when building a roadmap or backlog, splitting an epic into tickets, ordering or cutting work, or deciding after a release."
 ---
 
 # Roadmap
@@ -211,28 +211,7 @@ Not everything is a hypothesis. Do not force the frame on it.
 
 ## Example
 
-```
-Bet         Restock alerts                                        Appetite: 2 weeks
-Hypothesis  We believe that letting shoppers ask for an alert on out-of-stock products
-            will recover lost sales. We will know when 15% of the alert emails end in
-            an order within 7 days, measured over the first 4 weeks.
-Decision    Under 5%: remove it. Between 5% and 15%: one round on the email, then decide.
-Riskiest    Shoppers will not leave their email. Tested first with a fake door:
-            the button alone for 3 days, counting clicks.
-Non-goals   SMS and push, product variants, alert preferences.
-
-Wave 0  A  A shopper asks for an alert on an out-of-stock product.
-           Fixes the contract: `POST /restock-alerts` and the
-           `acme.catalog.restock_alert.requested` event. Behind the flag `restock_alerts`.
-           Signal: requests per day, by product.
-Wave 1  B  A shopper who asked gets one email when the product is back.    Blocked by A
-           Signal: emails sent, clicks, orders attributed to the link.
-        C  The product page remembers that the shopper already asked.      Blocked by A
-Wave 2  D  A shopper gets a single email when stock flaps within a day.    Blocked by B
-Later   SMS · product variants · alert preferences
-```
-
-B and C run in parallel: one lives in notifications, the other in the product page, and both build against the contract that A fixed.
+A bet framed, cut and ordered in waves, end to end: `resources/example.md`. Read it when the shape of a bet or a wave is not clear.
 
 ## What is not done
 

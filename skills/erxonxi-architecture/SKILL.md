@@ -1,6 +1,6 @@
 ---
 name: erxonxi-architecture
-description: "Application structure and architecture (hexagonal + DDD, in any language). Covers bounded contexts, modules, domain/application/infrastructure layers, use cases, entry points, the composition root and collaboration between contexts. Use when creating or reorganizing a project, module, use case or endpoint, when deciding where a file goes, or when reviewing dependencies between layers or contexts."
+description: "Where code goes in a hexagonal + DDD application, in any language: bounded contexts, modules, layers, use cases, entry points, composition root, collaboration between contexts. Use when creating or moving a project, module, use case or endpoint, or reviewing dependencies between layers."
 ---
 
 # Architecture

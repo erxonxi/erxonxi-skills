@@ -24,7 +24,7 @@ Apply these rules in any language. The project's existing convention always wins
 - Implement one phase at a time. End each phase by running the project's verification command (types, lint, tests) and stop for review.
 - Do not commit or push unless asked: propose messages in Conventional Commits format.
 - Refactor and behavior change go separately. Tests are not changed to make a refactor pass.
-- If a correction reveals an undocumented convention, document it.
+- If a correction reveals a convention, turn it into a check (lint rule, type, architecture test) with a baseline that only shrinks. A short doc only when no check can be exact. Never edit a check or its baseline to make a change pass.
 
 ## What to build and in what order
 
@@ -37,4 +37,4 @@ Apply these rules in any language. The project's existing convention always wins
 
 ## Skills with the detail
 
-`erxonxi-architecture` · `erxonxi-domain-modeling` · `erxonxi-testing` · `erxonxi-clean-code` · `erxonxi-infrastructure` · `erxonxi-frontend` · `erxonxi-workflow` · `erxonxi-roadmap`
+`erxonxi-architecture` · `erxonxi-domain-modeling` · `erxonxi-testing` · `erxonxi-clean-code` · `erxonxi-infrastructure` · `erxonxi-frontend` · `erxonxi-workflow` · `erxonxi-rule` · `erxonxi-roadmap`

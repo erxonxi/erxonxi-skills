@@ -1,6 +1,6 @@
 ---
 name: erxonxi-workflow
-description: "How to work with coding agents in any language. Covers researching, planning in vertical phases with public contracts, implementing phase by phase with verification and a stop, writing specs, documenting conventions, organizing AGENTS.md, docs, skills and lint, commits, and project scaffolding. Use when planning a non-trivial task, splitting it into phases, writing a spec, a convention document or an AGENTS.md, preparing a commit or a PR, or setting up the tooling of a new project."
+description: "How to work with coding agents in any language: memory layers (AGENTS.md, docs, skills, checks), research/plan/implement, specs, commits and PRs, project scaffolding. Use when planning a non-trivial task, writing a spec, a convention doc or an AGENTS.md, committing, or setting up a new project."
 ---
 
 # Workflow
@@ -21,11 +21,11 @@ Each piece of knowledge goes in the cheapest layer that enforces it:
 
 Rules:
 
-- What the linter can check is not written in prose: add it as a rule.
+- What a check can verify is not written in prose: add it as a check with `erxonxi-rule`.
 - A behavior that only the documentation describes is an aspiration, not a behavior.
 - Onboarding documentation for humans goes in the README, not in `docs/`.
 - A doc must be minimal, true and stable. If the code changes, the doc changes in the same commit.
-- When the user corrects an implementation because of an undocumented convention, document that convention at that moment and add it to the `AGENTS.md` map.
+- When the user corrects an implementation because of an undocumented convention, turn it into a check at that moment with `erxonxi-rule`. It becomes a short doc only when no check can be exact.
 
 ### Root `AGENTS.md` template
 
@@ -159,4 +159,4 @@ Rules for phases:
 - [ ] Did I run the verification command and is it green?
 - [ ] Did I update the affected docs in the same change?
 - [ ] Did I propose the commit instead of making it without being asked?
-- [ ] Is the new rule I learned checkable by lint? Then it goes to lint.
+- [ ] Is the convention I learned checkable? Then it becomes a check with `erxonxi-rule`.

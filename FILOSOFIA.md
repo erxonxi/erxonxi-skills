@@ -2,7 +2,7 @@
 
 Cómo diseño, modelo, nombro, estructuro y pruebo el código, escrito para que valga en cualquier lenguaje y para dárselo a agentes de código.
 
-El detalle operativo vive en las ocho skills de `skills/`. Este documento explica el porqué y el conjunto.
+El detalle operativo vive en las nueve skills de `skills/`. Este documento explica el porqué y el conjunto.
 
 ## 1. La idea central
 
@@ -89,7 +89,11 @@ Casi todas las decisiones de infraestructura tienen forma de escalera, y la regl
 
 ### 11. Lo comprobable se comprueba, no se escribe
 
-Formato, dependencias entre capas, parámetros por defecto, tamaño de los PR, formato de los commits: todo lo que una máquina puede verificar se convierte en regla de lint, test de arquitectura, hook o check de CI, con un mensaje que dice cómo arreglarlo. La prosa queda para lo que no se puede automatizar.
+Formato, dependencias entre capas, parámetros por defecto, tamaño de los PR, formato de los commits: todo lo que una máquina puede verificar se convierte en regla de lint, test de arquitectura, hook o check de CI, con un mensaje que dice cómo arreglarlo. La prosa queda para lo que no se puede automatizar, y para el porqué.
+
+Un check nuevo es un error desde el primer día para el código nuevo. El código que ya lo incumple se congela en una baseline que solo encoge, así que adoptar una regla nunca espera a una migración. Un check cuenta solo cuando se ha visto fallar con una violación y pasar en el repositorio.
+
+Por qué: un agente olvida un documento, lo malinterpreta o nunca lo carga. No puede ignorar un build en rojo. Cada corrección que un humano tiene que repetir es un check que nunca se escribió.
 
 ### 12. Pasos pequeños y verificados
 
@@ -128,6 +132,8 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | Mocks | Clase escrita a mano o ayudante genérico, siempre con vocabulario `should*` |
 | Tests de dominio aislados | Cubrir por caso de uso. Casos extra solo por particiones y límites |
 | Commit del agente | No hacer commit sin que lo pida el usuario |
+| Violaciones existentes de un check nuevo | Congeladas en una baseline por unidad, que solo encoge |
+| Una corrección del usuario | Se convierte en check. Un doc corto solo cuando ningún check puede ser exacto |
 | Subagentes de exploración | Con contexto. A ciegas como técnica opcional |
 | Dónde vive un evento compartido | En el contexto emisor |
 | Roadmap | Ahora, Siguiente, Más adelante. Sin fechas salvo que sean reales y externas |
@@ -147,6 +153,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 - Interfaces, fábricas y patrones sin variación real. Singletons.
 - Arquitectura hexagonal en una interfaz sin reglas.
 - Discutir formato a mano.
+- Checks como warnings, checks que adivinan, o tocar un check o su baseline para que un cambio pase.
 - Dejar que un agente lea toda la documentación, implemente varias fases seguidas o haga commit sin revisión.
 - Puntos de historia, objetivos de velocidad, backlogs como inventario, tickets horizontales, ni entregar sin una señal.
 
@@ -161,6 +168,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | `erxonxi-infrastructure` | Repositorios, bus de eventos, transacciones, caché, proyecciones, esquema |
 | `erxonxi-frontend` | Componentes, estado, estilos, cuánta arquitectura poner en cliente |
 | `erxonxi-workflow` | Planificar, trocear en fases, escribir specs o docs, commits, andamiaje |
+| `erxonxi-rule` | Tras una corrección, o para hacer cumplir una convención: convertirla en check con una baseline que encoge |
 | `erxonxi-roadmap` | Montar o revisar un roadmap, bajar un plan a tickets, ordenar y paralelizar trabajo, acotar un MVP, decidir tras una entrega |
 
 Todas empiezan por la misma regla: la convención existente del proyecto gana, y la skill decide solo cuando no hay precedente.

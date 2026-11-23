@@ -2,7 +2,7 @@
 
 How I design, model, name, structure and test code, written to hold in any language and to be handed to coding agents.
 
-The operational detail lives in the eight skills under `skills/`. This document explains the why and the whole.
+The operational detail lives in the nine skills under `skills/`. This document explains the why and the whole.
 
 ## 1. The central idea
 
@@ -89,7 +89,11 @@ Almost all infrastructure decisions have the shape of a ladder, and the rule is 
 
 ### 11. What is checkable is checked, not written
 
-Formatting, dependencies between layers, default parameters, PR size, commit format: everything a machine can verify becomes a lint rule, an architecture test, a hook or a CI check, with a message that says how to fix it. Prose is left for what cannot be automated.
+Formatting, dependencies between layers, default parameters, PR size, commit format: everything a machine can verify becomes a lint rule, an architecture test, a hook or a CI check, with a message that says how to fix it. Prose is left for what cannot be automated, and for the why.
+
+A new check is an error from day one for new code. The code that already breaks it is frozen in a baseline that only shrinks, so adopting a rule never waits for a migration. A check counts only after it has been seen failing on a violation and passing on the repository.
+
+Why: an agent forgets a document, misreads it or never loads it. It cannot ignore a red build. Every correction a human has to repeat is a check that was never written.
 
 ### 12. Small, verified steps
 
@@ -128,6 +132,8 @@ Points where several reasonable options exist and this is the chosen one. They a
 | Mocks | Hand-written class or generic helper, always with `should*` vocabulary |
 | Isolated domain tests | Cover per use case. Extra cases only for partitions and boundaries |
 | Agent commit | Do not commit unless the user asks |
+| Existing violations of a new check | Frozen in a baseline by unit, which only shrinks |
+| A correction from the user | Becomes a check. A short doc only when no check can be exact |
 | Exploration subagents | With context. Blind as an optional technique |
 | Where a shared event lives | In the emitting context |
 | Roadmap | Now, Next, Later. No dates unless they are real and external |
@@ -147,6 +153,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 - Interfaces, factories and patterns without real variation. Singletons.
 - Hexagonal architecture in an interface without rules.
 - Arguing about formatting by hand.
+- Checks as warnings, checks that guess, or editing a check or its baseline so a change passes.
 - Letting an agent read all the documentation, implement several phases in a row or commit without review.
 - Story points, velocity targets, backlogs as inventory, horizontal tickets, or shipping without a signal.
 
@@ -161,6 +168,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | `erxonxi-infrastructure` | Repositories, event bus, transactions, cache, projections, schema |
 | `erxonxi-frontend` | Components, state, styles, how much architecture to put in the client |
 | `erxonxi-workflow` | Plan, split into phases, write specs or docs, commits, scaffolding |
+| `erxonxi-rule` | After a correction, or to enforce a convention: turn it into a check with a shrinking baseline |
 | `erxonxi-roadmap` | Build or review a roadmap, split a plan into tickets, order and parallelize work, scope an MVP, decide after a release |
 
 All of them start with the same rule: the project's existing convention wins, and the skill decides only when there is no precedent.

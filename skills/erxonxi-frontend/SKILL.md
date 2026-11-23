@@ -1,6 +1,6 @@
 ---
 name: erxonxi-frontend
-description: "Framework-independent frontend guidance. Covers when to apply hexagonal architecture on the client and when not to, module and section structure, components, hooks, state, repository injection, component tests, CSS architecture, accessibility and performance. Use when creating or reviewing components, screens, client state, styles or the structure of a web application."
+description: "Frontend structure in any framework: how much architecture a client needs, components, hooks, state, injecting repositories, UI tests, CSS, accessibility. Use when creating or reviewing components, screens, client state, styles or the layout of a web app."
 ---
 
 # Frontend
