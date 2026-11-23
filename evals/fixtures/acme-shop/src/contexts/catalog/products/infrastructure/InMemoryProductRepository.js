@@ -13,4 +13,8 @@ export class InMemoryProductRepository extends ProductRepository {
   async search(id) {
     return this.products.get(id.value) ?? null;
   }
+
+  async searchAll() {
+    return [...this.products.values()];
+  }
 }

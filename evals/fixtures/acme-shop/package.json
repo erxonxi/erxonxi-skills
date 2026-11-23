@@ -2,7 +2,9 @@
   "name": "acme-shop",
   "private": true,
   "type": "module",
+  "engines": { "node": ">=20" },
   "scripts": {
+    "start": "node src/apps/api/main.js",
     "test": "node --test",
     "check": "node --test"
   }

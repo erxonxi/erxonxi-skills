@@ -23,3 +23,7 @@ acme::commit_baseline() {
   acme::git add -A
   acme::git commit -q -m "chore: baseline"
 }
+
+acme::copy_crm() {
+  cp -R "$FIXTURES/acme-crm/." .
+}

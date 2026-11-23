@@ -52,12 +52,12 @@ Wave 1. Blocked by: Phase 1.
 Contracts:
 
 - `RestockAlertEmailSender.send(productId: string): Promise<void>` in `src/contexts/notifications/restock-alerts/application/send/RestockAlertEmailSender.js`
-- Port `EmailSender` { send(to, subject, body) } in `src/contexts/notifications/shared/domain/`
+- Uses the existing `EmailSender` port in `src/contexts/notifications/shared/domain/EmailSender.js`
 - `RestockAlertEmailSender should`: send one email per pending alert · consume the alert after sending
 
 Tasks:
 
-- [ ] `EmailSender` port and `RestockAlertEmailSender` use case
+- [ ] `RestockAlertEmailSender` use case on the existing `EmailSender` port, copying `OrderConfirmationEmailSender`
 - [ ] Tests for both cases
 - [ ] Run the verification command and fix what fails
 - [ ] Evaluate and stop: `erxonxi-evaluate`, commit messages, wait for the user

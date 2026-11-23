@@ -4,6 +4,7 @@ export class MockProductRepository {
   constructor() {
     this.searchResult = null;
     this.saved = [];
+    this.searchAllResult = [];
   }
 
   shouldSearch(product) {
@@ -12,6 +13,14 @@ export class MockProductRepository {
 
   shouldSearchAndReturnNull() {
     this.searchResult = null;
+  }
+
+  shouldSearchAll(products) {
+    this.searchAllResult = products;
+  }
+
+  async searchAll() {
+    return this.searchAllResult;
   }
 
   async search(_id) {

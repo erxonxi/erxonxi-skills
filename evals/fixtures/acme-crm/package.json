@@ -1,0 +1,10 @@
+{
+  "name": "acme-crm",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test",
+    "check": "node --test"
+  }
+}

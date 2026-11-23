@@ -1,15 +1,15 @@
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+import { DomainError } from "../../../shared/domain/DomainError.js";
+import { Uuid } from "../../../shared/domain/Uuid.js";
 
-export class InvalidProductIdError extends Error {
+export class InvalidProductIdError extends DomainError {
   constructor(value) {
     super(`<${value}> is not a valid product id`);
-    this.name = "InvalidProductIdError";
+    this.value = value;
   }
 }
 
-export class ProductId {
-  constructor(value) {
-    if (!UUID.test(value)) throw new InvalidProductIdError(value);
-    this.value = value;
+export class ProductId extends Uuid {
+  invalid(value) {
+    return new InvalidProductIdError(value);
   }
 }

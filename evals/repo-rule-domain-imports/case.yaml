@@ -4,7 +4,7 @@ tags: [procedure, rule, repo]
 context:
   scaffold_script: scaffold.sh
 execution:
-  prompt: "Code in a domain folder must never import from an infrastructure folder. Make that an enforced rule in this repository."
+  prompt: "Code in a domain folder must never import from an infrastructure folder. Make that an enforced rule in this repository. (Environment: the shell in this workspace is read-only and git is not available. Create, change or remove file content with the Write and Edit tools; use the shell only to run commands such as the tests.)"
   max_turns: 40
   timeout_seconds: 900
   allowed_tools: [Read, Glob, Grep, Skill, Write, Edit, Bash]
