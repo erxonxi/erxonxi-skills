@@ -2,7 +2,7 @@
 
 Cómo diseño, modelo, nombro, estructuro y pruebo el código, escrito para que valga en cualquier lenguaje y para dárselo a agentes de código.
 
-El detalle operativo vive en las nueve skills de `skills/`. Este documento explica el porqué y el conjunto.
+El detalle operativo vive en las once skills de `skills/`. Este documento explica el porqué y el conjunto.
 
 ## 1. La idea central
 
@@ -111,6 +111,8 @@ Lo anterior, convertido en forma de trabajo para agentes de código.
 
 - **Memoria por capas.** Un `AGENTS.md` raíz corto con comandos, arquitectura en pocas líneas y un mapa de `docs/`, con la orden explícita de no leer todos los docs al empezar. Convenciones en `docs/`, un fichero por convención y con esqueleto fijo. Procedimientos en skills. Reglas mecánicas en lint y hooks.
 - **Investigar, planificar, implementar**, con una puerta humana en cada paso. La exploración se delega en subagentes con modelos baratos. El plan no se escribe hasta acordar fases y contratos.
+- **El plan lleva su estado.** Un fichero (o una issue padre con una hija por fase) cuyas casillas dicen qué está hecho, para que cualquier agente o sesión lo retome. La fase actual es la primera con trabajo pendiente.
+- **Delegar lleva un brief.** Un subagente recibe los contratos literales, los ficheros que posee, el patrón a copiar, el comando de verificación y sus límites. Su informe es una afirmación a comprobar, no una prueba. Agentes en paralelo solo en fases de la misma ola, con ficheros disjuntos.
 - **Contratos públicos en el plan**: firmas de casos de uso, eventos, suites de test con sus casos, esquema y textos de interfaz. Se revisa el qué antes de escribir el cómo.
 - **Specs como promesa**: `SHALL`, un comportamiento por requisito, valores concretos, solo lo observable.
 - **El agente no hace commit por su cuenta**: propone mensajes y espera.
@@ -132,6 +134,7 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | Mocks | Clase escrita a mano o ayudante genérico, siempre con vocabulario `should*` |
 | Tests de dominio aislados | Cubrir por caso de uso. Casos extra solo por particiones y límites |
 | Commit del agente | No hacer commit sin que lo pida el usuario |
+| Dónde vive un plan | `.agents/plans/<fecha>-<slug>.md`, o issues cuando el equipo trabaja en un gestor |
 | Violaciones existentes de un check nuevo | Congeladas en una baseline por unidad, que solo encoge |
 | Una corrección del usuario | Se convierte en check. Un doc corto solo cuando ningún check puede ser exacto |
 | Subagentes de exploración | Con contexto. A ciegas como técnica opcional |
@@ -167,7 +170,9 @@ Puntos donde hay varias opciones razonables y esta es la elegida. Son lo primero
 | `erxonxi-clean-code` | Nombrar, escribir funciones y clases, refactorizar, decidir si un patrón está justificado |
 | `erxonxi-infrastructure` | Repositorios, bus de eventos, transacciones, caché, proyecciones, esquema |
 | `erxonxi-frontend` | Componentes, estado, estilos, cuánta arquitectura poner en cliente |
-| `erxonxi-workflow` | Planificar, trocear en fases, escribir specs o docs, commits, andamiaje |
+| `erxonxi-workflow` | Organizar cómo trabaja un agente en un proyecto: el ciclo, capas de memoria, `AGENTS.md`, specs, commits, andamiaje |
+| `erxonxi-plan` | Planificar una tarea no trivial: investigación, decisiones, fases con contratos, olas |
+| `erxonxi-implement-phase` | Implementar, continuar o retomar una fase de un plan |
 | `erxonxi-rule` | Tras una corrección, o para hacer cumplir una convención: convertirla en check con una baseline que encoge |
 | `erxonxi-roadmap` | Montar o revisar un roadmap, bajar un plan a tickets, ordenar y paralelizar trabajo, acotar un MVP, decidir tras una entrega |
 

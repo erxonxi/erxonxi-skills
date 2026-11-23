@@ -2,7 +2,7 @@
 
 How I design, model, name, structure and test code, written to hold in any language and to be handed to coding agents.
 
-The operational detail lives in the nine skills under `skills/`. This document explains the why and the whole.
+The operational detail lives in the eleven skills under `skills/`. This document explains the why and the whole.
 
 ## 1. The central idea
 
@@ -111,6 +111,8 @@ The above, turned into a way of working for coding agents.
 
 - **Layered memory.** A short root `AGENTS.md` with commands, architecture in a few lines and a map of `docs/`, with the explicit order not to read all the docs at the start. Conventions in `docs/`, one file per convention and with a fixed skeleton. Procedures in skills. Mechanical rules in lint and hooks.
 - **Research, plan, implement**, with a human gate at each step. Exploration is delegated to subagents with cheap models. The plan is not written until phases and contracts are agreed.
+- **The plan carries its state.** A file (or a parent issue with one child per phase) whose checkboxes say what is done, so any agent or session can resume it. The current phase is the first one with work left.
+- **Delegation has a brief.** A subagent gets the contracts verbatim, the files it owns, the pattern to copy, the verification command and its limits. Its report is a claim to verify, not proof. Parallel agents only on phases of the same wave, with disjoint files.
 - **Public contracts in the plan**: use case signatures, events, test suites with their cases, schema and interface texts. The what is reviewed before the how is written.
 - **Specs as promise**: `SHALL`, one behavior per requirement, concrete values, only what is observable.
 - **The agent does not commit on its own**: it proposes messages and waits.
@@ -132,6 +134,7 @@ Points where several reasonable options exist and this is the chosen one. They a
 | Mocks | Hand-written class or generic helper, always with `should*` vocabulary |
 | Isolated domain tests | Cover per use case. Extra cases only for partitions and boundaries |
 | Agent commit | Do not commit unless the user asks |
+| Where a plan lives | `.agents/plans/<date>-<slug>.md`, or issues when the team works in a tracker |
 | Existing violations of a new check | Frozen in a baseline by unit, which only shrinks |
 | A correction from the user | Becomes a check. A short doc only when no check can be exact |
 | Exploration subagents | With context. Blind as an optional technique |
@@ -167,7 +170,9 @@ Points where several reasonable options exist and this is the chosen one. They a
 | `erxonxi-clean-code` | Name things, write functions and classes, refactor, decide whether a pattern is justified |
 | `erxonxi-infrastructure` | Repositories, event bus, transactions, cache, projections, schema |
 | `erxonxi-frontend` | Components, state, styles, how much architecture to put in the client |
-| `erxonxi-workflow` | Plan, split into phases, write specs or docs, commits, scaffolding |
+| `erxonxi-workflow` | Organize how an agent works on a project: the loop, memory layers, `AGENTS.md`, specs, commits, scaffolding |
+| `erxonxi-plan` | Plan a non-trivial task: research, decisions, phases with contracts, waves |
+| `erxonxi-implement-phase` | Implement, continue or resume one phase of a plan |
 | `erxonxi-rule` | After a correction, or to enforce a convention: turn it into a check with a shrinking baseline |
 | `erxonxi-roadmap` | Build or review a roadmap, split a plan into tickets, order and parallelize work, scope an MVP, decide after a release |
 

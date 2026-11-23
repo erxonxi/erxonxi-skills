@@ -40,7 +40,9 @@ In the Claude app, go to Customize → Plugins → Add → Add marketplace, ente
 | `erxonxi-clean-code` | Naming, functions, classes, smells and refactorings, design patterns, simple design |
 | `erxonxi-infrastructure` | Adapters, event bus, retries and dead letters, transactions, outbox and inbox, caching, projections, schema |
 | `erxonxi-frontend` | How much architecture a client needs, components, state, UI tests, CSS architecture, accessibility |
-| `erxonxi-workflow` | Agent memory layers, research/plan/implement, vertical-slice plans, specs, commits, project scaffolding |
+| `erxonxi-workflow` | The map: the decide, delegate, evaluate loop and which skill runs each step, agent memory layers, specs, commits, project scaffolding |
+| `erxonxi-plan` | Research with cheap subagents, then an approved plan: decisions, vertical phases with public contracts, waves for parallel work, saved with its state in a file or in issues |
+| `erxonxi-implement-phase` | One phase per run, yourself or delegated with a precise brief, verified, plan state updated, then a stop for review. Never commits on its own |
 | `erxonxi-rule` | Turning a convention into a check that fails in seconds: the lowest mechanism that covers it, a baseline that only shrinks, red then green, a short doc for the why. Also harvests the conventions a repository already follows |
 | `erxonxi-roadmap` | Lean and agile planning without bureaucracy, for any ticket tool: bets with a hypothesis, MVP cut, vertical slices, dependencies, waves of parallel work, instrumentation, iterating on data |
 

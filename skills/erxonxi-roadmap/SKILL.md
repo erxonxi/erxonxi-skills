@@ -5,7 +5,7 @@ description: "Lean planning for any ticket tool: a bet with a measurable hypothe
 
 # Roadmap
 
-YAGNI and KISS applied to the plan, not only to the code. This skill decides what to build, how small and in what order. How one slice is then researched, planned and implemented is `erxonxi-workflow`.
+YAGNI and KISS applied to the plan, not only to the code. This skill decides what to build, how small and in what order. How one slice is then researched and planned is `erxonxi-plan`, and how each phase is implemented is `erxonxi-implement-phase`.
 
 ## Rule zero
 
