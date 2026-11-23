@@ -40,7 +40,7 @@ Done when you know which files the change touches, which existing feature to cop
 
 ### 3. Ask once
 
-Put every open question in a single message, each with the option you recommend and why in one line. Use the agent's question tool if it has one. Include the granularity, with what each option would put in each phase:
+Put every open question in a single message, each with the option you recommend and why in one line. Use the agent's question tool if it has one. Do not ask what the user already decided. Unless they already said how fine the phases should be, include the granularity, with what each option would put in each phase:
 
 - minimal: one phase,
 - intermediate: one to three,
@@ -56,7 +56,7 @@ Done when the user has accepted the contracts and the phases explicitly.
 
 ### 5. Save the plan
 
-Only after approval. Where:
+Only after approval, and as it was approved. Something you would add now (an assumption, a `Blocked by`, an out-of-scope line) is a change to the plan: propose it before saving, or save the approved version and list the suggestion after it. Where:
 
 - Default: a file at `.agents/plans/<YYYY-MM-DD>-<slug>.md`, with the shape of `resources/plan-template.md`.
 - If the team tracks work in issues: a parent issue for the plan and one child issue per phase. See `resources/plan-in-issues.md`.
@@ -65,7 +65,7 @@ Everything in the plan in the project's working language, one language for every
 
 ### 6. Offer the next step
 
-Stop and let the user choose: leave it here, commit the plan on its own (a `docs` commit), start phase 1 with `erxonxi-implement-phase`, or commit the plan and then start phase 1.
+Say where the plan was saved and recommend one next step, normally starting phase 1 with `erxonxi-implement-phase`. Mention in one line that the plan can be committed on its own first (a `docs` commit). Then stop and wait for the user.
 
 Whatever the wording of the answer, this run goes no further than phase 1. Each phase is a run of its own.
 
@@ -111,6 +111,7 @@ When two phases do not depend on each other, say so, so they can be delegated in
 - A phase lists `Blocked by: <phase>` only for hard dependencies. Try to remove each one first with a contract agreed up front.
 - Phases that touch disjoint files and share only an agreed contract go in the same wave.
 - Two phases that touch the same files are never in the same wave.
+- Number the phases in the order they will be delivered. A wave is a note on each phase, never a reason to list phases out of order.
 
 ## What is not done
 

@@ -69,7 +69,7 @@ class UserMother {
 
 - One mother per aggregate, value object, event, command and response DTO.
 - Layers: random primitives (`UuidMother`, `WordMother`, `IntegerMother`) → value objects → aggregates → events, commands and responses.
-- Methods: `create(overrides?)` with valid defaults, and named variants for the interesting cases: `withTooLongName()`, `invalid()`, `fromUser(user)` (the event that aggregate would emit), `fromCommand(command)`.
+- Methods: `create(overrides?)` with valid defaults (the optional overrides are the one allowed exception to "no default parameters"), and named variants for the interesting cases: `withTooLongName()`, `invalid()`, `fromUser(user)` (the event that aggregate would emit), `fromCommand(command)`.
 - The test names only what matters to it: `UserMother.create({ name: "..." })`. The rest is noise the mother hides.
 - Boundary variants are built from domain constants, not from copied magic numbers.
 - They live in `tests/.../domain/`, next to the mirror of what they build. They evolve with the model in a single place.
@@ -83,7 +83,7 @@ class UserMother {
 - No module mocks or inline mocks for domain dependencies. Exception: the composition root boundary in route tests.
 - Prefixes by what they are: `Mock*` (verifies calls), `InMemory*`/`Fake*` (simplified working implementation), `Dummy*` (filler).
 - Mocks exist only in test code. An `InMemory*` may live in production if it is used for local development.
-- Control time and ids through ports (`Clock`, `UuidGenerator`) replaced in tests. Use random data with a fixed seed, so a failure can be reproduced.
+- Control time and server-generated ids through ports (`Clock`, `UuidGenerator`) replaced in tests. Ids the client sends come from a mother. Use random data with a fixed seed, so a failure can be reproduced.
 
 ## Integration test of an adapter
 

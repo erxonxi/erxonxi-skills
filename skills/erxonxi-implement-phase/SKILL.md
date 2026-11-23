@@ -58,12 +58,22 @@ Run the project's verification command (types, lint, tests). Fix what fails and 
 
 ### 6. Evaluate
 
-Run `erxonxi-evaluate` on the phase: contracts against the diff, an independent review, and evidence of what the phase does. Fix the confirmed findings that are inside the phase, and list the rest.
+Load `erxonxi-evaluate` and run it on the phase. If you cannot load it, do its core here, in this order:
+
+1. **Contracts**: for each contract of the phase, mark it present, changed or missing in the code, and list any public contract the phase added without the plan.
+2. **Independent review**: if you have a subagent tool, call it now with the diff, the contracts and the convention docs, and nothing of your reasoning (brief in `erxonxi-evaluate`, file `resources/review-brief.md`). Verify each finding before reporting it. Only without a subagent tool, do a separate pass yourself that reads only the diff and the contracts.
+3. **Evidence**: what the phase does, shown without running it, or why there is nothing to show.
+
+A green test run is step 5, not this step, and reading your own diff again is not a review. Fix the confirmed findings that are inside the phase, and list the rest.
+
+This step is not optional because the phase was small or the tests passed. If something prevents it (no way to load the skill, no way to get a separate review), say exactly what was not done and leave the evaluation task unchecked.
 
 ### 7. Present and stop
 
 - Report what changed, the verification command and its real result, the evaluation, and what you could not check.
-- Update the plan: checked tasks, `updated`, `implemented_by` if the project records provenance, **Next step**, and `status: done` after the last phase.
+- Update the plan: checked tasks, `updated`, `implemented_by` if the project records provenance, **Next step**, and `status: done` after the last phase. The plan ends in one of two states, never in between:
+  - **evaluated**: every task of the phase checked, including verify and evaluate; Next step names the following phase;
+  - **not evaluated**: the evaluate task (and verify, if it is not green) left unchecked; Next step says "Phase N: finish verification/evaluation", so the next run resumes this phase and not the next one.
 - Offer two or three numbered commit messages in the project's convention, each with a type that could fit, so the user can pick one by its number.
 - When the plan lives in issues and the user chose to work through pull requests, that choice is the permission to commit the phase on its linked branch, push it and open the pull request that closes the phase issue. Never merge it.
 - List the corrections the user made during the phase: each one is a candidate for `erxonxi-rule`.

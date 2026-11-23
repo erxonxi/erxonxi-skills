@@ -43,14 +43,14 @@ Done when every contract is marked as present, changed or missing.
 
 The author's reading is anchored on its own intent. Get a second one that is not:
 
-- Launch a reviewer subagent in a fresh context, on a strong model when the change touches data, money, security, concurrency or architecture.
+- If you have a subagent tool, this step means calling it: launch a reviewer in a fresh context, on a strong model when the change touches data, money, security, concurrency or architecture. Your own second reading does not replace it.
 - Give it the diff, the approved contracts and the paths of the convention docs. **Not** your reasoning, your summary or your conclusion. Use `resources/review-brief.md`.
 - Ask for findings, each with a file and line, the concrete scenario that fails, and a severity.
 - Verify every finding yourself before reporting it. Drop what you cannot confirm, and say how many you dropped.
 
 Without subagents, do a separate pass yourself reading only the diff and the contracts, with the checklists of the knowledge skills that apply (`erxonxi-architecture`, `erxonxi-domain-modeling`, `erxonxi-testing`, `erxonxi-clean-code`).
 
-Small, mechanical changes (docs, config, a rename) can skip this step: say that you skipped it.
+Only mechanical changes skip this step: docs, configuration, a rename with no behavior change. Size is not a reason: a small diff that adds or changes behavior gets a review, because that is where a second reading is cheapest. When you skip it, say so and why.
 
 Done when every confirmed finding is fixed or listed for the user.
 
@@ -77,6 +77,7 @@ Done when someone who did not run the code can see the change, or you said why t
 
 - **Commit**: propose two or three messages in the project's convention, as in `erxonxi-workflow`.
 - **Pull request**: fill the repository's template, or `resources/pr-template.md`. Only checks that ran appear as done, and what was not checked is always written down.
+- **When the change is not ready** (a red check, a missing contract, a confirmed finding not fixed): still write the text the user asked for, marked as a draft, with the open findings at the top of it. Its proof section states the current results, never the results you expect after the fixes.
 
 Done when the user can decide to commit, merge or send it back from what you wrote, without asking you anything.
 

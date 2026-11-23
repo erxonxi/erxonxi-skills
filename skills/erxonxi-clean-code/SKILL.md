@@ -38,7 +38,7 @@ Stopping criterion: the code is good enough when you could come back to it in si
 - One level of abstraction per function. The public method reads as a list of named steps, and the details go in private methods.
 - Guard clauses and early return. No `else` after a `return`. No nested conditionals when a guard flattens them.
 - No boolean flag arguments: two methods named by intent (`createUser` / `createAdmin`).
-- No default parameters: the caller passes everything explicitly (apply this according to the language idiom and the project convention).
+- No default parameters: the caller passes everything explicitly (apply this according to the language idiom and the project convention). The one exception is test data: an Object Mother's optional overrides (`UserMother.create({ name })`) exist so a test names only what it cares about.
 - Few parameters. When the signature looks like a form, group into a request object or value objects (`DateRange`, `Money`).
 - Tell, don't ask: do not pull data out of an object to decide outside it. Ask the object to do it (`user.addToSavedProducts(product)`). Do not chain accesses through several objects.
 - Separate query from command: a function returns data or changes state, not both.
