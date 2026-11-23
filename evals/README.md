@@ -19,7 +19,7 @@ Results land in `evals/results/<timestamp>/` (ignored by git), with an HTML repo
 | Knowledge | `knowledge-*` | Does the answer follow these skills' defaults where they differ from generic advice? | `llm` rubric | With and without |
 | Plan | `plan-*` | Does planning produce vertical phases with contracts, ask once with recommendations, and save only after approval? | `llm`, `file_exists`, `regex` | With and without |
 | Repo | `repo-*` | On synthetic repositories (a shop MVP and a CRM): does `erxonxi-rule` add a proven check with an exemption list, and in harvest mode find the drift from written conventions? Does `erxonxi-evaluate` find planted contract mismatches (and invent none on a correct phase), does `erxonxi-implement-phase` do one phase and stop, resume a half-done phase without starting the next, and stop when a contract cannot hold? Does `erxonxi-plan` plan a cross-context feature with the repository's real names? | `file_exists`, `regex`, `tool_used`, `llm` | With and without |
-| Code | `code-*` | Does the code the agent writes follow the skills where the repository offers a bad neighbour to copy (a fat `DealService`) or no precedent at all (the first event subscriber), and does it leave a one-off script alone? | `file_exists`, `regex`, `tool_used` (no judge) | With and without |
+| Code | `code-*` | Does a first slice in an empty project come out with the skills' layout, ports, named errors, mothers and handwritten mocks? Does the code follow the skills where the repository offers a bad neighbour to copy (a fat `DealService`) or no precedent (the first event subscriber), and does the agent keep a house style that contradicts the skills (a command bus with errors as values) and leave a one-off script alone? | `file_exists`, `regex`, `tool_used` (no judge) | With and without |
 
 Knowledge cases and most plan cases need no repository: the prompt describes the code. That makes them cheap and stable. Two plan cases scaffold the shop: one where the repository stores plans as numbered RFCs (the plugin must follow the house style, not impose `.agents/plans/`) and one that breaks a large epic down into a file.
 
@@ -29,6 +29,8 @@ Repo cases build their workspace with a scaffold script from `fixtures/`, so the
 - `acme-crm`: a CRM (contacts, sales with a deal pipeline, activities) with written conventions marked `Not checked` and three planted drifts listed in `fixtures/acme-crm.PLANTED.md`, which the agent never sees.
 - Restock-alerts states on top of the shop: a correct phase 1 (`restock-phase1-done`), a phase 2 already started (`restock-phase2-started`), and plans for each case (`restock-alerts-plan*.md`). `acme::add_plan <file>` and `acme::add_code <dir>` in `fixtures/acme.sh` combine them.
 - `orders-script`: a CSV and a bare `package.json`, for the one-off script case.
+- `greenfield`: a `package.json` and a five-line `AGENTS.md`, nothing else.
+- `acme-ledger`: invoicing in the opposite style to the skills, documented in its `AGENTS.md`: `src/modules/*/{handlers,model,persistence}`, a command bus, errors as values, server-generated ids, `mock.fn()` and builder functions in `test/`.
 
 The sandbox shapes these cases. The agent's shell is read-only and `git` is blocked: files change only through Write and Edit, and every repo prompt says so. The scaffold commits a baseline, but the agent cannot run `git diff` or `git commit`; the `no-commit` graders still catch an attempt. Repo cases grant unscoped Bash, because scoped prefixes deny compound commands and the agent then stops verifying.
 
@@ -59,7 +61,7 @@ The sandbox shapes these cases. The agent's shell is read-only and `git` is bloc
 | `goal-5` | Lean plans: decided once, no estimates in hours or points, saved where the repository saves them |
 | `goal-6` | Vertical slices that can be checked end to end |
 
-Cases tagged `harm` are reported apart. Any harm case where the plugin scores below the baseline is a regression, whatever the deltas say, and `score.py` exits with 1.
+On the CRM, the base model already copies the good neighbours, so those code cases are harm guards; the code goals get their signal from the greenfield case, where there is nothing to copy. Cases tagged `harm` are reported apart. Any harm case where the plugin scores below the baseline is a regression, whatever the deltas say, and `score.py` exits with 1.
 
 To save money after a change, keep the last full run's JSON as the baseline and re-run only the plugin arm of the cases that matter: `evals/run.sh code --ablation none --json new.json`, then `evals/score.py new.json --baseline full.json`.
 

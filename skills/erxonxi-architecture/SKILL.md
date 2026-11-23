@@ -11,6 +11,8 @@ Examples use TypeScript-like notation for illustration only. Apply the shape, no
 
 Before creating anything, look at how the project already solves a similar case and copy that pattern (folder tree, names, file shape). The project's existing convention wins over this guide. This guide decides only when the project has no precedent.
 
+When there is no precedent (a new project or the first module of its kind), what you write now becomes the pattern every later change copies. So load `erxonxi-domain-modeling` before modeling the aggregate and its errors, and `erxonxi-testing` before writing the first test (mothers, handwritten mocks of the ports), not only this guide.
+
 ## The map
 
 ```
