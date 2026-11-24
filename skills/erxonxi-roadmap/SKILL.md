@@ -67,19 +67,7 @@ Done when: the MVP fits the appetite with room to spare, and removing any part o
 - **Vertical slices.** Each ticket delivers behavior someone can observe, through every layer it needs, and could ship alone. Bad: "Restock alerts API", "Restock alerts UI", "Restock alerts tests". Good: "A shopper asks for an alert on an out-of-stock product".
 - **Right-size instead of estimating.** A slice is the right size when one person or one agent session can finish it and a human can read its diff in one sitting. That bound is a filter, never a number written on a slice: no days per slice, per role or per person. If it does not fit, split it. If the only way to split it is horizontally, keep it whole and say so. No points, no hours.
 - A slice that needs backend, frontend and QA is still one slice with one owner, and the others work on it with them. Never a ticket, a column or a wave per role.
-
-| Split by | First slice | Later slices |
-|---|---|---|
-| Workflow steps | The shortest path from start to end | Each optional step |
-| Happy path and edge cases | The happy path | Each error or boundary that matters |
-| Business rules | The most common rule | Each variation |
-| Data variations | One type, format or currency | The rest |
-| Interfaces | One channel or entry method | Other channels, bulk import |
-| Operations | Create and read | Update, delete, manage |
-| Major effort | The option that carries most of the cost | Its cheap siblings |
-| Quality attributes | Correct | Fast, polished, scalable, once measured |
-| Spike (last resort) | A timeboxed question that ends in a decision | The slices it unblocks |
-
+- When the first cut is not obvious, split by workflow step, happy path before edge cases, the most common rule, one data variation, one interface, create and read before the rest, or the costly option first. The table with each one is in `resources/techniques.md`.
 - Stop splitting when a piece no longer delivers anything observable on its own, or when coordinating the pieces costs more than building them.
 - A purely technical ticket is the exception: allowed when it unblocks two or more slices or removes a named risk, and it says which. Otherwise the enabling work travels inside the first slice that needs it.
 - Work that takes under an hour is done, not ticketed.
@@ -103,18 +91,7 @@ Done when: every slice could be demoed on its own and none is "part 1 of".
 - **Hard** means the slice cannot be built or verified without the other. **Soft** means it would be nicer afterwards. Only hard dependencies are recorded, with the tool's native "blocked by" relation, or a `Blocked by:` line where there is none.
 - Sharing files is not a dependency. It is an ordering constraint, solved by putting the two slices in different waves.
 - Draw the graph only when more than about eight slices have crossing links. Until then the list is enough.
-- A dependency is a cost. Before accepting one, try to remove it:
-
-| Dependency | How to loosen it |
-|---|---|
-| The consumer waits for the producer | Agree the contract first (signature, payload, schema) as the smallest slice. Both sides build against it, the consumer with a fake. |
-| Unfinished work cannot be merged | A feature flag. Deploying is not releasing. |
-| A breaking change in a schema or an API | Expand, migrate, contract: add the new shape, move the consumers, remove the old one. |
-| A large replacement blocks everyone | Branch by abstraction or a strangler: the new grows beside the old behind one seam. |
-| Two slices touch the same files | Sequence them, or extract the shared change as an earlier slice. |
-| A decision or another team | Ask today. Meanwhile build behind a port with the assumed answer and write the assumption in the ticket. |
-| An unknown | A timeboxed spike. |
-
+- A dependency is a cost. Before accepting one, try to remove it: agree the contract first and build both sides against it, hide unfinished work behind a flag, expand, migrate and contract a breaking change, grow a replacement beside the old code behind one seam, sequence slices that share files, ask today and build behind a port with the assumed answer, or settle an unknown with a timeboxed spike. How each one works: `resources/techniques.md`.
 - Calendar time is set by the longest chain of hard dependencies, not by the number of slices. Shorten the chain first.
 
 Done when: every "blocked by" is hard, and none could be removed with a contract, a flag or a reorder.
@@ -191,17 +168,7 @@ One page, three horizons, no dates:
   3. Between similar bets, first the one that teaches the most or keeps the most options open.
   4. Argue the top three in one sentence each. If the order cannot be argued in a sentence, a scoring formula will not fix it.
 - Later is not a backlog. Prune it every time it is touched. What nobody has defended in three reviews is deleted: if it matters, it comes back.
-- It lives where the team already looks, with a single source of truth:
-
-| Concept | Use whatever the tool calls |
-|---|---|
-| Bet | Project, epic, milestone, parent issue or page |
-| Slice | Issue, story, task, card or checklist line |
-| Hard dependency | The native "blocked by" relation, or a `Blocked by:` line |
-| Wave | The order of the list, or a label. Never a new workflow state |
-| Horizon | Board columns, a grouped view, or three headings in `ROADMAP.md` |
-| Signal | A link to the dashboard or the query |
-
+- It lives where the team already looks, with a single source of truth, using whatever the tool already calls a bet, a slice, a dependency, a wave and a horizon (a wave is the order of the list or a label, never a new workflow state). The mapping: `resources/techniques.md`.
 - Propose the slices and their order in the conversation first. Create or edit tickets only after the human accepts, and look for duplicates before creating.
 - When the user asks for everything in tickets, slice Now, give Next and Later as lines, and say why in two sentences: detail decays, and the first data will change most of it. If they still want all of it sliced, it is their call.
 

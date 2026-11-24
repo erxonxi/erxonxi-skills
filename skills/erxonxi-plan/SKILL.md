@@ -93,6 +93,11 @@ Next step   one sentence: which phase comes next
   1. Run the project's verification command (it is in `AGENTS.md`) and fix what fails.
   2. Evaluate and stop: `erxonxi-evaluate` (contracts, review at the level the phase's `Review:` line states, evidence), then commit proposals and a stop. The next phase waits for the user.
 
+### Phases that do not fit the mold
+
+- **A change under live data or live consumers** (a column, an event, an API): expand (the new shape exists beside the old one and both are kept in step), migrate (an idempotent backfill in batches, consumers moved), contract (the old shape removed). Every phase ships alone and says how it is rolled back. Only contract cannot be undone, and the plan says so.
+- **An unknown that decides a contract**: a spike before the phases, not a phase. One question, a time limit, code that is thrown away, and the answer written under Decisions. No contracts, tests, review or evaluation for it. The phases that depend on the answer are detailed once it is known, or in one line per possible answer.
+
 ### Public contracts
 
 What the user approves instead of code. Per phase, list only the kinds that change:

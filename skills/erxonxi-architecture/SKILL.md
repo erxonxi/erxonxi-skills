@@ -1,6 +1,6 @@
 ---
 name: erxonxi-architecture
-description: "Load before creating, moving or wiring a file, module, use case, endpoint or subscriber in a backend, and before answering where something lives, what a use case or endpoint takes and returns, or which module or context may depend on which, even for a one-line question. Its answers often differ from common practice."
+description: "Load before creating, moving or wiring a module, use case, endpoint or subscriber in a backend, and before answering where something lives, what a use case or endpoint takes and returns, or how modules and contexts depend on and talk to each other, even for a one-line question. Its answers often differ from common practice."
 ---
 
 # Architecture
@@ -98,6 +98,7 @@ Also:
 
 - Each context models its own view of a foreign concept (`NotificationsRecipient` is not the `User` of another context).
 - Data the consumer must remember is copied at the moment of the fact (the order line stores the product's name and price). It is not resolved later with a join.
+- A process that crosses contexts and lasts days (a return, an onboarding) keeps its state in the one aggregate that owns it, so where it stands is read in one place. Each step is a use case started by a person or by a subscriber, undoing is a named business action on that aggregate, and a deadline is a scheduled job that finds aggregates stuck in a state. No saga class, orchestrator or workflow engine until several contexts must compensate and none of them owns the state.
 - Avoid cycles between contexts. If a new context would depend on another one that would in turn depend on it, that aggregate belongs in the existing context.
 
 ## Shared kernel
@@ -110,7 +111,8 @@ Also:
 
 - Small project, script, CRUD without rules or UI without logic: no layers and no ports. The test: if you cannot name one invariant beyond format validation, nor one port you would replace in a test, group by feature and keep it plain. Add the layers with the first invariant or the second adapter.
 - Do not create an interface, factory or layer for a single implementation without a reason. A valid reason is crossing an input/output boundary (you need to substitute it in tests) or having a real variation.
-- Do not add contexts, command or query buses, brokers, subscribers or projections "just in case". The in-memory event bus is the exception: it is in from the first write, and an event nobody listens to yet is recorded and published, with nothing else built for it. A module is promoted to a context when it hurts.
+- Do not add contexts, command or query buses, brokers, subscribers or projections "just in case". The in-memory event bus is the exception: it is in from the first write, and an event nobody listens to yet is recorded and published, with nothing else built for it.
+- A module becomes a context when at least two of these hold: its words mean something else than next door, it changes for other reasons or other people, it already talks to its siblings only through ids, ports and events, or it needs its own deliverable or data. Size is not one of them. The price is that every collaboration with its old siblings becomes a port or an event.
 
 ## Adapting to the language
 
